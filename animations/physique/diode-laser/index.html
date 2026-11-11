@@ -66,15 +66,16 @@ button.info[aria-expanded="true"]{border-color:var(--laser);color:var(--laser)}
 button.info[aria-expanded="true"] .i{background:var(--laser);color:#fff}
 .infobox{background:var(--panel2);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;border-left:0}
 .infobox[hidden]{display:none}
-.panel.has-side{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:12px 16px;align-items:start}
+.panel.has-side{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,210px);gap:12px 16px;align-items:start}
 .panel.has-side>.main{min-width:0;display:flex;flex-direction:column;gap:12px}
-.panel.has-side>.side{display:flex;flex-direction:column;gap:8px;padding-right:14px;border-right:1px solid var(--line);position:sticky;top:12px}
+.panel.has-side>.side{display:flex;flex-direction:column;gap:8px;order:2;padding-left:14px;border-left:1px solid var(--line);position:sticky;top:12px}
+.panel.has-side>.main{order:1}
 .sidehead{font:500 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:2px 0 4px}
 .side .infobar{flex-direction:column;align-items:stretch;border-top:0;padding-top:0;gap:4px}
 .side button.info{justify-content:flex-start;text-align:left;border-radius:8px;white-space:normal;line-height:1.3;font-size:13px}
 .side .infobox{padding:10px}
 .side .infobox span{font-size:13px}
-@media (max-width:760px){.panel.has-side{display:flex;flex-direction:column}.panel.has-side>.side{order:2;border-right:0;padding-right:0;border-top:1px solid var(--line);padding-top:10px;position:static}}
+@media (max-width:760px){.panel.has-side{display:flex;flex-direction:column}.panel.has-side>.side{order:2;border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:10px;position:static}}
 
 .infobox b{font:500 15px/1.3 var(--f-display)}
 .infobox span{font-size:14px;line-height:1.6;max-width:70ch}
@@ -210,6 +211,8 @@ button.info[aria-expanded="true"] .i{background:var(--laser);color:#fff}
   </div>
 
   <h3>3. Pourquoi des couches : les façons de vibrer</h3>
+  <p class="note">D'abord, ce qu'est une orbitale. On part d'une onde qu'on voit (une corde), on passe à une surface (une membrane de tambour), puis à l'espace autour du noyau. À chaque fois : 0 nœud, puis 1 nœud de deux sortes.</p>
+  <div data-bloc="corde-orbitale"></div>
   <p class="note">Une onde enfermée ne peut vibrer que de certaines façons, comme une corde de guitare qui ne fait que des notes précises. Autour d'un noyau, chaque façon de vibrer est une « case ». Plus elle a de lignes de vide (de nœuds), plus elle a d'énergie et plus elle est grande. Avec 0 nœud il y a 1 façon, avec 1 nœud il y en a 4, avec 2 nœuds il y en a 9 : ce sont les couches. Chaque case accepte 2 électrons au plus.</p>
   <div class="panel">
     <div class="view"><canvas id="cvModes" style="aspect-ratio:400/300;cursor:pointer" aria-label="Forme 3D de la case choisie à gauche ; à droite, les cases rangées par énergie, remplies d'électrons selon l'élément choisi"></canvas></div>
@@ -321,7 +324,8 @@ const GA='#7E6BFF', IN='#D8A93A', PH='#2FBF94', BOND='#B85A55';
 
 /* ---------- outils de dessin ---------- */
 function setup(id,W,H){ const cv=document.getElementById(id), ctx=cv.getContext('2d');
-  function fit(){ const w=cv.clientWidth||W, d=Math.min(2,window.devicePixelRatio||1); cv.width=Math.round(w*d); cv.height=Math.round(w*H/W*d); }
+  function fit(){ const host=cv.parentElement, avail=(host&&host.clientWidth)||cv.clientWidth||W, maxH=Math.max(240,window.innerHeight-190), w=Math.max(200,Math.min(avail,maxH*W/H)), d=Math.min(2,window.devicePixelRatio||1);
+    cv.style.width=w+'px'; cv.style.marginInline='auto'; cv.width=Math.round(w*d); cv.height=Math.round(w*H/W*d); }
   fit(); addEventListener('resize',fit);
   return {cv,ctx,base(){ ctx.setTransform(cv.width/W,0,0,cv.height/H,0,0); }}; }
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)), ease=t=>t*t*(3-2*t), lerp=(a,b,t)=>a+(b-a)*t;
@@ -1289,5 +1293,6 @@ requestAnimationFrame(loop);
 </script>
 <script src="../../../assets/js/labo.js"></script>
 <script src="../../../assets/js/blocs/orbitales-liantes.js"></script>
+<script src="../../../assets/js/blocs/corde-orbitale.js"></script>
 <script>Labo.mountBlocs();</script>
 </body></html>

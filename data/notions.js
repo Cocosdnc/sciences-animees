@@ -38,7 +38,7 @@ window.NOTIONS={
          ressources:[{type:'animation',id:D,ancre:'blanc',titre:'La LED blanche'}]},
     {id:'ondes', titre:'Ondes', parent:'physique', resume:'Ce qui se propage, interfère, résonne : son, lumière, matière.'},
       {id:'onde-stationnaire', titre:'Ondes stationnaires', parent:'ondes', resume:'Une onde enfermée ne vibre que de certaines façons : nœuds, ventres, harmoniques.',
-       ressources:[{type:'bloc',id:'corde-vibrante'}]},
+       ressources:[{type:'bloc',id:'corde-vibrante'},{type:'bloc',id:'corde-orbitale'}]},
       {id:'interferences', titre:'Interférences', parent:'ondes', resume:'Des ondes qui se renforcent ou s’annulent selon leur décalage.',
        applications:[{type:'animation',id:D,ancre:'atomeseul',titre:'Davisson et Germer : diffraction des électrons'},{type:'bloc',id:'orbitales-liantes'}]},
     {id:'electricite', titre:'Électricité', parent:'physique', resume:'Tension, courant, et ce que font les électrons dans la matière.'},
@@ -67,7 +67,7 @@ window.NOTIONS={
         {id:'creux', titre:'Pourquoi l’électron ne tombe pas', parent:'atome-quantique', resume:'Attraction du noyau contre agitation d’une onde enfermée : un creux à 0,053 nm.',
          ressources:[{type:'bloc',id:'creux-atome'},{type:'animation',id:D,ancre:'atomeseul',titre:'Le creux de l’atome'}]},
         {id:'couches', titre:'Couches et orbitales', parent:'atome-quantique', resume:'Les façons de vibrer d’une onde autour du noyau : 1, 4, 9 cases.',
-         ressources:[{type:'animation',id:D,ancre:'atomeseul',titre:'Les façons de vibrer'}]},
+         ressources:[{type:'bloc',id:'corde-orbitale'},{type:'animation',id:D,ancre:'atomeseul',titre:'Les façons de vibrer'}]},
         {id:'pauli', titre:'Principe de Pauli', parent:'atome-quantique', resume:'Deux électrons au plus par case, de spins opposés.',
          ressources:[{type:'animation',id:D,ancre:'atomeseul',titre:'Remplir les cases'}]},
     /* ================= CHIMIE ================= */

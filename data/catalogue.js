@@ -24,7 +24,7 @@ window.CATALOGUE={
      themes:['lumière','laser','LED','électricité','semi-conducteur','atome','électron','émission stimulée','onde','orbitale','liaison','couleur'],
      resume:'Du pointeur aux atomes : couches p et n, émission stimulée, onde de l’électron (Davisson et Germer), orbitales, liaison Ga–P, couleur des LED et LED blanche.',
      chemin:'animations/physique/diode-laser/', signe:'650 nm', ajout:'2026-11-11',
-     blocs:['orbitales-liantes']},
+     blocs:['orbitales-liantes','corde-orbitale']},
     {id:'led-et-laser', titre:'LED et laser', domaine:'physique', niveaux:['collège','lycée'],
      themes:['lumière','LED','laser','diode','pointeur','émission stimulée','photon','jonction p-n'],
      resume:'Même jonction, deux destins pour la lumière : la LED l\u2019émet au hasard, le laser la recopie entre deux miroirs. Le pointeur en coupe, la puce en mille-feuille, et l\u2019émission stimulée en animation.',
@@ -50,6 +50,9 @@ window.CATALOGUE={
      script:'assets/js/blocs/corde-vibrante.js'},
     {id:'orbitales-liantes', titre:'Orbitale liante, orbitale antiliante', domaines:['chimie','physique'], niveaux:['lycée','supérieur'],
      themes:['liaison','molécule','orbitale','onde','énergie','semi-conducteur'], resume:'On additionne les ondes de deux atomes : en phase, le nuage se concentre entre les noyaux et lie ; en opposition, il s\u2019en écarte et repousse.',
-     script:'assets/js/blocs/orbitales-liantes.js'}
+     script:'assets/js/blocs/orbitales-liantes.js'},
+    {id:'corde-orbitale', titre:'De la corde à l\u2019orbitale', domaines:['physique','chimie'], niveaux:['lycée','supérieur'],
+     themes:['orbitale','onde stationnaire','nœud','corde','membrane','tambour','atome','couches'], resume:'Ce qu\u2019est une orbitale : la même onde stationnaire sur une corde (1D), une membrane (2D), puis autour du noyau (3D), avec 0 ou 1 nœud.',
+     script:'assets/js/blocs/corde-orbitale.js'}
   ]
 };

@@ -7,7 +7,8 @@ const C={bg:'#090D12',surface:'#10171F',ink:'#E8EEF4',muted:'#93A1B0',line:'#253
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function setup(id,W,H){ const cv=typeof id==='string'?document.getElementById(id):id, ctx=cv.getContext('2d');
-  function fit(){ const w=cv.clientWidth||W, d=Math.min(2,window.devicePixelRatio||1); cv.width=Math.round(w*d); cv.height=Math.round(w*H/W*d); }
+  function fit(){ const host=cv.parentElement, avail=(host&&host.clientWidth)||cv.clientWidth||W, maxH=Math.max(240,window.innerHeight-190), w=Math.max(200,Math.min(avail,maxH*W/H)), d=Math.min(2,window.devicePixelRatio||1);
+    cv.style.width=w+'px'; cv.style.marginInline='auto'; cv.width=Math.round(w*d); cv.height=Math.round(w*H/W*d); }
   fit(); addEventListener('resize',fit);
   return {cv,ctx,W,H,base(){ ctx.setTransform(cv.width/W,0,0,cv.height/H,0,0); }}; }
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)), ease=t=>t*t*(3-2*t), lerp=(a,b,t)=>a+(b-a)*t;
