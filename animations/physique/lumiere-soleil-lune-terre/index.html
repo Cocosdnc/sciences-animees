@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Combien de temps met la lumière pour arriver sur Terre ?</title>
+<style>
+  :root { --bg:#070a16; --panel:#141b33; --ink:#e8ecf6; --muted:#9aa4c0; --light:#ffd166; }
+  * { box-sizing:border-box; }
+  html, body { height:100%; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+         display:flex; flex-direction:column; overflow:hidden; } /* tout tient dans l'écran, sans défilement */
+  header { padding:1.2vh 20px 0; flex:0 0 auto; }
+  h1 { margin:0; font-size:clamp(16px,min(2.4vw,3.6vh),28px); }
+  .sub { color:var(--muted); font-size:clamp(13px,1.4vw,17px); margin-top:2px; }
+  .wrap { flex:1 1 auto; min-height:0; padding:1vh 20px 1.5vh; display:flex; flex-direction:column; gap:1vh; }
+  .controls { flex:0 0 auto; display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  .group { display:flex; background:var(--panel); border-radius:10px; padding:4px; gap:4px; }
+  .group button { font:inherit; font-size:clamp(13px,1.3vw,16px); border:0; border-radius:8px; padding:8px 14px; cursor:pointer; background:transparent; color:var(--ink); }
+  .group button.on { background:#2b3a6b; box-shadow:inset 0 0 0 1px #4d64b0; }
+  .label { color:var(--muted); font-size:13px; margin:0 2px 0 8px; }
+  canvas { flex:1 1 0; min-height:0; width:100%; object-fit:contain; display:block; background:#03050c; border-radius:14px; }
+  .row { flex:0 0 auto; display:flex; flex-wrap:wrap; gap:10px; }
+  .go { font:inherit; font-size:clamp(14px,min(1.6vw,2.6vh),19px); border:0; border-radius:10px; padding:1vh 20px; cursor:pointer; background:var(--light); color:#1a1300; font-weight:700; }
+  .card { background:var(--panel); border-radius:10px; padding:0.8vh 14px; flex:1; min-width:200px; }
+  .big { font-size:clamp(18px,min(3.6vw,5vh),42px); font-weight:700; font-variant-numeric:tabular-nums; }
+  .k { color:var(--muted); font-size:13px; }
+  .back { display:inline-block; font-size:13px; color:var(--muted); text-decoration:none; margin-bottom:2px; }
+  .back:hover { color:var(--ink); }
+  .msg { flex:0 0 auto; font-size:clamp(13px,min(1.6vw,2.4vh),20px); background:var(--panel); border-left:4px solid var(--light); padding:0.8vh 14px; border-radius:8px; min-height:2.6em; }
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="../../../">← Sciences animées</a>
+  <h1>Combien de temps met la lumière pour arriver sur Terre ?</h1>
+  <div class="sub">Le trajet de la lumière est représenté par un <b>rayon lumineux</b> : un trait fléché qui avance.</div>
+</header>
+<div class="wrap">
+  <div class="controls">
+    <span class="label">Trajet :</span>
+    <div class="group" id="scene">
+      <button data-v="lune" class="on">Lune → Terre</button>
+      <button data-v="soleil">Soleil → Terre</button>
+    </div>
+    <span class="label">Vitesse de l'animation :</span>
+    <div class="group" id="vit">
+      <button data-v="1" class="on">Temps réel</button>
+      <button data-v="10">× 10</button>
+      <button data-v="100">× 100</button>
+    </div>
+  </div>
+  <canvas id="c" width="1200" height="470"></canvas>
+  <div class="row">
+    <button class="go" id="go">▶ Envoyer la lumière</button>
+    <div class="card"><div class="k">Distance</div><div class="big" id="dist">–</div></div>
+    <div class="card"><div class="k">Temps écoulé pour la lumière</div><div class="big" id="time">0,00 s</div></div>
+  </div>
+  <div class="msg" id="msg"></div>
+</div>
+<script>
+// Globe terrestre procédural (océans, continents, glace, nuages), rendu en 3D par pixel.
+function makeEarth(R, opts){
+  opts = opts || {};
+  const TW=512, TH=256, tilt=(opts.tilt!=null?opts.tilt:23.4)*Math.PI/180;
+  // --- bruit de valeur 3D (sans couture sur la sphère) ---
+  function hash(x,y,z){ let h=Math.imul(x|0,374761393)^Math.imul(y|0,668265263)^Math.imul(z|0,1274126177); h=Math.imul(h^(h>>>13),1274126177); h^=h>>>16; h=Math.imul(h^(h>>>15),2246822519); h^=h>>>13; return (h>>>0)/4294967296; }
+  function sm(t){ return t*t*(3-2*t); }
+  function noise(x,y,z){
+    const xi=Math.floor(x), yi=Math.floor(y), zi=Math.floor(z), xf=sm(x-xi), yf=sm(y-yi), zf=sm(z-zi);
+    let v=0;
+    for(let dx=0;dx<2;dx++)for(let dy=0;dy<2;dy++)for(let dz=0;dz<2;dz++){
+      const w=(dx?xf:1-xf)*(dy?yf:1-yf)*(dz?zf:1-zf); v+=w*hash(xi+dx,yi+dy,zi+dz);
+    }
+    return v;
+  }
+  function fbm(x,y,z,oct){ let a=0.5,f=1,s=0,n=0; for(let i=0;i<oct;i++){ s+=a*noise(x*f,y*f,z*f); n+=a; a*=0.5; f*=2.03; } return s/n; }
+  // --- texture équirectangulaire ---
+  const tex=new Uint8ClampedArray(TW*TH*3);
+  for(let j=0;j<TH;j++){
+    const lat=(0.5-(j+0.5)/TH)*Math.PI, cl=Math.cos(lat), sl=Math.sin(lat);
+    for(let i=0;i<TW;i++){
+      const lon=(i+0.5)/TW*2*Math.PI;
+      const x=cl*Math.cos(lon), y=sl, z=cl*Math.sin(lon);
+      const n=fbm(x*1.9+10,y*1.9+10,z*1.9+10,6);
+      const d=fbm(x*3+40,y*3+40,z*3+40,4);
+      const c=fbm(x*3.2+90,y*5.5+90,z*3.2+90,5);
+      let r,g,b; const alat=Math.abs(lat*180/Math.PI);
+      if(n>0.535){ // terre
+        const h=Math.min(1,(n-0.535)/0.12);
+        const desert = (alat>12&&alat<35&&d>0.5) ? Math.min(1,(d-0.5)*5) : 0;
+        r=58+70*h; g=118+20*h; b=46+24*h;
+        r=r*(1-desert)+196*desert; g=g*(1-desert)+168*desert; b=b*(1-desert)+112*desert;
+        if(alat>52){ const t=Math.min(1,(alat-52)/14); r=r*(1-t)+86*t; g=g*(1-t)+96*t; b=b*(1-t)+70*t; }
+      } else { // océan
+        const dpt=Math.min(1,(0.535-n)/0.15);
+        r=22-10*dpt; g=92-40*dpt; b=168-40*dpt;
+      }
+      if(alat>70+6*(d-0.5)){ r=236; g=242; b=248; }
+      // nuages
+      const ca=Math.max(0,Math.min(1,(c-0.6)/0.14))*0.75;
+      r=r*(1-ca)+250*ca; g=g*(1-ca)+250*ca; b=b*(1-ca)+252*ca;
+      const k=(j*TW+i)*3; tex[k]=r; tex[k+1]=g; tex[k+2]=b;
+    }
+  }
+  // --- précalcul par pixel du disque ---
+  const S=Math.ceil(2*R)+2, cv=document.createElement('canvas'); cv.width=cv.height=S;
+  const cx=cv.getContext('2d'), img=cx.createImageData(S,S), px=img.data;
+  const L=opts.light||[ -0.75, 0.35, 0.56 ]; const ll=Math.hypot(L[0],L[1],L[2]); const Lx=L[0]/ll, Ly=L[1]/ll, Lz=L[2]/ll;
+  const idx=[], latI=[], lonB=[], shade=[];
+  const ct=Math.cos(tilt), st=Math.sin(tilt);
+  for(let py=0;py<S;py++)for(let pxx=0;pxx<S;pxx++){
+    const x=(pxx-S/2+0.5)/R, y=(S/2-py-0.5)/R, rr=x*x+y*y;
+    if(rr>1) continue;
+    const z=Math.sqrt(1-rr);
+    const bx=x*ct+y*st, by=-x*st+y*ct; // axe incliné
+    const lat=Math.asin(Math.max(-1,Math.min(1,by))), lon=Math.atan2(bx,z);
+    let s = opts.flat ? 0.95 : Math.max(0,x*Lx+y*Ly+z*Lz);
+    if(!opts.flat) s = 0.06 + 0.94*Math.pow(s,0.8);
+    const limb = 0.75+0.25*z;
+    idx.push((py*S+pxx)*4); latI.push(Math.min(TH-1,Math.floor((0.5-lat/Math.PI)*TH))); lonB.push((lon/(2*Math.PI))*TW); shade.push(s*limb);
+  }
+  const N=idx.length;
+  function render(rot){ // rot en radians
+    const off=rot/(2*Math.PI)*TW;
+    for(let k=0;k<N;k++){
+      let u=Math.floor(lonB[k]+off)%TW; if(u<0) u+=TW;
+      const t=(latI[k]*TW+u)*3, p=idx[k], s=shade[k];
+      px[p]=tex[t]*s; px[p+1]=tex[t+1]*s; px[p+2]=tex[t+2]*s; px[p+3]=255;
+    }
+    cx.putImageData(img,0,0);
+  }
+  return {
+    draw(ctx,x,y,rot){
+      render(rot||0);
+      ctx.drawImage(cv,x-S/2,y-S/2);
+      // atmosphère
+      const g=ctx.createRadialGradient(x,y,R*0.985,x,y,R*1.07);
+      g.addColorStop(0,'rgba(120,175,255,0.38)'); g.addColorStop(1,'rgba(110,170,255,0)');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,R*1.07,0,Math.PI*2); ctx.fill();
+    }, R
+  };
+}
+function starfield(ctx,W,H,n,seed){
+  let s=seed||3; const r=()=>{s=(s*16807)%2147483647; return s/2147483647;};
+  for(let i=0;i<n;i++){ const a=0.25+r()*0.6; ctx.fillStyle=`rgba(255,255,255,${a})`; const z=r()<0.1?1.6:0.9; ctx.fillRect(r()*W,r()*H,z,z); }
+}
+
+const C=299792.458;
+const cv=document.getElementById('c'), ctx=cv.getContext('2d'), W=cv.width, H=cv.height;
+const S={
+  lune:{ km:384400, note:'Distance et tailles Terre-Lune à l\'échelle (le Soleil, lui, n\'est pas à l\'échelle)', msg0:"La Lune renvoie vers nous la lumière du Soleil. Combien de temps met cette lumière pour arriver ? Fais un pronostic, puis envoie la lumière.",
+         msg1:"La lumière met environ <b>1,3 seconde</b> pour venir de la Lune jusqu'à nous. On voit donc la Lune telle qu'elle était il y a 1,3 s." },
+  soleil:{ km:149600000, note:'Tailles et distances pas à l\'échelle (le Soleil serait 109 fois plus grand que la Terre, et 11 700 diamètres terrestres plus loin)',
+         msg0:"Le Soleil est à 150 millions de km. Combien de temps met sa lumière pour arriver ? Fais un pronostic, puis envoie la lumière.",
+         msg1:"La lumière du Soleil met <b>8 minutes et 20 secondes</b> pour arriver. On voit donc le Soleil <b>tel qu'il était il y a 8 minutes</b>." }
+};
+let scene='lune', factor=1, running=false, tStart=0, lightT=0, done=false;
+// objets
+const earthSmall=makeEarth(16,{light:[0.25,0.3,0.92]});
+const earthBig=makeEarth(70,{light:[-0.9,0.2,0.4]});
+function moon(x,y,r,lit){
+  const g=ctx.createRadialGradient(x-r*0.3,y-r*0.3,r*0.1,x,y,r);
+  g.addColorStop(0,'#e9e7e2'); g.addColorStop(1,'#8d8a84');
+  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+}
+function sun(x,y,r){
+  const g=ctx.createRadialGradient(x,y,r*0.2,x,y,r*2.6);
+  g.addColorStop(0,'rgba(255,240,180,1)'); g.addColorStop(0.35,'rgba(255,190,60,0.9)'); g.addColorStop(0.42,'rgba(255,150,40,0.35)'); g.addColorStop(1,'rgba(255,120,20,0)');
+  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r*2.6,0,Math.PI*2); ctx.fill();
+  const g2=ctx.createRadialGradient(x-r*0.2,y-r*0.2,0,x,y,r);
+  g2.addColorStop(0,'#fff6d0'); g2.addColorStop(0.7,'#ffc23a'); g2.addColorStop(1,'#ff9a1a');
+  ctx.fillStyle=g2; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+}
+function arrowHead(x,y,ang,size,col){ ctx.save(); ctx.translate(x,y); ctx.rotate(ang); ctx.fillStyle=col; ctx.beginPath(); ctx.moveTo(size,0); ctx.lineTo(-size*0.8,size*0.6); ctx.lineTo(-size*0.8,-size*0.6); ctx.closePath(); ctx.fill(); ctx.restore(); }
+function drawRay(x0,x1,y,frac){
+  const xe=x0+(x1-x0)*frac;
+  if(frac<=0) return;
+  ctx.strokeStyle='rgba(255,209,102,0.25)'; ctx.lineWidth=12; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(xe,y); ctx.stroke();
+  ctx.strokeStyle='#ffd166'; ctx.lineWidth=3.5; ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(xe,y); ctx.stroke();
+  if(frac<1) arrowHead(xe,y,0,13,'#ffe8a6'); else arrowHead((x0+x1)/2,y,0,14,'#ffd166');
+}
+const stars=document.createElement('canvas'); stars.width=W; stars.height=H; starfield(stars.getContext('2d'),W,H,260,11);
+let rot=0;
+function fmtT(s){ if(s<60) return s.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' s'; const m=Math.floor(s/60), r=Math.floor(s%60); return m+' min '+String(r).padStart(2,'0')+' s'; }
+function frame(now){
+  ctx.clearRect(0,0,W,H); ctx.drawImage(stars,0,0);
+  const total=S[scene].km/C;
+  if(running){ lightT=Math.min(total,(now-tStart)/1000*factor); if(lightT>=total){ running=false; done=true; document.getElementById('msg').innerHTML=S[scene].msg1; document.getElementById('go').textContent='↻ Recommencer'; } }
+  const frac=lightT/total;
+  rot+=0.002;
+  ctx.font='17px system-ui'; ctx.textAlign='center'; ctx.fillStyle='#9aa4c0';
+  if(scene==='lune'){
+    // à l'échelle : distance Terre-Lune = 30 diamètres terrestres ; rayon Lune = 0,27 rayon Terre
+    const Ex=1110, y=H/2, Er=16, Mx=Ex-60.3*Er, Mr=4.4;
+    // Soleil (pas à l'échelle) et rayon fixe qui éclaire la Lune
+    const SunX=470, SunY=72, SunR=26;
+    sun(SunX,SunY,SunR);
+    const a=Math.atan2(y-SunY,Mx-SunX), x0=SunX+Math.cos(a)*(SunR+6), y0=SunY+Math.sin(a)*(SunR+6), x1=Mx-Math.cos(a)*(Mr+5), y1=y-Math.sin(a)*(Mr+5);
+    ctx.strokeStyle='#ffd166'; ctx.lineWidth=3; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.stroke();
+    arrowHead((x0+x1)/2,(y0+y1)/2,a,13,'#ffd166');
+    ctx.fillStyle='#9aa4c0'; ctx.fillText('Soleil (pas à l\'échelle)',SunX+SunR+110,SunY+6);
+    moon(Mx,y,Mr+0.6); earthSmall.draw(ctx,Ex,y,rot);
+    drawRay(Mx+Mr+3,Ex-Er-4,y,frac);
+    ctx.fillStyle='#9aa4c0'; // les dessins de la Terre et de la Lune changent la couleur : on la remet pour les étiquettes
+    ctx.fillText('Lune',Mx,y+34); ctx.fillText('Terre',Ex,y+44);
+    ctx.fillText('384 400 km',(Mx+Ex)/2,y-26);
+  } else {
+    const Sx=130, y=H/2, Sr=80, Ex=1090;
+    sun(Sx,y,Sr); earthBig.draw(ctx,Ex,y,rot);
+    drawRay(Sx+Sr+6,Ex-70-6,y,frac);
+    ctx.fillStyle='#9aa4c0'; // les dessins de la Terre et de la Lune changent la couleur : on la remet pour les étiquettes
+    ctx.fillText('Soleil',Sx,y+Sr+80); ctx.fillText('Terre',Ex,y+100);
+    ctx.fillText('150 millions de km',(Sx+Ex)/2,y-26);
+  }
+  ctx.fillStyle='#6f7896'; ctx.font='14px system-ui'; ctx.textAlign='left'; ctx.fillText(S[scene].note,14,H-14);
+  document.getElementById('time').textContent=fmtT(lightT);
+  requestAnimationFrame(frame);
+}
+function setGroup(id,cb){ document.querySelectorAll('#'+id+' button').forEach(b=>b.onclick=()=>{ document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); cb(b.dataset.v); }); }
+function reset(){ running=false; done=false; lightT=0; document.getElementById('go').textContent='▶ Envoyer la lumière'; document.getElementById('msg').innerHTML=S[scene].msg0;
+  document.getElementById('dist').textContent=S[scene].km.toLocaleString('fr-FR')+' km'; }
+setGroup('scene',v=>{ scene=v; reset(); });
+setGroup('vit',v=>{ const f=+v; if(running){ const now=performance.now(); tStart=now-lightT/f*1000; } factor=f; });
+document.getElementById('go').onclick=()=>{ if(running) return; if(done) reset(); running=true; tStart=performance.now()-lightT/factor*1000; document.getElementById('msg').innerHTML='La lumière voyage…'; };
+reset(); requestAnimationFrame(frame);
+</script>
+</body>
+</html>

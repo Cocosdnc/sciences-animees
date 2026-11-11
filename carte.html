@@ -58,6 +58,7 @@ mark{background:rgba(255,61,51,.25);color:inherit;border-radius:3px}
 .res a:hover{border-color:var(--muted)}
 .res a small{font:500 11px var(--f-mono);color:var(--muted)}
 .res a b{font:500 14px/1.3 var(--f-body)}
+.res.app a{background:transparent;border-style:dashed}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chips button{font-size:13px;padding:6px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:6px;text-align:left;line-height:1.3}
 .chips button i{width:7px;height:7px;border-radius:50%;background:var(--c);flex:none}
@@ -86,7 +87,7 @@ mark{background:rgba(255,61,51,.25);color:inherit;border-radius:3px}
       <div class="mapbox">
         <svg id="map" role="img" aria-label="Carte mentale des notions : domaines au centre, thèmes puis notions vers l'extérieur, liens transversaux en pointillés"></svg>
         <div class="zoom"><button type="button" id="zIn" aria-label="Zoomer">+</button><button type="button" id="zOut" aria-label="Dézoomer">−</button><button type="button" id="zFit" aria-label="Tout voir">⤢</button></div>
-        <div class="mapnote">Glisse pour te déplacer · molette ou +/− pour zoomer</div>
+        <div class="mapnote">Point plein : expliqué · point vide : explication à venir · cercle pointillé : application<br>Glisse pour te déplacer · molette ou +/− pour zoomer</div>
       </div>
     </div>
     <div class="pane" id="paneTree" hidden><div id="tree"></div></div>
@@ -107,10 +108,12 @@ N.noeuds.forEach(n=>{ byId[n.id]=Object.assign({},n); kids[n.id]=kids[n.id]||[];
 N.noeuds.forEach(n=>{ (kids[n.parent]=kids[n.parent]||[]).push(n.id); });
 (function walk(id,d,col){ const n=byId[id]; n.depth=d; if(d===1) col=n.color; n.color=col||n.color; (kids[id]||[]).forEach(c=>walk(c,d+1,col)); })('sciences',0);
 const anim=Object.fromEntries(K.animations.map(a=>[a.id,a])), bloc=Object.fromEntries((K.blocs||[]).map(b=>[b.id,b]));
-const nres=id=>(byId[id].ressources||[]).length+(kids[id]||[]).reduce((s,c)=>s+nres(c),0);
+const nexp=id=>(byId[id].ressources||[]).length+(kids[id]||[]).reduce((s,c)=>s+nexp(c),0);
+const napp=id=>(byId[id].applications||[]).length+(kids[id]||[]).reduce((s,c)=>s+napp(c),0);
+const nres=nexp;
 const links={}; N.liens.forEach(([a,b,t])=>{ if(!byId[a]||!byId[b]) return; (links[a]=links[a]||[]).push([b,t]); (links[b]=links[b]||[]).push([a,t]); });
 const path=id=>{ const p=[]; let n=byId[id]; while(n){ p.unshift(n.id); n=byId[n.parent]; } return p; };
-const kind=n=>n.depth===0?'Toutes les sciences':n.depth===1?'Domaine':(kids[n.id]||[]).length?(n.depth===2?'Thème':'Sous-thème'):'Notion';
+const kind=n=>n.depth===0?'Toutes les sciences':n.depth===1?'Domaine':n.application?((kids[n.id]||[]).length?'Applications':'Application'):(kids[n.id]||[]).length?(n.depth===2?'Thème':'Sous-thème'):'Notion';
 const norm=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
 
 let sel=(location.hash.slice(1)&&byId[location.hash.slice(1)])?location.hash.slice(1):'sciences', q='', open=new Set(path(sel));
@@ -123,13 +126,14 @@ function renderDetail(){
   const n=byId[sel]; det.innerHTML=''; det.style.setProperty('--c',n.color);
   const cr=el('div','crumb'); path(sel).slice(0,-1).forEach((id,i)=>{ if(i) cr.append(el('span','','›')); const b=el('button','',byId[id].titre); b.type='button'; b.onclick=()=>select(id,true); cr.append(b); }); if(n.depth) det.append(cr);
   det.append(el('div','kind',kind(n)), el('h2','',n.titre)); if(n.resume) det.append(el('p','',n.resume));
-  const R=n.ressources||[];
-  if(R.length){ det.append(el('div','sub','Animations et modèles')); const box=el('div','res');
-    R.forEach(r=>{ const a=document.createElement('a');
-      if(r.type==='animation'){ const A=anim[r.id]; if(!A) return; a.href=A.chemin+(r.ancre?'#'+r.ancre:''); a.append(el('small','','Animation · '+A.titre), el('b','',r.titre||A.titre)); }
-      else { const B=bloc[r.id]; if(!B) return; a.href='blocs/voir.html#'+B.id; a.append(el('small','','Modèle réutilisable'), el('b','',B.titre)); }
-      box.append(a); }); det.append(box); }
-  else if(!(kids[sel]||[]).length || !nres(sel)) det.append(el('div','soon',nres(sel)?'':'Pas encore d’animation ici. Cette notion est prévue sur la carte.'));
+  const linkOf=r=>{ const a=document.createElement('a');
+    if(r.type==='animation'){ const A=anim[r.id]; if(!A) return null; a.href=A.chemin+(r.ancre?'#'+r.ancre:''); a.append(el('small','','Animation · '+A.titre), el('b','',r.titre||A.titre)); }
+    else { const B=bloc[r.id]; if(!B) return null; a.href='blocs/voir.html#'+B.id; a.append(el('small','','Modèle réutilisable'), el('b','',B.titre)); }
+    return a; };
+  const R=n.ressources||[], AP=n.applications||[], leaf=!(kids[sel]||[]).length;
+  if(R.length){ det.append(el('div','sub','Pour comprendre')); const box=el('div','res'); R.forEach(r=>{ const a=linkOf(r); if(a) box.append(a); }); det.append(box); }
+  else if(leaf||!nexp(sel)) det.append(el('div','soon',leaf?'Explication à venir : aucune animation n\u2019explique encore cette notion.':'Aucune notion de cette partie n\u2019a encore son explication.'));
+  if(AP.length){ det.append(el('div','sub','Applications : où on la retrouve')); const box=el('div','res app'); AP.forEach(r=>{ const a=linkOf(r); if(a) box.append(a); }); det.append(box); }
   const ch=kids[sel]||[]; if(ch.length){ det.append(el('div','sub',n.depth===0?'Domaines':'Contient')); const c=el('div','chips');
     ch.forEach(id=>{ const b=el('button'); b.type='button'; b.style.setProperty('--c',byId[id].color); b.append(el('i'),byId[id].titre); const k=nres(id); if(!k) b.style.opacity=.6; b.onclick=()=>select(id,true); c.append(b); }); det.append(c); }
   const L=links[sel]||[]; if(L.length){ det.append(el('div','sub','Liée à')); const c=el('div','links');
@@ -148,7 +152,7 @@ function renderTree(){
       const t=el('button','tw',has?(isOpen?'▾':'▸'):''); t.type='button'; t.disabled=!has; t.setAttribute('aria-label',(isOpen?'Replier ':'Déplier ')+n.titre);
       t.onclick=()=>{ isOpen?open.delete(cid):open.add(cid); renderTree(); };
       const b=el('button','nd d'+Math.min(n.depth,3)+(nres(cid)?'':' vide')); b.type='button'; b.style.setProperty('--c',n.color); b.append(el('i'),hl(n.titre));
-      const k=nres(cid); b.append(el('small','',k?k+' ressource'+(k>1?'s':''):'à venir')); if(cid===sel) b.setAttribute('aria-current','true');
+      const k=nexp(cid), ka=napp(cid); b.append(el('small','',k?k+' explication'+(k>1?'s':''):(ka?'explication à venir':'à venir'))); if(cid===sel) b.setAttribute('aria-current','true');
       b.onclick=()=>select(cid,false); row.append(t,b); li.append(row); if(has&&isOpen) li.append(build(cid)); ul.append(li); }); return ul; }
   treeEl.innerHTML=''; treeEl.append(build('sciences'));
 }
@@ -174,6 +178,7 @@ Object.keys(byId).forEach(id=>{ const n=byId[id], p=pos[id], d=Math.min(n.depth,
   const full=nres(id)>0;
   mk('circle',{cx:p.x,cy:p.y,r:SIZE[d]*2.2,fill:n.color,'fill-opacity':full?.12:0},g);
   mk('circle',{cx:p.x,cy:p.y,r:SIZE[d],fill:full?n.color:'#0B1016',stroke:n.color,'stroke-width':full?0:1.6},g);
+  if(n.application) mk('circle',{cx:p.x,cy:p.y,r:SIZE[d]+4,fill:'none',stroke:n.color,'stroke-width':1.2,'stroke-dasharray':'2 2'},g);
   const t=mk('text',{'font-size':FS[d],'font-weight':d<=2?600:400},g); t.textContent=n.titre;
   if(d===0){ t.setAttribute('x',p.x); t.setAttribute('y',p.y+46); t.setAttribute('text-anchor','middle'); }
   else if(d===1){ const s=Math.sin(p.a); t.setAttribute('x',p.x); t.setAttribute('y',p.y+(s<0?-26:36)); t.setAttribute('text-anchor','middle'); }

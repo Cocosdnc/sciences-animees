@@ -13,6 +13,12 @@ Ces règles viennent des retours faits pendant la création de la première anim
 - **Citer les sources** sous chaque animation qui s'appuie sur des modèles de recherche.
 - **Être honnête sur l'histoire** : distinguer ce que l'expérience d'origine a fait de ce que l'animation montre (exemple : Davisson et Germer envoyaient un flux continu ; les électrons « un par un », c'est Tonomura en 1989).
 
+## Carte des notions : explication ou application
+
+- **Une animation n'est rattachée à une notion comme explication que si elle l'explique vraiment** : on en sort en ayant compris le pourquoi. Exemple : *Dans la diode laser* explique l'émission stimulée, mais ne fait qu'**utiliser** la synthèse additive (pour la LED blanche).
+- Quand une notion intervient sans être expliquée, l'animation va dans `applications`, pas dans `ressources`. La notion reste alors « explication à venir ».
+- Chaque thème a une sous-partie **Applications** (LED, laser, LED blanche…) : les objets où ses notions servent.
+
 ## Dessin
 
 - **Orientation cohérente d'une vue à l'autre** : si le faisceau part vers la droite dans le pointeur, il part vers la droite dans le boîtier, la puce et les couches. Même empilement partout (couche p en haut).

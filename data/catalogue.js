@@ -28,7 +28,15 @@ window.CATALOGUE={
     {id:'led-et-laser', titre:'LED et laser', domaine:'physique', niveaux:['collège','lycée'],
      themes:['lumière','LED','laser','diode','pointeur','émission stimulée','photon','jonction p-n'],
      resume:'Même jonction, deux destins pour la lumière : la LED l\u2019émet au hasard, le laser la recopie entre deux miroirs. Le pointeur en coupe, la puce en mille-feuille, et l\u2019émission stimulée en animation.',
-     chemin:'animations/physique/led-et-laser/', signe:'LED · laser', ajout:'2026-11-11'}
+     chemin:'animations/physique/led-et-laser/', signe:'LED · laser', ajout:'2026-11-11'},
+    {id:'lumiere-tour-de-la-terre', titre:'Combien de fois la lumière fait-elle le tour de la Terre en 1 seconde ?', domaine:'physique', niveaux:['collège'],
+     themes:['lumière','vitesse de la lumière','propagation','Terre','distance'],
+     resume:'Un rayon lumineux lancé à ras de la Terre, en temps réel ou au ralenti : 300 000 km en une seconde, soit 7,5 tours.',
+     chemin:'animations/physique/lumiere-tour-de-la-terre/', signe:'7,5 tours', ajout:'2026-11-11'},
+    {id:'lumiere-soleil-lune-terre', titre:'Combien de temps met la lumière pour arriver sur Terre ?', domaine:'physique', niveaux:['collège'],
+     themes:['lumière','vitesse de la lumière','propagation','Lune','Soleil','système solaire','distance'],
+     resume:'De la Lune (1,3 s) et du Soleil (8 min 20 s) jusqu\u2019à la Terre, en temps réel ou accéléré, avec la Terre et la Lune à l\u2019échelle.',
+     chemin:'animations/physique/lumiere-soleil-lune-terre/', signe:'8 min 20 s', ajout:'2026-11-11'}
   ],
   /* Blocs : modèles réutilisables, insérables dans n'importe quelle page avec <div data-bloc="id"></div>.
      - domaines : tous les domaines où le bloc sert (il apparaît dans chacun)
