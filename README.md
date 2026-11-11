@@ -9,7 +9,9 @@ Site statique, sans étape de construction : il s'héberge tel quel sur GitHub P
 
 ```
 index.html                    Accueil : domaines, catalogue filtrable, modèles
+carte.html                    Carte des notions : vue en arbre et carte mentale, à partir des mêmes données
 data/catalogue.js             LE fichier à modifier pour ajouter une animation ou un modèle
+data/notions.js               Arborescence des notions (domaine › thème › sous-thème › notion) et liens transversaux
 assets/css/base.css           Styles communs (couleurs, panneaux, boutons, colonne « Comprendre »)
 assets/js/labo.js             Outils communs : dessin sur canevas, boutons « i », horloge, blocs
 assets/js/blocs/<id>.js       Modèles réutilisables (un fichier par modèle)
@@ -35,11 +37,19 @@ Insérer un modèle dans n'importe quelle page :
 <script>Labo.mountBlocs();</script>
 ```
 
+## Carte des notions
+
+`data/notions.js` décrit chaque notion une seule fois : son parent (domaine, thème ou sous-thème), un résumé,
+les animations et modèles qui l'expliquent (avec la section précise de la page), et des liens vers d'autres notions,
+y compris d'un domaine à l'autre. La page `carte.html` en tire deux vues : un arbre dépliable et une carte mentale
+qu'on déplace et qu'on zoome. Une notion sans ressource apparaît « à venir » : la carte sert aussi de feuille de route.
+
 ## Ajouter une animation
 
 1. Copier `animations/_modele/` vers `animations/<domaine>/<id>/`.
 2. Écrire la page (une section = une idée ; réutiliser les modèles existants quand c'est possible).
 3. Ajouter une entrée dans `data/catalogue.js` (champs décrits en tête du fichier).
+   Rattacher l'animation aux notions concernées dans `data/notions.js` (champ `ressources`).
 4. Lancer `node tools/verifier.mjs`.
 5. Relire avec la liste de `docs/CONVENTIONS.md`.
 

@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Carte des notions · Sciences animées</title>
+<meta name="description" content="Toutes les notions des sciences, rangées par domaine et reliées entre elles, en arbre ou en carte mentale.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/css/base.css">
+<style>
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.bar input{flex:1;min-width:200px;font:400 15px var(--f-body);color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.bar input::placeholder{color:var(--muted)}
+.explorer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,330px);gap:16px;align-items:start}
+@media (max-width:860px){.explorer{grid-template-columns:1fr}}
+.pane{background:var(--panel);border:1px solid var(--line);border-radius:16px;min-width:0}
+/* arbre */
+#tree{padding:10px;max-height:72vh;overflow:auto}
+#tree ul{list-style:none;margin:0;padding:0 0 0 16px;border-left:1px solid var(--line)}
+#tree>ul{padding-left:0;border-left:0}
+#tree li{margin:2px 0}
+.row{display:flex;align-items:center;gap:4px}
+.tw{width:24px;height:24px;padding:0;border:0;background:none;color:var(--muted);font:500 13px var(--f-mono);flex:none}
+.tw:disabled{visibility:hidden}
+.nd{flex:1;min-width:0;text-align:left;background:none;border:1px solid transparent;border-radius:8px;padding:6px 8px;display:flex;align-items:center;gap:8px;font-size:14px;line-height:1.3}
+.nd:hover{border-color:var(--line);background:var(--panel2)}
+.nd[aria-current="true"]{border-color:var(--c,var(--laser));background:var(--panel2)}
+.nd i{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
+.nd.d1{font:700 16px/1.2 var(--f-display)}
+.nd.d1 i{width:11px;height:11px}
+.nd.d2{font-weight:500}
+.nd.vide{color:var(--muted)}
+.nd small{margin-left:auto;font:500 11px var(--f-mono);color:var(--muted);white-space:nowrap}
+mark{background:rgba(255,61,51,.25);color:inherit;border-radius:3px}
+/* carte mentale */
+.mapbox{position:relative;overflow:hidden;border-radius:16px}
+#map{display:block;width:100%;height:min(72vh,700px);min-height:420px;background:radial-gradient(circle at 50% 50%,#101922 0%,#070A0E 75%);touch-action:none;cursor:grab}
+#map.drag{cursor:grabbing}
+#map text{font-family:var(--f-body);fill:var(--ink);paint-order:stroke;stroke:#070A0E;stroke-width:4px;stroke-linejoin:round;pointer-events:none}
+#map .n{cursor:pointer}
+#map .n circle{transition:r .15s}
+#map .dim{opacity:.13}
+.zoom{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px}
+.zoom button{width:36px;height:36px;padding:0;font:500 18px var(--f-mono)}
+.mapnote{position:absolute;left:10px;bottom:10px;font:500 11px var(--f-mono);color:var(--muted);background:rgba(5,8,11,.7);padding:6px 8px;border-radius:6px;pointer-events:none}
+/* détail */
+#detail{padding:16px;display:flex;flex-direction:column;gap:12px;position:sticky;top:12px}
+.crumb{display:flex;flex-wrap:wrap;gap:4px;font-size:12px;color:var(--muted)}
+.crumb button{background:none;border:0;padding:0;color:var(--muted);font-size:12px;text-decoration:underline;text-underline-offset:2px}
+.crumb button:hover{color:var(--ink)}
+.kind{font:500 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+#detail h2{font-size:22px}
+#detail p{margin:0;font-size:14px;color:var(--muted);line-height:1.55}
+.sub{font:500 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.res{display:flex;flex-direction:column;gap:6px}
+.res a{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.res a:hover{border-color:var(--muted)}
+.res a small{font:500 11px var(--f-mono);color:var(--muted)}
+.res a b{font:500 14px/1.3 var(--f-body)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{font-size:13px;padding:6px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:6px;text-align:left;line-height:1.3}
+.chips button i{width:7px;height:7px;border-radius:50%;background:var(--c);flex:none}
+.links{display:flex;flex-direction:column;gap:6px}
+.links button{text-align:left;display:flex;flex-direction:column;gap:2px;padding:8px 10px;border-radius:10px;line-height:1.3}
+.links button span{font-size:12px;color:var(--muted)}
+.links button b{font-weight:500;display:flex;gap:6px;align-items:center}
+.links button b i{width:7px;height:7px;border-radius:50%;background:var(--c)}
+.soon{font-size:14px;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:10px 12px}
+</style>
+</head>
+<body>
+<div class="topbar"><a class="brand" href="./"><i></i>Sciences animées</a><nav><a href="./#catalogue">Animations</a><a href="carte.html">Carte des notions</a><a href="blocs/">Modèles</a></nav></div>
+<div class="wrap" style="gap:24px">
+  <header class="page">
+    <div class="kicker">Carte des notions</div>
+    <h1>Tout est lié</h1>
+    <p class="lead">Chaque domaine se divise en thèmes, puis en notions. Les traits en pointillés relient des notions qui s'expliquent l'une l'autre, souvent d'un domaine à l'autre. Choisis une notion pour voir ses animations et ce qui s'y rattache.</p>
+  </header>
+  <div class="bar">
+    <div class="seg" role="group" aria-label="Vue"><button type="button" data-v="carte" aria-pressed="true">Carte mentale</button><button type="button" data-v="arbre" aria-pressed="false">Arbre</button></div>
+    <input id="q" type="search" placeholder="Chercher une notion : onde, liaison, couleur…" aria-label="Chercher une notion">
+  </div>
+  <div class="explorer">
+    <div class="pane" id="paneMap">
+      <div class="mapbox">
+        <svg id="map" role="img" aria-label="Carte mentale des notions : domaines au centre, thèmes puis notions vers l'extérieur, liens transversaux en pointillés"></svg>
+        <div class="zoom"><button type="button" id="zIn" aria-label="Zoomer">+</button><button type="button" id="zOut" aria-label="Dézoomer">−</button><button type="button" id="zFit" aria-label="Tout voir">⤢</button></div>
+        <div class="mapnote">Glisse pour te déplacer · molette ou +/− pour zoomer</div>
+      </div>
+    </div>
+    <div class="pane" id="paneTree" hidden><div id="tree"></div></div>
+    <aside class="pane" id="detail" aria-live="polite"></aside>
+  </div>
+</div>
+<script src="data/catalogue.js"></script>
+<script src="data/notions.js"></script>
+<script>
+(function(){
+const K=window.CATALOGUE, N=window.NOTIONS;
+/* ---------- construction du graphe ---------- */
+const byId={}, kids={};
+const root={id:'sciences',titre:'Sciences',resume:'Tous les domaines du site.',parent:null,depth:0,color:'#E8EEF4'};
+byId.sciences=root; kids.sciences=[];
+K.domaines.forEach(d=>{ byId[d.id]={id:d.id,titre:d.nom,resume:d.resume,parent:'sciences',color:d.couleur}; kids.sciences.push(d.id); kids[d.id]=[]; });
+N.noeuds.forEach(n=>{ byId[n.id]=Object.assign({},n); kids[n.id]=kids[n.id]||[]; });
+N.noeuds.forEach(n=>{ (kids[n.parent]=kids[n.parent]||[]).push(n.id); });
+(function walk(id,d,col){ const n=byId[id]; n.depth=d; if(d===1) col=n.color; n.color=col||n.color; (kids[id]||[]).forEach(c=>walk(c,d+1,col)); })('sciences',0);
+const anim=Object.fromEntries(K.animations.map(a=>[a.id,a])), bloc=Object.fromEntries((K.blocs||[]).map(b=>[b.id,b]));
+const nres=id=>(byId[id].ressources||[]).length+(kids[id]||[]).reduce((s,c)=>s+nres(c),0);
+const links={}; N.liens.forEach(([a,b,t])=>{ if(!byId[a]||!byId[b]) return; (links[a]=links[a]||[]).push([b,t]); (links[b]=links[b]||[]).push([a,t]); });
+const path=id=>{ const p=[]; let n=byId[id]; while(n){ p.unshift(n.id); n=byId[n.parent]; } return p; };
+const kind=n=>n.depth===0?'Toutes les sciences':n.depth===1?'Domaine':(kids[n.id]||[]).length?(n.depth===2?'Thème':'Sous-thème'):'Notion';
+const norm=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+
+let sel=(location.hash.slice(1)&&byId[location.hash.slice(1)])?location.hash.slice(1):'sciences', q='', open=new Set(path(sel));
+const matches=()=>{ if(!q) return null; const nq=norm(q); return new Set(Object.values(byId).filter(n=>norm(n.titre+' '+(n.resume||'')).includes(nq)).map(n=>n.id)); };
+
+/* ---------- détail ---------- */
+const det=document.getElementById('detail');
+function el(tag,cls,txt){ const e=document.createElement(tag); if(cls) e.className=cls; if(txt!==undefined) e.textContent=txt; return e; }
+function renderDetail(){
+  const n=byId[sel]; det.innerHTML=''; det.style.setProperty('--c',n.color);
+  const cr=el('div','crumb'); path(sel).slice(0,-1).forEach((id,i)=>{ if(i) cr.append(el('span','','›')); const b=el('button','',byId[id].titre); b.type='button'; b.onclick=()=>select(id,true); cr.append(b); }); if(n.depth) det.append(cr);
+  det.append(el('div','kind',kind(n)), el('h2','',n.titre)); if(n.resume) det.append(el('p','',n.resume));
+  const R=n.ressources||[];
+  if(R.length){ det.append(el('div','sub','Animations et modèles')); const box=el('div','res');
+    R.forEach(r=>{ const a=document.createElement('a');
+      if(r.type==='animation'){ const A=anim[r.id]; if(!A) return; a.href=A.chemin+(r.ancre?'#'+r.ancre:''); a.append(el('small','','Animation · '+A.titre), el('b','',r.titre||A.titre)); }
+      else { const B=bloc[r.id]; if(!B) return; a.href='blocs/voir.html#'+B.id; a.append(el('small','','Modèle réutilisable'), el('b','',B.titre)); }
+      box.append(a); }); det.append(box); }
+  else if(!(kids[sel]||[]).length || !nres(sel)) det.append(el('div','soon',nres(sel)?'':'Pas encore d’animation ici. Cette notion est prévue sur la carte.'));
+  const ch=kids[sel]||[]; if(ch.length){ det.append(el('div','sub',n.depth===0?'Domaines':'Contient')); const c=el('div','chips');
+    ch.forEach(id=>{ const b=el('button'); b.type='button'; b.style.setProperty('--c',byId[id].color); b.append(el('i'),byId[id].titre); const k=nres(id); if(!k) b.style.opacity=.6; b.onclick=()=>select(id,true); c.append(b); }); det.append(c); }
+  const L=links[sel]||[]; if(L.length){ det.append(el('div','sub','Liée à')); const c=el('div','links');
+    L.forEach(([id,t])=>{ const o=byId[id], b=el('button'); b.type='button'; b.style.setProperty('--c',o.color); const bb=el('b'); bb.append(el('i'),o.titre);
+      const dom=byId[path(id)[1]]; b.append(bb, el('span','',t+(path(id)[1]!==path(sel)[1]?' · '+dom.titre:''))); b.onclick=()=>select(id,true); c.append(b); }); det.append(c); }
+}
+
+/* ---------- arbre ---------- */
+const treeEl=document.getElementById('tree');
+function hl(text){ const span=el('span'); if(!q){ span.textContent=text; return span; } const i=norm(text).indexOf(norm(q)); if(i<0){ span.textContent=text; return span; }
+  span.append(text.slice(0,i)); const m=el('mark','',text.slice(i,i+q.length)); span.append(m, text.slice(i+q.length)); return span; }
+function renderTree(){
+  const M=matches(), keep=new Set(); if(M) M.forEach(id=>path(id).forEach(p=>keep.add(p)));
+  function build(id){ const ul=el('ul'); (kids[id]||[]).forEach(cid=>{ if(M&&!keep.has(cid)) return; const n=byId[cid], li=el('li'), row=el('div','row');
+      const has=(kids[cid]||[]).length, isOpen=M?true:open.has(cid);
+      const t=el('button','tw',has?(isOpen?'▾':'▸'):''); t.type='button'; t.disabled=!has; t.setAttribute('aria-label',(isOpen?'Replier ':'Déplier ')+n.titre);
+      t.onclick=()=>{ isOpen?open.delete(cid):open.add(cid); renderTree(); };
+      const b=el('button','nd d'+Math.min(n.depth,3)+(nres(cid)?'':' vide')); b.type='button'; b.style.setProperty('--c',n.color); b.append(el('i'),hl(n.titre));
+      const k=nres(cid); b.append(el('small','',k?k+' ressource'+(k>1?'s':''):'à venir')); if(cid===sel) b.setAttribute('aria-current','true');
+      b.onclick=()=>select(cid,false); row.append(t,b); li.append(row); if(has&&isOpen) li.append(build(cid)); ul.append(li); }); return ul; }
+  treeEl.innerHTML=''; treeEl.append(build('sciences'));
+}
+
+/* ---------- carte mentale ---------- */
+const svg=document.getElementById('map'), NS='http://www.w3.org/2000/svg';
+const RAD=[0,160,300,430,560], SIZE=[24,15,10,8,6], FS=[21,20,17,15,14];
+const leaves0=id=>(kids[id]||[]).length?(kids[id]).reduce((s,c)=>s+leaves0(c),0):1;
+const leaves=id=>byId[id].depth===1?Math.max(5,leaves0(id)):leaves0(id);
+const pos={};
+(function lay(id,a0,a1){ const n=byId[id], am=(a0+a1)/2, r=RAD[Math.min(n.depth,4)]; pos[id]={x:r*Math.cos(am),y:r*Math.sin(am),a:am};
+  const ch=kids[id]||[], tot=ch.reduce((s,c)=>s+leaves(c),0); let a=a0; ch.forEach(c=>{ const span=(a1-a0)*leaves(c)/tot; lay(c,a,a+span); a+=span; }); })('sciences',-Math.PI/2,Math.PI*1.5);
+let vb={x:-640,y:-640,w:1280,h:1280};
+function setVB(){ svg.setAttribute('viewBox',vb.x+' '+vb.y+' '+vb.w+' '+vb.h); }
+function mk(tag,attrs,parent){ const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); if(parent) parent.appendChild(e); return e; }
+const gE=mk('g',{},svg), gL=mk('g',{},svg), gN=mk('g',{},svg); const nodeEls={}, edgeEls=[], linkEls=[];
+Object.keys(byId).forEach(id=>{ const n=byId[id]; if(!n.parent) return; const p=pos[n.parent], c=pos[id];
+  const mr=(RAD[Math.min(byId[n.parent].depth,4)]+RAD[Math.min(n.depth,4)])/2, cx=mr*Math.cos(c.a), cy=mr*Math.sin(c.a);
+  const e=mk('path',{d:`M${p.x},${p.y} Q${cx},${cy} ${c.x},${c.y}`,fill:'none',stroke:n.color,'stroke-opacity':.35,'stroke-width':Math.max(1,3.4-n.depth*.7)},gE); edgeEls.push([e,n.parent,id]); });
+N.liens.forEach(([a,b])=>{ if(!pos[a]||!pos[b]) return; const A=pos[a],B=pos[b], mx=(A.x+B.x)/2*.35, my=(A.y+B.y)/2*.35;
+  const e=mk('path',{d:`M${A.x},${A.y} Q${mx},${my} ${B.x},${B.y}`,fill:'none',stroke:'#E8EEF4','stroke-opacity':.28,'stroke-width':1.2,'stroke-dasharray':'5 5'},gL); linkEls.push([e,a,b]); });
+Object.keys(byId).forEach(id=>{ const n=byId[id], p=pos[id], d=Math.min(n.depth,4), g=mk('g',{class:'n',tabindex:0,role:'button','aria-label':n.titre},gN);
+  const full=nres(id)>0;
+  mk('circle',{cx:p.x,cy:p.y,r:SIZE[d]*2.2,fill:n.color,'fill-opacity':full?.12:0},g);
+  mk('circle',{cx:p.x,cy:p.y,r:SIZE[d],fill:full?n.color:'#0B1016',stroke:n.color,'stroke-width':full?0:1.6},g);
+  const t=mk('text',{'font-size':FS[d],'font-weight':d<=2?600:400},g); t.textContent=n.titre;
+  if(d===0){ t.setAttribute('x',p.x); t.setAttribute('y',p.y+46); t.setAttribute('text-anchor','middle'); }
+  else if(d===1){ const s=Math.sin(p.a); t.setAttribute('x',p.x); t.setAttribute('y',p.y+(s<0?-26:36)); t.setAttribute('text-anchor','middle'); }
+  else { const c=Math.cos(p.a), s=Math.sin(p.a), off=SIZE[d]+7, X=p.x+c*off, Y=p.y+s*off; let deg=p.a*180/Math.PI; const left=c<0; if(left) deg+=180;
+    t.setAttribute('x',X); t.setAttribute('y',Y); t.setAttribute('dy','.35em'); t.setAttribute('text-anchor',left?'end':'start'); t.setAttribute('transform','rotate('+deg.toFixed(1)+' '+X.toFixed(1)+' '+Y.toFixed(1)+')'); }
+  if(!full) t.setAttribute('fill-opacity',.55);
+  g.addEventListener('click',e=>{ if(moved) return; select(id,false); });
+  g.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); select(id,false); } });
+  nodeEls[id]=g; });
+function renderMap(){
+  const M=matches(); const near=new Set([sel,...path(sel),...(kids[sel]||[]),...(links[sel]||[]).map(l=>l[0])]);
+  const focus=sel!=='sciences';
+  Object.entries(nodeEls).forEach(([id,g])=>{ const on=M?M.has(id):(!focus||near.has(id)); g.classList.toggle('dim',!on);
+    const c=g.querySelectorAll('circle')[1], d=Math.min(byId[id].depth,4); c.setAttribute('r',id===sel?SIZE[d]*1.5:SIZE[d]);
+    g.querySelectorAll('circle')[1].setAttribute('stroke',id===sel?'#FFFFFF':byId[id].color); if(id===sel) c.setAttribute('stroke-width',2.4); else if(nres(id)) c.setAttribute('stroke-width',0); });
+  edgeEls.forEach(([e,a,b])=>{ const on=M?(M.has(a)&&M.has(b)):(!focus||(near.has(a)&&near.has(b))); e.classList.toggle('dim',!on); });
+  linkEls.forEach(([e,a,b])=>{ const on=M?(M.has(a)||M.has(b)):(!focus||a===sel||b===sel); e.classList.toggle('dim',!on); e.setAttribute('stroke-opacity',(a===sel||b===sel)?.85:.28); e.setAttribute('stroke-width',(a===sel||b===sel)?2:1.2); });
+}
+function centerOn(id,anim){ const p=pos[id], w=id==='sciences'?1240:Math.min(vb.w,820); const tgt={x:p.x-w/2,y:p.y-w/2,w,h:w};
+  if(!anim){ vb=tgt; setVB(); return; } const s={...vb}, t0=performance.now();
+  (function f(t){ const k=Math.min(1,(t-t0)/450), e=k*k*(3-2*k); vb={x:s.x+(tgt.x-s.x)*e,y:s.y+(tgt.y-s.y)*e,w:s.w+(tgt.w-s.w)*e,h:s.h+(tgt.h-s.h)*e}; setVB(); if(k<1) requestAnimationFrame(f); })(t0); }
+/* déplacement et zoom */
+let drag=null, moved=false;
+svg.addEventListener('pointerdown',e=>{ drag={x:e.clientX,y:e.clientY,vx:vb.x,vy:vb.y}; moved=false; });
+svg.addEventListener('pointermove',e=>{ if(!drag) return; const r=svg.getBoundingClientRect(), k=vb.w/Math.min(r.width,r.height)*(r.width>r.height?r.height/r.height:1);
+  const sc=Math.max(vb.w/r.width,vb.h/r.height), dx=(e.clientX-drag.x)*sc, dy=(e.clientY-drag.y)*sc; if(Math.abs(e.clientX-drag.x)+Math.abs(e.clientY-drag.y)>4){ moved=true; svg.classList.add('drag'); if(!svg.hasPointerCapture(e.pointerId)) svg.setPointerCapture(e.pointerId); }
+  if(moved){ vb.x=drag.vx-dx; vb.y=drag.vy-dy; setVB(); } });
+['pointerup','pointercancel'].forEach(t=>svg.addEventListener(t,()=>{ drag=null; svg.classList.remove('drag'); setTimeout(()=>moved=false,0); }));
+function zoom(f,cx,cy){ const nw=Math.min(2400,Math.max(260,vb.w*f)); cx=cx??vb.x+vb.w/2; cy=cy??vb.y+vb.h/2; vb={x:cx-(cx-vb.x)*nw/vb.w,y:cy-(cy-vb.y)*nw/vb.h,w:nw,h:nw}; setVB(); }
+svg.addEventListener('wheel',e=>{ e.preventDefault(); const r=svg.getBoundingClientRect(), sc=Math.max(vb.w/r.width,vb.h/r.height);
+  const cx=vb.x+vb.w/2+(e.clientX-r.left-r.width/2)*sc, cy=vb.y+vb.h/2+(e.clientY-r.top-r.height/2)*sc; zoom(e.deltaY>0?1.12:1/1.12,cx,cy); },{passive:false});
+document.getElementById('zIn').onclick=()=>zoom(1/1.25); document.getElementById('zOut').onclick=()=>zoom(1.25); document.getElementById('zFit').onclick=()=>{ vb={x:-640,y:-640,w:1280,h:1280}; setVB(); };
+
+/* ---------- sélection, vues, recherche ---------- */
+function select(id,recentre){ sel=id; path(id).forEach(p=>open.add(p)); try{ history.replaceState(null,'','#'+id); }catch(e){}
+  renderDetail(); renderTree(); renderMap(); if(recentre&&view==='carte') centerOn(id,true); }
+let view='carte';
+document.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{ view=b.dataset.v; document.querySelectorAll('[data-v]').forEach(c=>c.setAttribute('aria-pressed',c===b));
+  document.getElementById('paneMap').hidden=view!=='carte'; document.getElementById('paneTree').hidden=view!=='arbre'; });
+const qi=document.getElementById('q');
+qi.addEventListener('input',()=>{ q=qi.value.trim(); renderTree(); renderMap(); });
+qi.addEventListener('keydown',e=>{ if(e.key==='Enter'){ const M=matches(); if(M&&M.size){ const first=[...M].sort((a,b)=>byId[a].depth-byId[b].depth)[0]; q=''; qi.value=''; select(first,true); } } });
+addEventListener('hashchange',()=>{ const h=location.hash.slice(1); if(byId[h]&&h!==sel) select(h,true); });
+setVB(); select(sel,false); if(sel!=='sciences') centerOn(sel,false);
+})();
+</script>
+</body>
+</html>

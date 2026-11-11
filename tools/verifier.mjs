@@ -21,3 +21,14 @@ for(const b of K.blocs||[]){
   else if(!fs.readFileSync(f,'utf8').includes(`defineBloc('${b.id}'`)) err.push(`bloc ${b.id} : ${b.script} ne déclare pas defineBloc('${b.id}')`); else ok(`bloc ${b.id}`);
 }
 if(err.length){ console.error('\n'+err.map(e=>'  ✗ '+e).join('\n')); process.exit(1); } else console.log('\nCatalogue valide.');
+
+// Carte des notions
+const ctx2={window:{}}; vm.runInNewContext(fs.readFileSync(path.join(root,'data/notions.js'),'utf8'),ctx2);
+const NO=ctx2.window.NOTIONS, nids=new Set(K.domaines.map(d=>d.id)), err2=[];
+for(const n of NO.noeuds){ if(nids.has(n.id)) err2.push(`notion en double : ${n.id}`); nids.add(n.id); }
+for(const n of NO.noeuds){ if(!nids.has(n.parent)) err2.push(`notion ${n.id} : parent inconnu « ${n.parent} »`);
+  for(const r of n.ressources||[]){ if(r.type==='animation'&&!K.animations.some(a=>a.id===r.id)) err2.push(`notion ${n.id} : animation « ${r.id} » inconnue`);
+    if(r.type==='bloc'&&!(K.blocs||[]).some(b=>b.id===r.id)) err2.push(`notion ${n.id} : bloc « ${r.id} » inconnu`);
+    if(r.type==='animation'&&r.ancre){ const a=K.animations.find(a=>a.id===r.id); const html=fs.readFileSync(path.join(root,a.chemin,'index.html'),'utf8'); if(!html.includes(`id="${r.ancre}"`)) err2.push(`notion ${n.id} : section #${r.ancre} absente de ${a.chemin}`); } } }
+for(const [a,b] of NO.liens){ if(!nids.has(a)||!nids.has(b)) err2.push(`lien ${a} ↔ ${b} : notion inconnue`); }
+if(err2.length){ console.error(err2.map(e=>'  ✗ '+e).join('\n')); process.exit(1); } else console.log(`Carte valide : ${NO.noeuds.length} notions, ${NO.liens.length} liens.`);
