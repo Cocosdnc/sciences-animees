@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LED et laser · Sciences animées</title>
+<meta name="description" content="LED ou diode laser : comment chacune produit sa lumière, ce qu'il y a dans un pointeur, et l'émission stimulée en animation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<style>
+svg.schema{width:100%;height:auto;display:block}
+svg.schema .ts{font:400 12px var(--f-body);fill:var(--muted)}
+svg.schema .th{font:500 14px var(--f-body);fill:var(--ink)}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:640px){.duo{grid-template-columns:1fr}}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.stat{background:var(--panel2);border-radius:8px;padding:8px 12px}
+.stat small{display:block;font-size:12px;color:var(--muted)}
+.stat strong{font:500 22px/1.2 var(--f-mono);font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<div class="topbar"><a class="brand" href="../../../"><i></i>Sciences animées</a><nav><a href="../../../#catalogue">Animations</a><a href="../../../carte.html">Carte des notions</a><a href="../../../blocs/">Modèles</a></nav></div>
+<div class="wrap">
+  <header class="page">
+    <div class="kicker">Physique · lumière · 650 nm</div>
+    <h1>LED et laser</h1>
+    <p class="lead">Les deux sont des diodes : un cristal où des électrons tombent dans des trous en émettant de la lumière. Ce qui les sépare, c'est ce que devient cette lumière une fois émise. Pour aller jusqu'aux atomes, voir <a href="../diode-laser/">Dans la diode laser</a>.</p>
+  </header>
+
+  <section id="led-ou-laser">
+    <div class="step">1 · Le principe</div>
+    <h2>LED ou diode laser ?</h2>
+    <div class="panel">
+      <div class="view" style="padding:10px 0"><svg class="schema" viewBox="0 0 380 440" role="img" aria-label="Une LED émet dans toutes les directions ; une diode laser, entre un miroir et un miroir partiel, sort un seul faisceau">
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+        <text class="th" x="40" y="40">LED</text>
+        <rect x="110" y="90" width="160" height="26" rx="2" fill="#2E2660" stroke="#A193FF" stroke-width=".6"/><text class="ts" x="190" y="107" text-anchor="middle" style="fill:#CFC8FF">p</text>
+        <rect x="110" y="116" width="160" height="10" fill="#6A2020" stroke="#FF6B61" stroke-width=".6"/>
+        <rect x="110" y="126" width="160" height="26" rx="2" fill="#11463A" stroke="#3FD4A8" stroke-width=".6"/><text class="ts" x="190" y="143" text-anchor="middle" style="fill:#A9F0DA">n</text>
+        <g stroke="#FF3D33" stroke-width="1.6" fill="none">
+          <line x1="150" y1="86" x2="128" y2="62" marker-end="url(#ar)"/><line x1="190" y1="86" x2="190" y2="58" marker-end="url(#ar)"/><line x1="230" y1="86" x2="252" y2="62" marker-end="url(#ar)"/>
+          <line x1="150" y1="156" x2="128" y2="180" marker-end="url(#ar)"/><line x1="230" y1="156" x2="252" y2="180" marker-end="url(#ar)"/>
+          <line x1="106" y1="121" x2="76" y2="121" marker-end="url(#ar)"/><line x1="274" y1="121" x2="304" y2="121" marker-end="url(#ar)"/></g>
+        <text class="ts" x="190" y="204" text-anchor="middle">Émission spontanée,</text><text class="ts" x="190" y="220" text-anchor="middle">dans toutes les directions</text>
+        <line x1="40" y1="240" x2="340" y2="240" stroke="#25313D"/>
+        <text class="th" x="40" y="268">Diode laser</text>
+        <rect x="80" y="290" width="180" height="26" rx="2" fill="#2E2660" stroke="#A193FF" stroke-width=".6"/><text class="ts" x="170" y="307" text-anchor="middle" style="fill:#CFC8FF">p</text>
+        <rect x="80" y="316" width="180" height="14" fill="#6A2020" stroke="#FF6B61" stroke-width=".6"/>
+        <rect x="80" y="330" width="180" height="26" rx="2" fill="#11463A" stroke="#3FD4A8" stroke-width=".6"/><text class="ts" x="170" y="347" text-anchor="middle" style="fill:#A9F0DA">n</text>
+        <line x1="76" y1="284" x2="76" y2="362" stroke="#C9D2DB" stroke-width="4"/>
+        <line x1="264" y1="284" x2="264" y2="362" stroke="#C9D2DB" stroke-width="2" stroke-dasharray="4 3"/>
+        <g stroke="#FF8A80" stroke-width="1.2" fill="none"><line x1="92" y1="320" x2="246" y2="320" marker-end="url(#ar)"/><line x1="246" y1="326" x2="92" y2="326" marker-end="url(#ar)"/></g>
+        <line x1="268" y1="323" x2="340" y2="323" stroke="#FF3D33" stroke-width="3" marker-end="url(#ar)"/>
+        <text class="ts" x="304" y="308" text-anchor="middle">Faisceau</text>
+        <text class="ts" x="76" y="380" text-anchor="middle">Miroir</text><text class="ts" x="264" y="380" text-anchor="middle">Face nue (30 %)</text>
+        <text class="ts" x="190" y="408" text-anchor="middle">Émission stimulée : allers-retours,</text><text class="ts" x="190" y="424" text-anchor="middle">puis sortie en un seul faisceau</text>
+      </svg></div>
+      <div class="caption"><b>Même jonction, deux destins pour la lumière</b><span>Dans les deux cas, le courant pousse les électrons de la couche n vers la couche p, et ils émettent un photon en traversant la zone active (en rouge). Dans la LED, chaque photon part au hasard. Dans la diode laser, le miroir et la face de sortie renvoient la lumière dans la zone active, où chaque photon en déclenche d'autres identiques. Une partie sort par la face avant : c'est le faisceau.</span></div>
+      <div class="infobar" id="ib1"></div><div class="infobox" id="bx1" hidden></div>
+    </div>
+  </section>
+
+  <section id="pointeur">
+    <div class="step">2 · L'objet réel</div>
+    <h2>Ce qu'il y a dans un pointeur</h2>
+    <div class="panel">
+      <div class="view" style="padding:10px 0"><svg class="schema" viewBox="0 0 380 180" role="img" aria-label="Pointeur en coupe : piles, circuit relié au bouton, boîtier laser, lentille, faisceau">
+        <defs><marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+        <rect x="20" y="60" width="280" height="50" rx="10" fill="none" stroke="#3A4654" stroke-width="1.2"/>
+        <rect x="28" y="70" width="50" height="30" rx="4" fill="#2B353F" stroke="#8C97A4" stroke-width=".6"/><text class="ts" x="70" y="89" text-anchor="middle">+</text>
+        <rect x="82" y="70" width="50" height="30" rx="4" fill="#2B353F" stroke="#8C97A4" stroke-width=".6"/><text class="ts" x="124" y="89" text-anchor="middle">+</text>
+        <line x1="132" y1="85" x2="142" y2="85" stroke="#93A1B0"/>
+        <rect x="142" y="72" width="34" height="26" rx="3" fill="#0F3B31" stroke="#3FD4A8" stroke-width=".6"/>
+        <rect x="150" y="50" width="20" height="10" rx="2" fill="#5A4410" stroke="#E3B341" stroke-width=".6"/><line x1="160" y1="60" x2="160" y2="72" stroke="#93A1B0"/>
+        <g stroke="#93A1B0"><line x1="176" y1="78" x2="190" y2="78"/><line x1="176" y1="85" x2="190" y2="85"/><line x1="176" y1="92" x2="190" y2="92"/></g>
+        <rect x="190" y="70" width="40" height="30" rx="4" fill="#2E2660" stroke="#A193FF" stroke-width=".6"/>
+        <ellipse cx="262" cy="85" rx="6" ry="18" fill="#1E3A5A" stroke="#5AA9FF" stroke-width=".6"/>
+        <line x1="232" y1="85" x2="254" y2="85" stroke="#FF3D33" stroke-dasharray="2 2"/>
+        <line x1="270" y1="85" x2="362" y2="85" stroke="#FF3D33" stroke-width="3" marker-end="url(#ar2)"/>
+        <text class="ts" x="160" y="42" text-anchor="middle">Bouton</text><text class="ts" x="335" y="74" text-anchor="middle">Faisceau</text>
+        <g stroke="#93A1B0" stroke-width=".6" stroke-dasharray="3 3"><line x1="80" y1="102" x2="80" y2="124"/><line x1="210" y1="102" x2="210" y2="124"/><line x1="159" y1="100" x2="159" y2="144"/><line x1="262" y1="105" x2="272" y2="144"/></g>
+        <text class="ts" x="80" y="136" text-anchor="middle">Piles</text><text class="ts" x="210" y="136" text-anchor="middle">Boîtier laser</text>
+        <text class="ts" x="159" y="156" text-anchor="middle">Circuit</text><text class="ts" x="274" y="156" text-anchor="middle">Lentille</text>
+      </svg></div>
+      <div class="caption"><b>De l'arrière vers l'avant</b><span>Les piles, un petit circuit qui limite le courant pour ne pas griller la diode, le boîtier laser (une capsule métallique de 5,6 mm où est collée la puce), puis la lentille qui rend le faisceau parallèle. Le bouton ferme simplement le circuit.</span></div>
+      <div class="infobar" id="ib2"></div><div class="infobox" id="bx2" hidden></div>
+    </div>
+  </section>
+
+  <section id="puce">
+    <div class="step">3 · La puce</div>
+    <h2>Un bâtonnet en mille-feuille</h2>
+    <div class="duo">
+      <div class="panel">
+        <div class="view" style="padding:10px 0"><svg class="schema" viewBox="0 0 380 330" role="img" aria-label="Face de sortie vue de face : électrode, ruban, couche p, zone active, couche n, substrat, électrode négative ; la lumière sort sous le ruban">
+          <rect x="95" y="58" width="50" height="10" fill="#C99A2E"/>
+          <rect x="95" y="68" width="50" height="42" fill="#3A3080"/>
+          <rect x="30" y="110" width="180" height="20" fill="#3A3080"/>
+          <rect x="30" y="130" width="180" height="6" fill="#C9382F"/>
+          <rect x="30" y="136" width="180" height="22" fill="#17705A"/>
+          <rect x="30" y="158" width="180" height="78" fill="#3B434C"/>
+          <rect x="30" y="236" width="180" height="8" fill="#C99A2E"/>
+          <ellipse cx="120" cy="133" rx="22" ry="8" fill="#FF3D33" opacity=".6"/>
+          <g stroke="#93A1B0" stroke-width=".5" stroke-dasharray="3 3" fill="none"><line x1="147" y1="63" x2="226" y2="63"/><line x1="147" y1="88" x2="226" y2="88"/><line x1="212" y1="120" x2="226" y2="114"/><line x1="212" y1="133" x2="226" y2="140"/><line x1="212" y1="147" x2="226" y2="166"/><line x1="212" y1="197" x2="226" y2="197"/><line x1="212" y1="240" x2="226" y2="240"/></g>
+          <text class="ts" x="230" y="67">Électrode +</text><text class="ts" x="230" y="92">Ruban (guide)</text><text class="ts" x="230" y="118">p-AlGaInP</text>
+          <text class="ts" x="230" y="144">Zone active GaInP</text><text class="ts" x="230" y="170">n-AlGaInP</text><text class="ts" x="230" y="201">Substrat GaAs</text><text class="ts" x="230" y="244">Électrode −</text>
+          <ellipse cx="48" cy="276" rx="12" ry="5" fill="#FF3D33" opacity=".6"/><text class="ts" x="68" y="280">Zone d'où sort la lumière</text>
+          <text class="ts" x="30" y="306">Face de sortie, vue de face</text><text class="ts" x="30" y="322">Épaisseurs non à l'échelle</text>
+        </svg></div>
+        <div class="caption"><b>La face de sortie, de face</b><span>La lumière sort par une tache de quelques micromètres, juste sous le ruban. Le ruban ne laisse passer le courant que sur une bande étroite : l'effet laser se concentre sur une seule ligne.</span></div>
+      </div>
+      <div class="panel">
+        <div class="view" style="padding:10px 0"><svg class="schema" viewBox="0 0 380 310" role="img" aria-label="Bâtonnet laser en relief : couches empilées, fil d'or sur le dessus, miroir arrière, faisceau sortant de la face avant">
+          <defs><marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+          <polygon points="60,200 180,200 320,110 200,110" fill="#E3B341" stroke="#8E6A1E" stroke-width=".5"/>
+          <polygon points="180,200 320,110 320,132 180,222" fill="#2A2350" stroke="#A193FF" stroke-width=".5"/>
+          <polygon points="180,222 320,132 320,138 180,228" fill="#5A1D1D" stroke="#FF6B61" stroke-width=".5"/>
+          <polygon points="180,228 320,138 320,166 180,256" fill="#0F3B31" stroke="#3FD4A8" stroke-width=".5"/>
+          <rect x="60" y="200" width="120" height="22" fill="#4A3FA0"/><rect x="60" y="222" width="120" height="6" fill="#E24B4A"/><rect x="60" y="228" width="120" height="28" fill="#1D8E70"/>
+          <text class="ts" x="160" y="215" text-anchor="middle" style="fill:#E6E1FF">p</text><text class="ts" x="160" y="246" text-anchor="middle" style="fill:#D6FFF1">n</text>
+          <path d="M190 155 Q190 70 150 62" fill="none" stroke="#E3B341" stroke-width="1.5"/>
+          <text class="ts" x="150" y="50" text-anchor="middle">Fil d'or (+)</text>
+          <line x1="108" y1="232" x2="44" y2="273" stroke="#FF3D33" stroke-width="3" marker-end="url(#ar3)"/>
+          <text class="ts" x="30" y="295">Faisceau</text>
+          <line x1="300" y1="90" x2="318" y2="108" stroke="#93A1B0" stroke-width=".5" stroke-dasharray="3 3"/>
+          <text class="ts" x="290" y="84" text-anchor="middle">Miroir arrière</text>
+          <text class="ts" x="262" y="232">≈ 0,3 mm de long</text><text class="ts" x="200" y="290">Collé sur le support (−)</text>
+        </svg></div>
+        <div class="caption"><b>Le bâtonnet en relief</b><span>Une minuscule brique de cristal, plus petite qu'un grain de sel. La lumière voyage dans la fine bande rouge, entre le miroir arrière et la face avant, d'où sort le faisceau.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="emission">
+    <div class="step">4 · L'émission stimulée</div>
+    <h2>Les photons qui se recopient</h2>
+    <div class="panel">
+      <div class="view"><canvas id="cvE" style="aspect-ratio:380/200" aria-label="Zone active entre un miroir et un miroir partiel : électrons en haut ou en bas, photons qui en déclenchent d'autres"></canvas></div>
+      <div class="lc"><button type="button" id="bCur">Couper le courant</button><button type="button" id="bPh">Envoyer un photon</button><button type="button" id="bRes">Réinitialiser</button></div>
+      <div class="stats"><div class="stat"><small>Photons dans la zone</small><strong id="nIn">0</strong></div><div class="stat"><small>Photons sortis</small><strong id="nOut">0</strong></div></div>
+      <div class="legend"><span><i class="dot" style="background:#EF9F27"></i>Électron en haut, prêt à tomber</span><span><i class="dot" style="background:transparent;border:1.5px solid #888780"></i>Électron tombé, il a donné sa lumière</span><span><i style="width:14px;height:3px;background:#FF3D33"></i>Photon</span></div>
+      <div class="caption"><b>Ce qu'il faut regarder</b><span>De temps en temps, un électron tombe tout seul et lance un photon dans une direction au hasard ; la plupart sont perdus par le haut ou le bas. Mais quand un photon passe à côté d'un électron en haut, il le fait tomber, et un deuxième photon identique part dans la même direction (le cercle orange). Les photons qui filent dans la longueur se multiplient à chaque aller-retour, et une partie sort à droite. Coupe le courant : les électrons ne remontent plus, l'avalanche s'éteint.</span></div>
+      <div class="infobar" id="ib4"></div><div class="infobox" id="bx4" hidden></div>
+    </div>
+  </section>
+  <p class="sources">Ces schémas sont les premiers faits pour ce site. La même histoire, avec un microscope zoomable jusqu'aux atomes, est dans <a href="../diode-laser/">Dans la diode laser</a>.</p>
+</div>
+<script src="../../../assets/js/labo.js"></script>
+<script>
+(function(){
+const L=Labo;
+const INFO={
+  jonction:['Jonction p-n','Une couche avec des électrons en trop (n) collée à une couche avec des places vides (p). Le courant pousse les deux vers le milieu, où ils se rencontrent.'],
+  spont:['Émission spontanée','Un électron qui tombe dans un trou émet un photon, à un moment et dans une direction au hasard. C’est la lumière d’une LED.'],
+  stim:['Émission stimulée','Un photon qui passe force l’électron à tomber tout de suite. Le nouveau photon est une copie : même couleur, même direction, même rythme. Le photon de départ n’est pas consommé.'],
+  sortie:['La face de sortie','Pas de miroir : c’est le cristal nu. Le saut d’indice entre le cristal (3,5) et l’air (1) renvoie environ 30 % de la lumière, le reste sort.'],
+  circuit:['Le circuit','Il limite le courant à quelques dizaines de milliampères. Sans lui, la diode grille en une fraction de seconde.'],
+  lentille:['La lentille','La lumière sort de la puce en éventail ovale. La lentille la rend parallèle, ce qui donne un point net sur le mur.'],
+  boitier:['Le boîtier','Une capsule métallique de 5,6 mm qui protège la puce et évacue sa chaleur, avec une fenêtre en verre.'],
+  inversion:['Pourquoi il faut du courant','Un photon qui passe devant un électron en bas est absorbé. Pour que la lumière grossisse, il faut plus d’électrons en haut qu’en bas : c’est ce que le courant entretient.'],
+  simplif:['Ce qui est simplifié','Les électrons sont dessinés à des places fixes avec deux étages. En réalité, électrons libres et trous se déplacent dans la zone active. Les vitesses et les nombres sont ralentis et réduits pour qu’on voie quelque chose.']
+};
+L.infoBar(document.getElementById('ib1'),document.getElementById('bx1'),['jonction','spont','stim','sortie'],INFO);
+L.infoBar(document.getElementById('ib2'),document.getElementById('bx2'),['circuit','boitier','lentille'],INFO);
+L.infoBar(document.getElementById('ib4'),document.getElementById('bx4'),['spont','stim','inversion','sortie','simplif'],INFO);
+L.mountSides();
+
+/* émission stimulée */
+const V=L.setup('cvE',380,200);
+const X0=40,X1=342,Y0=55,Y1=145,COLS=12,ROWS=3;
+let sites=[],ph=[],fl=[],out=0,current=true,frame=0;
+function reset(){ sites=[]; for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) sites.push({x:55+c*25,y:75+r*25,e:Math.random()<.5?1:0}); ph=[]; fl=[]; out=0; }
+reset();
+const addPh=(x,y,vx,vy)=>{ if(ph.length<260) ph.push({x,y,vx,vy,last:-1,o:false}); };
+document.getElementById('bCur').onclick=e=>{ current=!current; e.currentTarget.textContent=current?'Couper le courant':'Allumer le courant'; };
+document.getElementById('bPh').onclick=()=>{ const r=Math.floor(Math.random()*ROWS); addPh(X0+4,75+r*25,2,0); };
+document.getElementById('bRes').onclick=reset;
+function step(){
+  for(const s of sites){ if(current&&!s.e&&Math.random()<.012) s.e=1;
+    if(s.e&&Math.random()<.0006){ s.e=0; const a=Math.random()*Math.PI*2; addPh(s.x,s.y,2*Math.cos(a),2*Math.sin(a)); } }
+  for(const p of ph){ p.x+=p.vx; p.y+=p.vy;
+    if(!p.o){
+      if(p.y<Y0||p.y>Y1){ p.dead=true; continue; }
+      if(p.x<=X0&&p.vx<0){ p.vx=-p.vx; p.x=X0; }
+      if(p.x>=X1&&p.vx>0){ if(Math.random()<.3){ p.vx=-p.vx; p.x=X1; } else { p.o=true; out++; } }
+      const c=Math.round((p.x-55)/25);
+      if(c>=0&&c<COLS){ for(let r=0;r<ROWS;r++){ const i=r*COLS+c, s=sites[i];
+        if(i!==p.last&&Math.abs(p.x-s.x)<2.5&&Math.abs(p.y-s.y)<10){ p.last=i;
+          if(s.e&&Math.random()<.6){ s.e=0; const dy=p.y>s.y?-3:3; addPh(p.x,Math.min(Y1-2,Math.max(Y0+2,p.y+dy)),p.vx,p.vy); ph[ph.length-1].last=i; fl.push({x:s.x,y:s.y,t:12}); } } } }
+    } else if(p.x>390) p.dead=true; }
+  ph=ph.filter(p=>!p.dead); fl.forEach(f=>f.t--); fl=fl.filter(f=>f.t>0);
+}
+L.onFrame(()=>{ step(); const x=V.ctx; V.base(); L.bgLab(x,380,200);
+  x.fillStyle='rgba(255,61,51,.08)'; x.fillRect(X0,Y0,X1-X0,Y1-Y0);
+  x.fillStyle=L.lg(x,X0-8,0,X0-2,0,[[0,'#6B7681'],[.5,'#F2F5F8'],[1,'#7B8691']]); x.fillRect(X0-8,Y0-6,6,Y1-Y0+12);
+  L.line(x,X1+4,Y0-6,X1+4,Y1+6,'#C9D2DB',2,[5,4]);
+  L.txt(x,'Zone active',190,38,'center',L.C.ink); L.txt(x,'Miroir',20,172,'left'); L.txt(x,'Face nue (30 %)',376,172,'right');
+  for(const s of sites){ L.line(x,s.x-6,s.y-6,s.x+6,s.y-6,'#4D5D6E',1); L.line(x,s.x-6,s.y+6,s.x+6,s.y+6,'#4D5D6E',1);
+    if(s.e){ L.glow(x,s.x,s.y-6,9,'#EF9F27',.4); L.sph(x,s.x,s.y-6,3.2,'#EF9F27'); } else { x.beginPath(); x.arc(s.x,s.y+6,3,0,7); x.strokeStyle='#888780'; x.lineWidth=1.5; x.stroke(); } }
+  for(const f of fl){ x.beginPath(); x.arc(f.x,f.y,10+(12-f.t),0,7); x.strokeStyle='rgba(239,159,39,'+(f.t/12)+')'; x.lineWidth=1.5; x.stroke(); }
+  x.save(); x.globalCompositeOperation='lighter'; x.strokeStyle='#FF3D33'; x.lineWidth=2.2;
+  for(const p of ph){ const l=Math.hypot(p.vx,p.vy)||1; x.beginPath(); x.moveTo(p.x-4*p.vx/l,p.y-4*p.vy/l); x.lineTo(p.x+4*p.vx/l,p.y+4*p.vy/l); x.stroke(); } x.restore();
+  L.vignette(x,380,200);
+  if(++frame%6===0){ document.getElementById('nIn').textContent=ph.filter(p=>!p.o).length; document.getElementById('nOut').textContent=out; } }, V.cv);
+})();
+</script>
+</body>
+</html>

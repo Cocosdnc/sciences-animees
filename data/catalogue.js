@@ -24,7 +24,11 @@ window.CATALOGUE={
      themes:['lumière','laser','LED','électricité','semi-conducteur','atome','électron','émission stimulée','onde','orbitale','liaison','couleur'],
      resume:'Du pointeur aux atomes : couches p et n, émission stimulée, onde de l’électron (Davisson et Germer), orbitales, liaison Ga–P, couleur des LED et LED blanche.',
      chemin:'animations/physique/diode-laser/', signe:'650 nm', ajout:'2026-11-11',
-     blocs:['orbitales-liantes']}
+     blocs:['orbitales-liantes']},
+    {id:'led-et-laser', titre:'LED et laser', domaine:'physique', niveaux:['collège','lycée'],
+     themes:['lumière','LED','laser','diode','pointeur','émission stimulée','photon','jonction p-n'],
+     resume:'Même jonction, deux destins pour la lumière : la LED l\u2019émet au hasard, le laser la recopie entre deux miroirs. Le pointeur en coupe, la puce en mille-feuille, et l\u2019émission stimulée en animation.',
+     chemin:'animations/physique/led-et-laser/', signe:'LED · laser', ajout:'2026-11-11'}
   ],
   /* Blocs : modèles réutilisables, insérables dans n'importe quelle page avec <div data-bloc="id"></div>.
      - domaines : tous les domaines où le bloc sert (il apparaît dans chacun)
