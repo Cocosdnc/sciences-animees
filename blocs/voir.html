@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Modèle · Sciences animées</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body>
+<div class="topbar"><a class="brand" href="../"><i></i>Sciences animées</a><nav><a href="../#catalogue">Animations</a><a href="./">Modèles</a></nav></div>
+<div class="wrap">
+  <header class="page"><div class="kicker">Modèle</div><h1 id="t">Modèle</h1><p class="lead" id="r"></p></header>
+  <section><div id="zone"></div></section>
+</div>
+<script src="../data/catalogue.js"></script>
+<script src="../assets/js/labo.js"></script>
+<script>
+(function(){
+  const K=window.CATALOGUE, id=location.hash.slice(1), b=K.blocs.find(x=>x.id===id);
+  if(!b){ document.getElementById('t').textContent='Modèle introuvable'; document.getElementById('r').innerHTML='<a href="./">Voir tous les modèles</a>'; return; }
+  document.title=b.titre+' · Sciences animées'; document.getElementById('t').textContent=b.titre; document.getElementById('r').textContent=b.resume;
+  const s=document.createElement('script'); s.src='../'+b.script;
+  s.onload=()=>{ const z=document.getElementById('zone'); z.innerHTML='<div data-bloc></div>'; z.firstChild.dataset.bloc=b.id; Labo.mountBlocs(z); };
+  document.body.appendChild(s);
+  addEventListener('hashchange',()=>location.reload());
+})();
+</script>
+</body>
+</html>

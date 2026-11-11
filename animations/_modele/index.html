@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- MODÈLE : copier ce dossier dans animations/<domaine>/<id>/ puis remplacer les textes. -->
+<title>Titre de l'animation · Sciences animées</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../assets/css/base.css">
+</head>
+<body>
+<div class="topbar"><a class="brand" href="../../"><i></i>Sciences animées</a><nav><a href="../../#catalogue">Animations</a><a href="../../blocs/">Modèles</a></nav></div>
+<div class="wrap">
+  <header class="page">
+    <div class="kicker">Domaine · détail typique</div>
+    <h1>Titre de l'animation</h1>
+    <p class="lead">Une phrase qui dit ce qu'on va comprendre.</p>
+  </header>
+
+  <!-- Une section = une idée. On réutilise un modèle existant avec une seule ligne : -->
+  <section>
+    <div class="step">Étape 1</div>
+    <h2>Une idée à la fois</h2>
+    <p class="note">Ce qu'il faut regarder dans l'animation, en deux ou trois phrases.</p>
+    <div data-bloc="corde-vibrante"></div>
+  </section>
+
+  <!-- Ou bien une animation propre à cette page, avec la même structure de panneau : -->
+  <section>
+    <div class="step">Étape 2</div>
+    <h2>Une animation propre à la page</h2>
+    <div class="panel">
+      <div class="view"><canvas id="cv" style="aspect-ratio:400/200" aria-label="Décrire ici ce que montre l'animation"></canvas></div>
+      <div class="lc"><label class="slider"><span>Réglage</span><input id="r" type="range" min="1" max="10" value="3"><strong id="rv">3</strong></label></div>
+      <div class="caption"><b>Ce qu'on voit</b><span>Explication courte, mise à jour quand on change un réglage.</span></div>
+      <div class="infobar" id="ib"></div><div class="infobox" id="ibx" hidden></div>
+    </div>
+    <p class="sources">Sources : citer ici les références utilisées.</p>
+  </section>
+</div>
+<script src="../../assets/js/labo.js"></script>
+<script src="../../assets/js/blocs/corde-vibrante.js"></script>
+<script>
+(function(){
+  const L=Labo, V=L.setup('cv',400,200); let n=3, t=0;
+  const INFO={ idee:['Une notion','Explication en quelques phrases : le pourquoi, pas seulement le comment.'], simplif:['Ce qui est simplifié','Toujours dire ce que le dessin ne respecte pas (échelle, vitesse, forme…).'] };
+  L.infoBar(document.getElementById('ib'),document.getElementById('ibx'),['idee','simplif'],INFO);
+  document.getElementById('r').oninput=e=>{ n=+e.target.value; document.getElementById('rv').textContent=n; };
+  L.mountBlocs();
+  L.onFrame(dt=>{ t+=dt; const x=V.ctx; V.base(); L.bgLab(x,400,200);
+    for(let i=0;i<n;i++) L.sph(x,40+i*36,100+20*Math.sin(t*2+i),10,L.C.p);
+    L.vignette(x,400,200); }, V.cv);
+})();
+</script>
+</body>
+</html>

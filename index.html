@@ -1,1284 +1,146 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Dans la diode laser</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sciences animées</title>
+<meta name="description" content="Des animations interactives pour comprendre les sciences : physique, chimie, biologie, Terre et Univers, mathématiques.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
-</head><body>
+<link rel="stylesheet" href="assets/css/base.css">
 <style>
-html,body{margin:0}
-[hidden]{display:none!important}
-/* Layout : une colonne. En tête, un « microscope » plein cadre qui zoome du pointeur jusqu'aux atomes ; dessous, deux bancs d'essai (couleur, LED blanche). Univers sombre assumé : salle de manip, lumière laser. */
-:root{
-  --bg:#090D12; --panel:#10171F; --panel2:#16202A; --ink:#E8EEF4; --muted:#93A1B0; --line:#25313D;
-  --laser:#FF3D33; --gold:#E3B341; --p:#A193FF; --n:#3FD4A8; --hole:#FFB547;
-  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
-  --f-body:"IBM Plex Sans","Segoe UI",Roboto,sans-serif;
-  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
-  color-scheme:dark;
-}
-body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--f-body);
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
-.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:52px}
-header{display:flex;flex-direction:column;gap:10px}
-.kicker{font:500 12px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--laser)}
-h1{font:700 clamp(32px,6.4vw,52px)/1.02 var(--f-display);margin:0;letter-spacing:-.015em;text-wrap:balance}
-h2{font:700 24px/1.2 var(--f-display);margin:0;text-wrap:balance}
-h3{font:700 18px/1.3 var(--f-display);margin:6px 0 0}
-.lead{color:var(--muted);margin:0;max-width:62ch}
-section{display:flex;flex-direction:column;gap:14px}
-.step{font:500 12px/1 var(--f-mono);color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:12px}
-.view{position:relative;border-radius:12px;overflow:hidden;background:#05080B;border:1px solid var(--line)}
-canvas{width:100%;height:auto;display:block}
-#cvScope{cursor:zoom-in}
-.depth{position:absolute;left:10px;top:10px;font:500 11px/1 var(--f-mono);letter-spacing:.06em;color:var(--muted);background:rgba(5,8,11,.7);padding:6px 8px;border-radius:6px;pointer-events:none}
-.scale{position:absolute;right:10px;top:10px;font:500 11px/1 var(--f-mono);color:var(--ink);background:rgba(5,8,11,.7);padding:6px 8px;border-radius:6px;pointer-events:none;font-variant-numeric:tabular-nums}
-.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-button{font:500 14px/1 var(--f-body);color:var(--ink);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:9px 12px;cursor:pointer}
-button:hover{border-color:var(--muted)}
-button:focus-visible{outline:2px solid var(--laser);outline-offset:2px}
-button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-button.primary{background:var(--laser);border-color:var(--laser);color:#fff}
-.levels{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
-.levels button{font-size:12px;padding:8px 2px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media (max-width:520px){.levels{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.caption{display:flex;flex-direction:column;gap:3px;min-height:5.5em}
-.caption b{font:500 16px/1.3 var(--f-display)}
-.caption span{color:var(--muted);font-size:14px;line-height:1.55;max-width:70ch}
-.lc{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px;border-radius:10px;background:var(--panel2)}
-.lc[hidden]{display:none}
-@media (max-width:520px){.depth,.scale{font-size:10px;padding:4px 6px;top:6px}.depth{left:6px}.scale{right:6px}}
-#bdSteps{grid-template-columns:repeat(7,minmax(0,1fr))}
-@media (max-width:520px){#bdSteps{grid-template-columns:repeat(4,minmax(0,1fr))}}
-.lc .ctr{font:400 13px var(--f-mono);color:var(--muted);margin-left:auto}
-.lc .ctr b{color:var(--ink);font-weight:500}
-.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted);width:100%}
-.legend i{display:inline-block;vertical-align:middle;margin-right:6px}
-.dot{width:9px;height:9px;border-radius:50%;background:var(--laser);box-shadow:0 0 6px var(--laser)}
-.dot.pale{background:#B85A55;box-shadow:none}
-.ring{width:10px;height:10px;border-radius:50%;border:1.6px solid var(--hole);box-shadow:0 0 6px var(--hole)}
-.wave{width:16px;height:2px;background:var(--laser);border-radius:2px}
-.infobar{display:flex;flex-wrap:wrap;gap:6px;padding-top:10px;border-top:1px solid var(--line)}
-button.info{font-size:13px;padding:5px 10px 5px 6px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
-button.info[aria-expanded="true"]{border-color:var(--laser);color:var(--laser)}
-.i{display:inline-grid;place-items:center;width:17px;height:17px;border-radius:50%;background:var(--ink);color:var(--bg);font:500 11px/1 var(--f-mono)}
-button.info[aria-expanded="true"] .i{background:var(--laser);color:#fff}
-.infobox{background:var(--panel2);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;border-left:0}
-.infobox[hidden]{display:none}
-.panel.has-side{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:12px 16px;align-items:start}
-.panel.has-side>.main{min-width:0;display:flex;flex-direction:column;gap:12px}
-.panel.has-side>.side{display:flex;flex-direction:column;gap:8px;padding-right:14px;border-right:1px solid var(--line);position:sticky;top:12px}
-.sidehead{font:500 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:2px 0 4px}
-.side .infobar{flex-direction:column;align-items:stretch;border-top:0;padding-top:0;gap:4px}
-.side button.info{justify-content:flex-start;text-align:left;border-radius:8px;white-space:normal;line-height:1.3;font-size:13px}
-.side .infobox{padding:10px}
-.side .infobox span{font-size:13px}
-@media (max-width:760px){.panel.has-side{display:flex;flex-direction:column}.panel.has-side>.side{order:2;border-right:0;padding-right:0;border-top:1px solid var(--line);padding-top:10px;position:static}}
-
-.infobox b{font:500 15px/1.3 var(--f-display)}
-.infobox span{font-size:14px;line-height:1.6;max-width:70ch}
-.note{font-size:15px;max-width:66ch;margin:0;color:var(--ink)}
-.note em{font-style:normal;font-weight:500;color:var(--laser)}
-.callout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-@media (max-width:560px){.callout{grid-template-columns:1fr}}
-.callout div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
-.callout small{font:500 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.callout b{font:500 16px/1.3 var(--f-display)}
-.callout span{font-size:14px;line-height:1.55;color:var(--muted)}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;align-self:flex-start;max-width:100%}
-.seg button{border:0;border-radius:0}
-.slider{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);flex-wrap:wrap}
-.slider input{flex:1;min-width:140px;accent-color:var(--laser)}
-.slider strong{font:500 15px var(--f-mono);color:var(--ink);min-width:48px;text-align:right;font-variant-numeric:tabular-nums}
-.result{display:flex;gap:14px;align-items:center}
-.swatch{width:64px;height:64px;border-radius:50%;flex:none;border:1px solid var(--line)}
-.rtext{display:flex;flex-direction:column;gap:4px;min-width:0}
-.formula{font:500 17px/1.3 var(--f-mono)}
-.formula sub{font-size:11px}
-.nums{display:flex;flex-wrap:wrap;gap:4px 14px;font:400 14px var(--f-mono);color:var(--muted)}
-.nums span:last-child{color:var(--ink)}
-.status{font-size:14px;line-height:1.45}
-.status::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;background:var(--st,var(--n))}
-.bar{width:16px;height:5px;border-radius:2px}
-.bar.ok{background:var(--ink)}.bar.mid{background:var(--muted)}.bar.bad{background:var(--line)}
-.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.stat{background:var(--panel2);border-radius:8px;padding:8px 12px}
-.stat small{display:block;font-size:12px;color:var(--muted)}
-.stat strong{font:500 22px/1.2 var(--f-mono);font-variant-numeric:tabular-nums}
+.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:24px;align-items:center}
+@media (max-width:760px){.hero{grid-template-columns:1fr}}
+.hero canvas{border-radius:16px;border:1px solid var(--line);background:#05080B}
+.search{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.search input{flex:1;min-width:220px;font:400 15px var(--f-body);color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+.search input::placeholder{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border-radius:999px;font-size:13px;padding:7px 12px;display:inline-flex;gap:8px;align-items:center}
+.chips button i{width:8px;height:8px;border-radius:50%}
+.chips button small{font:500 11px var(--f-mono);color:var(--muted)}
+.chips button[aria-pressed="true"] small{color:var(--bg)}
+.domains{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.dom{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;color:var(--ink);font:inherit}
+.dom:hover{border-color:var(--muted)}
+.dom b{font:700 17px/1.2 var(--f-display);display:flex;align-items:center;gap:8px}
+.dom b i{width:10px;height:10px;border-radius:50%}
+.dom span{font-size:13px;color:var(--muted);line-height:1.45}
+.dom small{font:500 11px var(--f-mono);color:var(--muted);letter-spacing:.04em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:var(--ink);transition:border-color .15s}
+.card:hover{border-color:var(--muted)}
+.card .thumb{height:120px;position:relative;display:flex;align-items:flex-end;padding:12px;background:radial-gradient(120% 140% at 80% 0%,var(--c) 0%,transparent 55%),#0B1118}
+.card .thumb em{font:500 28px/1 var(--f-mono);font-style:normal;color:#fff;text-shadow:0 0 18px var(--c)}
+.card .body{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card h3{margin:0;font-size:19px}
+.card p{margin:0;font-size:14px;color:var(--muted);line-height:1.5;flex:1}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tags span{font:500 11px/1 var(--f-mono);color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 8px}
+.tags span.d{color:var(--ink);border-color:var(--c)}
+.empty{background:var(--panel);border:1px dashed var(--line);border-radius:16px;padding:22px;color:var(--muted);font-size:15px}
+.empty b{display:block;color:var(--ink);font:500 17px/1.3 var(--f-display);margin-bottom:4px}
+footer{max-width:1080px;margin:56px auto 0;border-top:1px solid var(--line);padding-top:16px;font-size:13px;color:var(--muted)}
 </style>
-
+</head>
+<body>
+<div class="topbar"><a class="brand" href="./"><i></i><span id="siteName">Sciences animées</span></a><nav><a href="#catalogue">Animations</a><a href="#domaines">Domaines</a><a href="blocs/">Modèles</a></nav></div>
 <div class="wrap">
-<header>
-  <div class="kicker">Pointeur rouge · 650 nm</div>
-  <h1>Dans la diode laser</h1>
-  <p class="lead">Un seul microscope pour descendre du pointeur jusqu'aux atomes de la zone active. Clique sur l'image ou sur « Zoomer » pour entrer plus loin. Les boutons <span class="i" aria-hidden="true">i</span> expliquent chaque élément.</p>
-  <div class="controls"><button id="allPlay" class="primary">Visite guidée depuis le début</button></div>
-</header>
+  <header class="page hero">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="kicker">Laboratoire en ligne</div>
+      <h1>Voir la science <br>en mouvement</h1>
+      <p class="lead" id="devise"></p>
+      <div class="controls"><a class="primary" href="#catalogue" style="text-decoration:none"><button class="primary" type="button" tabindex="-1">Parcourir les animations</button></a></div>
+    </div>
+    <canvas id="cvHero" style="aspect-ratio:400/260" aria-label="Animation décorative : un faisceau laser traverse une rangée d'atomes"></canvas>
+  </header>
 
-<section id="scope">
-  <div class="step">Le microscope</div>
-  <h2>Du pointeur aux atomes</h2>
-  <div class="panel">
-    <div class="view">
-      <canvas id="cvScope" style="aspect-ratio:400/250" aria-label="Vue zoomable : pointeur, tête en coupe, boîtier ouvert, puce, couches en fonctionnement, atomes de la zone active"></canvas>
-      <div class="depth" id="depth">Niveau 1 / 6</div>
-      <div class="scale" id="scale">≈ 15 cm</div>
-    </div>
-    <div class="levels" id="levels"></div>
-    <div class="controls">
-      <button id="zPrev">Dézoomer</button>
-      <button id="zNext">Zoomer</button>
-      <button id="zPlay">Visite guidée</button>
-    </div>
-    <div class="caption" aria-live="polite"><b id="zTitle"></b><span id="zText"></span></div>
-    <div class="lc" id="lc4" hidden>
-      <button id="c4Cur" aria-pressed="true">Courant branché</button>
-      <button id="c4Mir" aria-pressed="true">Miroirs : oui</button>
-      <button id="c4View" aria-pressed="false">Vue énergie</button>
-      <span class="ctr">Photons sortis : <b id="c4Out">0</b></span>
-      <div class="legend">
-        <span><i class="dot"></i>Électron libre</span>
-        <span><i class="ring"></i>Trou</span>
-        <span><i class="dot pale"></i>Électron d'une liaison (vue énergie)</span>
-        <span><i class="wave"></i>Photon, avec le nombre de copies</span>
-      </div>
-    </div>
-    <div class="lc" id="lc5" hidden>
-      <div class="seg" role="group" aria-label="Scène" id="sc5">
-        <button data-s="0" aria-pressed="true">1 · Rencontre</button>
-        <button data-s="1" aria-pressed="false">2 · Absorption</button>
-        <button data-s="2" aria-pressed="false">3 · Copie</button>
-      </div>
-      <button id="c5Pause">Pause</button>
-      <div class="legend">
-        <span><i class="dot" style="background:#7E6BFF;box-shadow:none"></i>Ga</span>
-        <span><i class="dot" style="background:#D8A93A;box-shadow:none"></i>In</span>
-        <span><i class="dot" style="background:#2FBF94;box-shadow:none"></i>P</span>
-        <span><i class="dot pale"></i>Électron d'une liaison</span>
-        <span><i class="dot"></i>Électron libre</span>
-        <span><i class="ring"></i>Trou : électron manquant dans une liaison</span>
-      </div>
-    </div>
-    <div class="infobar" id="zInfo"></div>
-    <div class="infobox" id="zBox" hidden></div>
-  </div>
+  <section id="domaines">
+    <div class="step">Domaines</div>
+    <h2>Choisis un domaine</h2>
+    <div class="domains" id="domList"></div>
+  </section>
 
-  <div class="callout">
-    <div><small>Atome isolé</small><b>Exciter = monter d'un niveau</b><span>L'électron saute sur une orbite plus haute. Sa place du bas reste vide, mais personne ne lui donne de nom : elle ne peut pas bouger.</span></div>
-    <div><small>Cristal</small><b>Exciter = sortir de la liaison</b><span>Le niveau bas, ce sont les liaisons. L'électron qui monte devient libre et laisse une liaison incomplète. Cette place vide peut passer d'une liaison à l'autre : on l'appelle un trou.</span></div>
-  </div>
-  <p class="note">C'est donc la même chose dite deux fois. Monter d'un niveau, c'est créer une paire électron + trou. Redescendre, c'est l'électron qui comble un trou. Dans le microscope, niveau « Atomes », la vue énergie à droite montre les deux en même temps.</p>
-</section>
+  <section id="catalogue">
+    <div class="step">Catalogue</div>
+    <h2 id="catTitle">Toutes les animations</h2>
+    <div class="search"><input id="q" type="search" placeholder="Rechercher : laser, atome, onde, réaction…" aria-label="Rechercher une animation"></div>
+    <div class="chips" id="chips" role="group" aria-label="Filtrer par domaine"></div>
+    <div class="chips" id="lvls" role="group" aria-label="Filtrer par niveau"></div>
+    <div class="grid" id="cards"></div>
+    <div class="empty" id="empty" hidden><b>Rien ici pour l'instant</b><span id="emptyText"></span></div>
+  </section>
 
-<section id="atomeseul">
-  <div class="step">Avant la liaison · l'atome tout seul</div>
-  <h2>Pourquoi l'électron tient autour du noyau</h2>
-  <p class="note">Tout repose sur un fait démontré en 1927 : l'électron n'est pas une petite bille, c'est une onde. Une fois ça admis, le reste en découle. Une onde enfermée autour du noyau ne peut pas se serrer sans s'agiter, c'est pourquoi l'électron ne tombe pas. Et elle ne peut vibrer que de certaines façons, c'est pourquoi il y a des couches.</p>
-
-  <h3>1. D'abord : l'électron est une onde</h3>
-  <p class="note">L'expérience de Davisson et Germer : on tire des électrons, un par un, sur un cristal de nickel, et on regarde dans quelles directions ils rebondissent. Des billes rebondiraient dans tous les sens. Les électrons, eux, s'accumulent à un angle précis : la signature d'une onde.</p>
-  <div class="panel">
-    <div class="view"><canvas id="cvDG" style="aspect-ratio:400/260" aria-label="Électrons tirés sur un cristal de nickel, points d'impact sur un écran en arc et histogramme des angles"></canvas></div>
-    <div class="lc">
-      <div class="seg" role="group" aria-label="Nature des électrons" id="dgSeg"><button data-w="1" aria-pressed="true">Électrons (réalité)</button><button data-w="0" aria-pressed="false">Si c'étaient des billes</button></div>
-      <button id="dgView" aria-pressed="false">Voir les ondes</button>
-      <button id="dgGun" aria-pressed="false">Zoom sur le canon</button>
-      <button id="dgClear">Vider l'écran</button>
-      <label class="slider" for="dgHt" style="width:100%"><span>Chauffage du filament (débit d'électrons)</span><input id="dgHt" type="range" min="10" max="100" step="1" value="45"><strong id="dgHtv">45 %</strong></label>
-      <label class="slider" for="dgVr" style="width:100%"><span>Tension du canon (vitesse des électrons)</span><input id="dgVr" type="range" min="25" max="100" step="1" value="54"><strong id="dgVv">54 V</strong></label>
-      <span class="ctr" id="dgRead" style="margin-left:0"></span>
-    </div>
-    <div class="caption" aria-live="polite"><b id="dgTitle"></b><span id="dgText"></span></div>
-    <div class="infobar" id="dgInfo"></div>
-    <div class="infobox" id="dgBox" hidden></div>
-  </div>
-
-  <h3>2. Le creux : pourquoi il ne tombe pas, et n'est pas arraché</h3>
-  <p class="note">Deux effets tirent en sens contraire. Le noyau attire l'électron : plus il est près, plus son énergie baisse. Mais une onde qu'on serre dans un petit espace s'agite davantage : son énergie monte. Le nuage prend la taille où la somme des deux est la plus basse.</p>
-  <div class="panel">
-    <div class="view"><canvas id="cvWell" style="aspect-ratio:400/250" aria-label="Nuage de l'électron autour d'un noyau, dont la taille change, et courbe de son énergie en fonction de la taille"></canvas></div>
-    <div class="lc">
-      <button id="wFar">Lâcher l'électron loin</button>
-      <button id="wNear">Le coller contre le noyau</button>
-      <label class="slider" for="wR" style="width:100%"><span>Taille du nuage</span><input id="wR" type="range" min="20" max="400" step="1" value="100"><strong id="wRv">0,053 nm</strong></label>
-    </div>
-    <div class="caption"><b>Le creux de l'atome</b><span>L'attraction (bleu) gagne quand le nuage est grand, l'agitation (orange) quand il est petit. Le total (blanc) a un creux : 0,053 nm pour l'hydrogène. L'électron y reste, comme une bille au fond d'un bol. Pour l'en sortir, il faut lui fournir 13,6 eV d'un coup, 500 fois plus que l'agitation thermique à 20 °C.</span></div>
-    <div class="infobar" id="wInfo"></div>
-    <div class="infobox" id="wBox" hidden></div>
-  </div>
-
-  <h3>3. Pourquoi des couches : les façons de vibrer</h3>
-  <p class="note">Une onde enfermée ne peut vibrer que de certaines façons, comme une corde de guitare qui ne fait que des notes précises. Autour d'un noyau, chaque façon de vibrer est une « case ». Plus elle a de lignes de vide (de nœuds), plus elle a d'énergie et plus elle est grande. Avec 0 nœud il y a 1 façon, avec 1 nœud il y en a 4, avec 2 nœuds il y en a 9 : ce sont les couches. Chaque case accepte 2 électrons au plus.</p>
-  <div class="panel">
-    <div class="view"><canvas id="cvModes" style="aspect-ratio:400/300;cursor:pointer" aria-label="Forme 3D de la case choisie à gauche ; à droite, les cases rangées par énergie, remplies d'électrons selon l'élément choisi"></canvas></div>
-    <div class="levels" id="mdPills" style="grid-template-columns:repeat(8,minmax(0,1fr))"></div>
-    <div class="controls"><button id="mdOri">Autre orientation</button><button id="mdP">Phosphore</button><button id="mdGa">Gallium</button><button id="mdNe">Néon</button></div>
-    <label class="slider" for="mdZ"><span>Électrons</span><input id="mdZ" type="range" min="1" max="36" step="1" value="15"><strong id="mdZv">15</strong></label>
-    <div class="caption" aria-live="polite"><b id="mdTitle"></b><span id="mdText"></span></div>
-    <div class="legend">
-      <span><i class="dot" style="background:#FF8A80;box-shadow:none"></i>Onde « vers le haut »</span>
-      <span><i class="dot" style="background:#6FB6FF;box-shadow:none"></i>Onde « vers le bas »</span>
-      <span>Entre les deux : un nœud, où l'électron n'est jamais</span>
-    </div>
-    <div class="infobar" id="mdInfo"></div>
-    <div class="infobox" id="mdBox" hidden></div>
-  </div>
-  <p class="note"><em>Et la liaison ?</em> Le phosphore a 5 électrons dans sa couche externe, le gallium 3, et cette couche a 4 cases, soit 8 places. En se mettant côte à côte, chaque atome partage ses électrons externes avec ses 4 voisins : 4 liaisons de 2 électrons, et toutes les places basses sont remplies. La section suivante montre comment deux nuages fusionnent.</p>
-</section>
-
-<section id="liaison">
-  <div class="step">Zoom ultime · d'après les modèles de la physique du solide</div>
-  <h2>Au cœur d'une liaison Ga–P, en 3D</h2>
-  <p class="note">Ici on abandonne les billes. Chaque atome est un noyau minuscule entouré d'un nuage : la carte des endroits où ses électrons ont des chances d'être trouvés. Glisse sur l'image pour la faire tourner.</p>
-  <div class="panel">
-    <div class="view"><canvas id="cvBond" style="aspect-ratio:400/270;cursor:grab;touch-action:none" aria-label="Deux noyaux, gallium et phosphore, avec leurs nuages d'électrons en 3D : liaison, trou, électron libre, et nuage qui oscille pendant l'émission"></canvas>
-      <div class="depth">Glisse pour tourner</div><div class="scale">≈ 0,24 nm entre les noyaux</div></div>
-    <div class="levels" id="bdSteps"></div>
-    <div class="controls"><button id="bdPrev">Précédent</button><button id="bdNext">Suivant</button><button id="bdReplay">Rejouer l'étape</button></div>
-    <div class="caption" aria-live="polite"><b id="bdTitle"></b><span id="bdText"></span></div>
-    <div class="lc" id="lcAp" hidden>
-      <div class="seg" role="group" aria-label="Façon dont les ondes se combinent" id="apSeg"><button data-m="b" aria-pressed="true">Ondes en phase</button><button data-m="a" aria-pressed="false">Ondes en opposition</button></div>
-      <button id="apGo">Lâcher les atomes</button>
-      <label class="slider" for="apR" style="width:100%"><span>Distance (glisse pour rapprocher)</span><input id="apR" type="range" min="13" max="46" step="1" value="44"><strong id="apRv">0,52 nm</strong></label>
-    </div>
-    <div class="legend">
-      <span><i class="dot" style="background:#9FB3C8;box-shadow:none"></i>Électrons du cœur</span>
-      <span><i class="dot" style="background:#FF9C94;box-shadow:none"></i>Nuage des électrons de liaison</span>
-      <span><i class="dot"></i>Nuage de l'électron libre</span>
-      <span><i class="ring"></i>Trou : charge + non compensée</span>
-    </div>
-    <div class="infobar" id="bdInfo"></div>
-    <div class="infobox" id="bdBox" hidden></div>
-  </div>
-  <p class="note" style="font-size:13px;color:var(--muted)">Ce que disent les modèles utilisés : dans un cristal comme GaAs ou GaP, les états de l'étage bas sont formés à partir des orbitales <em>liantes</em> entre atomes voisins, ceux de l'étage haut à partir des orbitales <em>antiliantes</em> (modèle des liaisons fortes). Pendant une transition, l'électron est dans une superposition des deux états : sa densité de charge oscille à la fréquence ΔE/h et rayonne comme un dipôle. Un trou est l'absence d'un électron dans la bande pleine, étalée sur des centaines de mailles. Sources : <a href="https://alevi.usc.edu/files/2018/05/Vogl1983-10syajv.pdf">Vogl et al., 1983</a> · <a href="https://ocw.mit.edu/courses/6-730-physics-for-solid-state-applications-spring-2003/0eaf19b6f8c6f576cb63f79083727d1a_ProjP31.pdf">MIT 6.730</a> · <a href="https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Quantum_Tutorials_(Rioux)/04%3A_Spectroscopy/4.10%3A_Another_Look_at_the_Quantum_Jump">Rioux, LibreTexts</a> · <a href="https://laserstars.org/glossary/spontaneous.html">laserstars.org</a> · <a href="https://en.wikipedia.org/wiki/Electron_hole">Electron hole</a></p>
-</section>
-
-<section id="couleur">
-  <div class="step">Banc d'essai 1</div>
-  <h2>Le dosage des atomes règle la couleur</h2>
-  <p class="note">Choisis un cristal, puis fais varier sa composition. L'écart entre les deux niveaux (le gap) change, donc la couleur aussi : λ (en nm) ≈ 1240 ÷ gap (en eV).</p>
-  <div class="panel">
-    <div class="seg" role="group" aria-label="Famille de cristal" id="famSeg">
-      <button data-f="algaas" aria-pressed="false">AlGaAs</button>
-      <button data-f="algainp" aria-pressed="true">AlGaInP</button>
-      <button data-f="ingan" aria-pressed="false">InGaN</button>
-    </div>
-    <label class="slider" for="famX"><span id="famLab">Aluminium</span><input id="famX" type="range" min="0" max="80" step="1" value="0"><strong id="famXv">0 %</strong></label>
-    <div class="result">
-      <div class="swatch" id="swatch"></div>
-      <div class="rtext">
-        <div class="formula" id="famF"></div>
-        <div class="nums"><span id="famE"></span><span id="famL"></span><span id="famC"></span></div>
-        <div class="status" id="famS"></div>
-      </div>
-    </div>
-    <div class="view"><canvas id="cvLat" style="aspect-ratio:400/160" aria-label="Réseau du cristal, chaque place de métal colorée selon l'élément"></canvas></div>
-    <div class="legend" id="latLeg"></div>
-    <canvas id="cvSpec" style="aspect-ratio:400/100" aria-label="Spectre de 350 à 950 nm avec la longueur d'onde obtenue et la plage possible pour ce cristal"></canvas>
-    <div class="legend"><span><i class="bar ok"></i>Émission efficace</span><span><i class="bar mid"></i>Plus faible</span><span><i class="bar bad"></i>Presque plus de lumière</span></div>
-    <div class="infobar" id="fInfo"></div>
-    <div class="infobox" id="fBox" hidden></div>
-  </div>
-  <p class="note"><em>Pourquoi surtout du rouge, du vert et du bleu ?</em> La plage est continue : il existe des LED ambre, orange, jaunes ou cyan. Mais l'œil n'a que trois sortes de cônes, donc trois couleurs suffisent à recréer toutes les autres. Et entre 530 et 590 nm, aucun cristal n'éclaire bien : trop d'aluminium rend le gap « indirect », trop d'indium remplit le cristal de défauts.</p>
-</section>
-
-<section id="blanc">
-  <div class="step">Banc d'essai 2</div>
-  <h2>La LED blanche : du bleu et de la poudre jaune</h2>
-  <div class="panel">
-    <div class="view"><canvas id="cvWhite" style="aspect-ratio:400/240" aria-label="Photons bleus émis par la puce, certains convertis en jaune par les grains de luminophore, et spectre résultant"></canvas></div>
-    <label class="slider" for="phos"><span>Quantité de luminophore</span><input id="phos" type="range" min="0" max="100" step="1" value="45"><strong id="phosV">45 %</strong></label>
-    <div class="stats">
-      <div class="stat"><small>Photons bleus sortis</small><strong id="wB">0</strong></div>
-      <div class="stat"><small>Photons jaunes sortis</small><strong id="wY">0</strong></div>
-    </div>
-    <div class="infobar" id="wInfo"></div>
-    <div class="infobox" id="wBox" hidden></div>
-  </div>
-  <h3>Dans un grain de poudre : l'ion cérium</h3>
-  <div class="panel">
-    <div class="view"><canvas id="cvCe" style="aspect-ratio:400/240" aria-label="Un photon bleu absorbé par un ion cérium, l'électron descend des marches en chauffant le cristal puis émet un photon jaune"></canvas></div>
-    <div class="caption" aria-live="polite"><b id="ceTitle"></b><span id="ceText"></span></div>
-    <div class="controls"><button id="ceReplay">Rejouer</button><button id="cePause">Pause</button></div>
-    <div class="infobar" id="ceInfo"></div>
-    <div class="infobox" id="ceBox" hidden></div>
-  </div>
-  <p class="note"><em>Absorber puis réémettre.</em> Ici, c'est bien ce que tu décrivais : le photon bleu est absorbé, l'électron du cérium monte, perd un peu d'énergie en chaleur, puis retombe en émettant du jaune. Le bleu restant et le jaune sortent ensemble, et l'œil additionne les deux : il voit du blanc.</p>
-</section>
+  <section id="modeles">
+    <div class="step">Boîte à modèles</div>
+    <h2>Des modèles qui servent partout</h2>
+    <p class="note">Certains modèles reviennent dans plusieurs domaines : le creux de l'atome, la corde vibrante, les orbitales. Chacun est un bloc qu'on retrouve dans les animations, et qu'on peut aussi ouvrir seul.</p>
+    <div class="chips" id="blocList"></div>
+  </section>
 </div>
+<footer>Sciences animées · animations libres d'utilisation en classe · les explications indiquent toujours ce qui est simplifié et leurs sources.</footer>
 
+<script src="data/catalogue.js"></script>
+<script src="assets/js/labo.js"></script>
 <script>
 (function(){
-const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const C={bg:'#090D12',surface:'#10171F',ink:'#E8EEF4',muted:'#93A1B0',line:'#25313D',laser:'#FF3D33',gold:'#E3B341',p:'#A193FF',n:'#3FD4A8',hole:'#FFB547',metal:'#9AA6B2',act:'#FF6B61'};
-const GA='#7E6BFF', IN='#D8A93A', PH='#2FBF94', BOND='#B85A55';
+const K=window.CATALOGUE, L=window.Labo;
+document.getElementById('siteName').textContent=K.site.nom;
+document.getElementById('devise').textContent=K.site.devise;
+const dom=Object.fromEntries(K.domaines.map(d=>[d.id,d]));
+const NIV=['collège','lycée','supérieur'];
+let fDom=(location.hash.slice(1)&&dom[location.hash.slice(1)])?location.hash.slice(1):'tous', fNiv=null, q='';
+const count=id=>K.animations.filter(a=>a.domaine===id).length;
 
-/* ---------- outils de dessin ---------- */
-function setup(id,W,H){ const cv=document.getElementById(id), ctx=cv.getContext('2d');
-  function fit(){ const w=cv.clientWidth||W, d=Math.min(2,window.devicePixelRatio||1); cv.width=Math.round(w*d); cv.height=Math.round(w*H/W*d); }
-  fit(); addEventListener('resize',fit);
-  return {cv,ctx,base(){ ctx.setTransform(cv.width/W,0,0,cv.height/H,0,0); }}; }
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)), ease=t=>t*t*(3-2*t), lerp=(a,b,t)=>a+(b-a)*t;
-function hx(c){ c=c.replace('#',''); return [0,2,4].map(i=>parseInt(c.substr(i,2),16)); }
-function mix(c,t,a){ const A=hx(c),B=hx(t); return 'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*a)).join(',')+')'; }
-const dk=(c,a)=>mix(c,'#000000',a), lt=(c,a)=>mix(c,'#ffffff',a);
-function rgba(c,a){ const A=hx(c); return 'rgba('+A[0]+','+A[1]+','+A[2]+','+a+')'; }
-function lg(x,x0,y0,x1,y1,st){ const g=x.createLinearGradient(x0,y0,x1,y1); st.forEach(s=>g.addColorStop(s[0],s[1])); return g; }
-function sph(x,cx,cy,r,col,a){ const g=x.createRadialGradient(cx-r*.35,cy-r*.42,r*.06,cx,cy,r); g.addColorStop(0,lt(col,.8)); g.addColorStop(.35,col); g.addColorStop(1,dk(col,.62));
-  x.save(); if(a!==undefined) x.globalAlpha*=a; x.beginPath(); x.arc(cx,cy,r,0,7); x.fillStyle=g; x.fill(); x.restore(); }
-function glow(x,cx,cy,r,col,a){ if(r<=0||a<=0) return; x.save(); x.globalCompositeOperation='lighter'; const g=x.createRadialGradient(cx,cy,0,cx,cy,r);
-  g.addColorStop(0,rgba(col,a)); g.addColorStop(1,rgba(col,0)); x.fillStyle=g; x.beginPath(); x.arc(cx,cy,r,0,7); x.fill(); x.restore(); }
-function elec(x,cx,cy,r){ glow(x,cx,cy,r*4.2,C.laser,.6); sph(x,cx,cy,r,'#FF4A40'); }
-function hole(x,cx,cy,r,pu){ glow(x,cx,cy,r*3.2,C.hole,.22+.2*(pu||0)); x.beginPath(); x.arc(cx,cy,r,0,7); x.strokeStyle=C.hole; x.lineWidth=1.6; x.stroke(); }
-function bondE(x,cx,cy,r){ sph(x,cx,cy,r||2.6,BOND); }
-function poly(x,p,f,s,lw){ x.beginPath(); x.moveTo(p[0],p[1]); for(let i=2;i<p.length;i+=2) x.lineTo(p[i],p[i+1]); x.closePath();
-  if(f){x.fillStyle=f;x.fill();} if(s){x.strokeStyle=s;x.lineWidth=lw||1;x.stroke();} }
-function line(x,a,b,c,d,col,lw,dash){ x.beginPath(); x.setLineDash(dash||[]); x.moveTo(a,b); x.lineTo(c,d); x.strokeStyle=col; x.lineWidth=lw||1; x.stroke(); x.setLineDash([]); }
-function arrow(x,a,b,c,d,col,lw){ line(x,a,b,c,d,col,lw); const an=Math.atan2(d-b,c-a); x.beginPath(); x.moveTo(c,d);
-  x.lineTo(c-7*Math.cos(an-.45),d-7*Math.sin(an-.45)); x.moveTo(c,d); x.lineTo(c-7*Math.cos(an+.45),d-7*Math.sin(an+.45)); x.strokeStyle=col; x.lineWidth=lw||1; x.stroke(); }
-function rr(x,a,b,w,h,r,fill,stroke,lw){ x.beginPath(); x.moveTo(a+r,b); x.arcTo(a+w,b,a+w,b+h,r); x.arcTo(a+w,b+h,a,b+h,r); x.arcTo(a,b+h,a,b,r); x.arcTo(a,b,a+w,b,r); x.closePath();
-  if(fill){x.fillStyle=fill;x.fill();} if(stroke){x.strokeStyle=stroke;x.lineWidth=lw||1;x.stroke();} }
-function txt(x,s,px,py,al,col,bold){ x.font=(bold?'500 ':'')+'11px "IBM Plex Sans","Segoe UI",sans-serif'; x.textAlign=al||'left'; x.textBaseline='middle'; x.fillStyle=col||C.muted; x.fillText(s,px,py); }
-function tag(x,s,px,py,al,col){ x.font='500 11px "IBM Plex Sans","Segoe UI",sans-serif'; const w=x.measureText(s).width+10; const lx=al==='right'?px-w:al==='center'?px-w/2:px;
-  rr(x,lx,py-9,w,18,4,'rgba(5,8,11,.72)'); txt(x,s,lx+5,py,'left',col||C.ink); }
-function lead(x,a,b,c,d){ line(x,a,b,c,d,'rgba(232,238,244,.45)',.7,[3,3]); x.beginPath(); x.arc(a,b,1.8,0,7); x.fillStyle='rgba(232,238,244,.8)'; x.fill(); }
-function beam(x,x0,y0,x1,y1,w){ x.save(); x.globalCompositeOperation='lighter'; x.lineCap='round';
-  [[w*7,.06],[w*3.4,.16],[w*1.6,.45],[w*.6,.95]].forEach(([lw,a],k)=>{ x.strokeStyle=k===3?rgba('#FFD6D2',a):rgba(C.laser,a); x.lineWidth=lw; x.beginPath(); x.moveTo(x0,y0); x.lineTo(x1,y1); x.stroke(); }); x.restore(); }
-function cone(x,x0,y0,x1,h,a){ x.save(); x.globalCompositeOperation='lighter'; const g=x.createLinearGradient(x0,0,x1,0); g.addColorStop(0,rgba(C.laser,a)); g.addColorStop(1,rgba(C.laser,a*.25));
-  poly(x,[x0,y0-1,x1,y0-h,x1,y0+h,x0,y0+1],g); x.restore(); }
-function cuboid(x,ox,oy,w,h,d,front,top,side){ const dx=d*.7, dy=-d*.5;
-  poly(x,[ox,oy,ox+w,oy,ox+w+dx,oy+dy,ox+dx,oy+dy],top);
-  poly(x,[ox+w,oy,ox+w+dx,oy+dy,ox+w+dx,oy+h+dy,ox+w,oy+h],side);
-  x.fillStyle=front; x.fillRect(ox,oy,w,h); }
-function block(x,ox,oy,w,h,d,col){ cuboid(x,ox,oy,w,h,d,lg(x,0,oy,0,oy+h,[[0,lt(col,.1)],[1,dk(col,.25)]]),lt(col,.3),dk(col,.4)); }
-function hcyl(x,x0,x1,cy,r,col,cap){ x.fillStyle=lg(x,0,cy-r,0,cy+r,[[0,dk(col,.6)],[.22,lt(col,.5)],[.45,col],[.8,dk(col,.45)],[1,dk(col,.75)]]); x.fillRect(x0,cy-r,x1-x0,2*r);
-  if(cap!==false){ x.beginPath(); x.ellipse(x1,cy,r*.3,r,0,0,7); x.fillStyle=lg(x,x1-r*.3,cy-r,x1+r*.3,cy+r,[[0,lt(col,.35)],[1,dk(col,.45)]]); x.fill(); } }
-function wave(x,px,py,ux,uy,len,amp,ph,col,lw,a){ x.save(); x.globalCompositeOperation='lighter'; x.globalAlpha=a===undefined?1:a; x.lineCap='round';
-  [[lw*3.2,.22],[lw,1]].forEach(([w,al])=>{ x.beginPath(); for(let s=0;s<=len;s+=1){ const e=Math.sin(Math.PI*s/len), wv=amp*e*Math.sin(s*.55-ph); const X=px-ux*s-uy*wv, Y=py-uy*s+ux*wv; s?x.lineTo(X,Y):x.moveTo(X,Y); }
-    x.strokeStyle=rgba(col,al); x.lineWidth=w; x.stroke(); }); x.restore(); }
-function vignette(x,W,H){ const g=x.createRadialGradient(W/2,H/2,Math.min(W,H)*.35,W/2,H/2,Math.max(W,H)*.7); g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,.55)'); x.fillStyle=g; x.fillRect(0,0,W,H); }
-function bgLab(x,W,H){ x.fillStyle=lg(x,0,0,0,H,[[0,'#0E151D'],[1,'#06090D']]); x.fillRect(0,0,W,H); }
+const dl=document.getElementById('domList');
+K.domaines.forEach(d=>{ const b=document.createElement('button'); b.className='dom'; b.type='button';
+  b.innerHTML='<b><i></i></b><span></span><small></small>'; b.querySelector('i').style.background=d.couleur;
+  b.querySelector('b').append(d.nom); b.querySelector('span').textContent=d.resume;
+  const n=count(d.id); b.querySelector('small').textContent=n?n+' animation'+(n>1?'s':''):'bientôt';
+  b.onclick=()=>{ setDom(d.id); document.getElementById('catalogue').scrollIntoView({behavior:L.reduce?'auto':'smooth'}); }; dl.appendChild(b); });
 
-/* ---------- textes ---------- */
-const INFO={
- piles:['Piles','Elles fournissent environ 3 V. La diode laser rouge a besoin d’environ 2,2 V pour s’allumer.'],
- circuit:['Circuit','Il limite le courant à quelques dizaines de milliampères. Sans lui, le courant s’emballe et la diode grille en une fraction de seconde.'],
- bouton:['Bouton','Il ferme simplement le circuit : tant qu’il est enfoncé, le courant passe.'],
- boitier:['Boîtier laser','Petite capsule métallique de 5,6 mm (format « TO »). Elle protège la puce et évacue sa chaleur.'],
- lentille:['Lentille','La lumière sort de la puce en éventail ovale (environ 10° sur 30°). La lentille rend le faisceau parallèle, ce qui donne un point net sur le mur.'],
- fenetre:['Fenêtre en verre','Elle ferme le boîtier de façon étanche : l’humidité et la poussière abîmeraient les faces du cristal.'],
- fil:['Fil d’or','Plus fin qu’un cheveu (environ 25 µm). L’or ne rouille pas et se soude facilement. Il amène le + sur le dessus de la puce.'],
- support:['Support en cuivre','Bloc relié au −. La puce chauffe beaucoup pour sa taille : trop chaude, elle éclaire moins et s’use vite.'],
- pattes:['Embase et pattes','Trois pattes : une pour le +, une pour le −, et souvent une troisième pour une petite photodiode qui mesure la lumière émise.'],
- baton:['La puce','Environ 0,3 × 0,2 × 0,1 mm, plus petite qu’un grain de sel. Couchée dans le sens du faisceau.'],
- ruban:['Ruban','Bande étroite (2 à 5 µm) gravée sur le dessus. Le courant ne passe que là, donc la lumière naît sur une seule ligne, dans la longueur.'],
- miroir:['Miroir arrière','Face obtenue en cassant le cristal le long de ses plans d’atomes, puis recouverte d’un traitement qui renvoie plus de 95 % de la lumière.'],
- sortie:['Face de sortie : pas de miroir','C’est le cristal nu, cassé net. Le saut d’indice entre le cristal (3,5) et l’air (1) suffit à renvoyer environ 30 % de la lumière vers l’intérieur, comme un reflet sur une vitre mais en plus fort. Les 70 % restants sortent et forment le faisceau.'],
- elec:['Électrode','Fine couche de métal sur le dessus de la puce, sur laquelle est soudé le fil d’or. Elle répartit le + sur le ruban.'],
- p:['Couche p','AlGaInP avec un peu de zinc : ces atomes ont un électron de moins que ceux qu’ils remplacent, ce qui laisse des liaisons incomplètes, les trous.'],
- act:['Zone active','GaInP sans aluminium, épaisse d’environ 10 nm. Ses deux niveaux sont plus rapprochés (1,9 eV) : électrons et trous s’y retrouvent piégés. C’est le seul endroit qui brille.'],
- n:['Couche n','AlGaInP avec un peu de silicium : ces atomes apportent un électron de plus, qui n’a pas de place dans les liaisons. Il est libre.'],
- pn:['Pourquoi « p » et « n » ?','Ce n’est pas la charge de la couche : les deux restent neutres. C’est le signe de ce qui y circule. n comme négatif (électrons libres), p comme positif (trous, qui se déplacent comme des charges +).'],
- algainp:['AlGaInP','Phosphure d’aluminium, gallium et indium. Un seul cristal : Al, Ga et In se partagent les places « métal », et chacun alterne avec un atome de phosphore. Le dosage règle la couleur.'],
- al:['Al · Aluminium','Le métal du papier alu. Dans le cristal, il écarte les deux niveaux et baisse l’indice : c’est ce qui permet aux couches p et n de piéger électrons et lumière au milieu.'],
- ga:['Ga · Gallium','Métal argenté qui fond dans la main (29 °C). C’est l’ossature de presque tous les cristaux de LED et de lasers.'],
- in:['In · Indium','Métal très mou, rayable à l’ongle, aussi utilisé dans les écrans tactiles. Il rapproche les deux niveaux (vers le rouge).'],
- ph:['P · Phosphore','Non-métal, celui du grattoir des allumettes. Un atome sur deux du cristal. Pendant la fabrication il arrive sous forme de gaz, la phosphine.'],
- electron:['Électron libre','Électron qui n’est pris dans aucune liaison : il peut voyager dans le cristal. Ils sont nombreux dans la couche n.'],
- trou:['Trou','Une liaison entre deux atomes où il manque un électron. Ce n’est pas un atome manquant. Quand un électron voisin saute dedans, le trou se retrouve à côté : il « avance » en sens inverse.'],
- photon:['Photon','Grain de lumière rouge : 650 nm, 1,9 eV.'],
- milieu:['Pourquoi seulement au milieu ?','En haut il n’y a que des trous, en bas que des électrons libres : personne à rencontrer. Le courant pousse les deux vers la zone active, où ils restent coincés ensemble.'],
- pile:['Le rôle de la pile','Elle ne fait pas descendre les électrons. Côté −, elle pousse des électrons libres dans la couche n. Côté +, elle retire des électrons des liaisons de la couche p, ce qui crée des trous. C’est elle qui fournit l’énergie de la lumière.'],
- cuvette:['La cuvette','Dans la zone active, les deux niveaux sont plus rapprochés. Les électrons y « tombent » depuis la couche n, les trous y « remontent » depuis la couche p, et ils y restent piégés ensemble.'],
- bandes:['Vue énergie','On range les électrons selon leur énergie : étage haut pour les électrons libres, étage bas pour ceux des liaisons. Un trou est une place vide à l’étage bas. Entre les deux étages, aucune place.'],
- transp:['Pourquoi p et n n’absorbent pas la lumière','Pour absorber un photon, il faut qu’il ait au moins l’énergie qui sépare les deux étages. Dans p et n cet écart vaut 2,3 eV, plus que le photon (1,9 eV) : elles sont transparentes pour lui.'],
- spont:['Émission spontanée','Un électron libre qui trouve un trou finit par s’y loger tout seul, après quelques nanosecondes, à un moment et dans une direction au hasard. C’est la lumière d’une LED.'],
- stim:['Émission stimulée','Une onde qui passe force l’électron à tomber tout de suite. L’onde émise est une copie : même fréquence, même direction, même rythme. L’onde de départ n’est pas consommée.'],
- absorb:['Absorption','Une onde arrive sur une liaison complète. Un électron prend son énergie et sort de la liaison : l’onde disparaît, et il reste un électron libre et un trou.'],
- inversion:['Il faut plus d’électrons en haut','Absorption et émission stimulée ont la même probabilité (Einstein, 1917). Pour que la lumière grossisse, il faut donc plus de paires prêtes à tomber que de liaisons prêtes à absorber. C’est ce que le courant entretient. Coupe-le : tout s’éteint.'],
- pasdepit:['Pas « par dépit »','L’électron serait tombé de toute façon. La stimulation ne change pas l’énergie libérée, mais elle choisit quand et comment : maintenant, dans la direction de l’onde, au même rythme. Et l’onde de départ survit : 1 entre, 2 sortent. Avec les miroirs, cette copie se répète des centaines de fois : c’est le faisceau.'],
- excit:['Exciter = créer une paire','Dans un atome isolé, exciter un électron, c’est le faire monter sur une orbite plus haute. Dans un cristal, l’orbite du bas, ce sont les liaisons : l’électron qui monte sort de sa liaison et devient libre. La place qu’il laisse, c’est le trou. Exciter = créer une paire électron-trou ; désexciter = l’électron comble un trou.'],
- lien:['Pourquoi la liaison libère de l’énergie','Un électron dans une liaison est tenu par deux noyaux à la fois : il est plus « bas » en énergie qu’un électron libre. En comblant le trou, il descend de 1,9 eV, et cette énergie doit partir quelque part : en lumière.'],
- pourquoi:['Pourquoi l’onde fait descendre','L’onde secoue l’électron à son rythme. S’il est dans une liaison, la seule chose possible est de monter : absorption. S’il est libre au-dessus d’un trou, il ne peut plus monter, la seule transition possible est de descendre. En vibrant, il rayonne une onde qui s’ajoute à celle qui passe.'],
- einstein:['Einstein, 1917','Einstein a montré que l’absorption et l’émission stimulée ont exactement la même probabilité. L’émission stimulée a été prédite sur le papier 43 ans avant le premier laser (1960).'],
- vrai:['Ce dessin est-il vrai ?','Pour la forme réelle des nuages, voir « Au cœur d’une liaison » plus bas. Ici, les atomes sont des billes et l’électron libre un point : en réalité, l’électron libre est une onde étalée sur des milliers d’atomes, et deux atomes voisins sont à 0,25 nm. Le réseau réel est en 3D (structure « blende »). Mais l’histoire racontée est juste : un électron libre comble une liaison incomplète, et la différence d’énergie part en lumière.'],
- ressort:['Le modèle du ressort','L’électron accroché à un ressort, poussé par l’onde : poussé dans le sens du mouvement il prend de l’énergie (absorption), poussé à contre-temps il en rend (émission stimulée). Bon modèle pour la résonance, mais il n’explique pas les deux niveaux fixes.'],
- gap:['Le gap','L’écart d’énergie entre l’étage haut et l’étage bas. C’est l’énergie du photon émis : λ (nm) ≈ 1240 ÷ gap (eV).'],
- algaas:['AlGaAs','Arséniure d’aluminium et de gallium. Sans aluminium (GaAs), il émet dans l’infrarouge, vers 870 nm : télécommandes, capteurs.'],
- ingan:['InGaN','Nitrure d’indium et de gallium. Sans indium (GaN), ultraviolet. Avec 15 à 20 % d’indium, du bleu ; vers 30 %, du vert. Prix Nobel 2014.'],
- n2:['N · Azote','Le gaz qui forme 78 % de l’air. Lié au gallium, il donne un cristal très solide aux niveaux très écartés : de là viennent le bleu et l’ultraviolet.'],
- as:['As · Arsenic','Toxique à l’état libre, mais stable une fois pris dans le cristal. Lié au gallium, il donne des niveaux rapprochés : infrarouge et rouge profond.'],
- indirect:['Gap indirect','Avec trop d’aluminium, l’électron ne peut plus retomber en émettant simplement un photon : il lui faudrait en même temps donner un choc au cristal, ce qui est très rare. Il perd alors son énergie en chaleur. C’est aussi pour ça que le silicium ne fait pas de LED.'],
- greengap:['Le trou du vert','Entre environ 530 et 590 nm, aucun cristal n’éclaire bien : AlGaInP devient indirect, et InGaN a besoin de tant d’indium que le cristal se déforme.'],
- rvb:['Pourquoi rouge, vert et bleu ?','L’œil a trois sortes de cônes. En mélangeant trois lumières bien choisies, on les stimule dans n’importe quelle proportion, donc on recrée toutes les couleurs. C’est le principe des écrans.'],
- lumino:['Luminophore (YAG:Ce)','Poudre de grenat d’yttrium et d’aluminium contenant un peu de cérium. Ce n’est pas un filtre : un filtre bloque, le luminophore convertit.'],
- stokes:['Pourquoi jaune et pas bleu ?','L’électron du cérium monte grâce au photon bleu, perd un peu d’énergie en vibrations (chaleur), puis retombe. Il lui reste moins d’énergie à émettre : du jaune.'],
- oeil:['Pourquoi l’œil voit blanc','Le jaune excite à la fois les cônes rouges et verts, le bleu excite les cônes bleus. Les trois répondent ensemble : le cerveau voit du blanc. C’est une addition de lumières, pas une moyenne.'],
- rgb3:['L’autre façon de faire du blanc','Mettre côte à côte trois puces rouge, verte et bleue. C’est ce que font les écrans et les rubans LED RGB.'],
- dgexp:['L\u2019expérience réelle (1927)','Clinton Davisson et Lester Germer, aux Bell Labs, tiraient des électrons de 54 V sur un cristal de nickel. Un accident (le cristal avait été chauffé et s\u2019était réorganisé en gros grains) a fait apparaître un pic net à 50°. Ils mesuraient avec un détecteur mobile ; ici un écran en arc montre la même chose. Prix Nobel 1937.'],
- debroglie:['La longueur d\u2019onde de l\u2019électron','Louis de Broglie a proposé en 1924 que toute particule a une onde, de longueur λ = h / (m × v). Plus l\u2019électron va vite, plus son onde est courte. À 54 V, λ = 0,167 nm, du même ordre que l\u2019écart entre atomes : c\u2019est pour ça qu\u2019un cristal fait un bon « réseau » pour la révéler.'],
- unparun:['Un électron à la fois','En 1927, Davisson et Germer envoyaient un flux continu, des milliards d\u2019électrons par seconde. Les expériences vraiment « un par un » sont venues plus tard (Tonomura, 1989, avec deux fentes) : on baisse tellement le débit qu\u2019il n\u2019y a jamais deux électrons en même temps dans l\u2019appareil, et la figure se forme quand même, point par point. Chaque électron, seul, se comporte comme une onde qui se réfléchit sur toutes les rangées d\u2019atomes à la fois. Au moment de la détection, il ne fait qu\u2019un point, à un endroit tiré au hasard, mais avec plus de chances là où l\u2019onde est forte.'],
- cathode:['La cathode','Le filament chauffé. Dans un métal, les électrons externes circulent librement mais sont retenus à la surface : il faut environ 4,5 eV pour sortir du tungstène. Vers 2 000 °C, quelques-uns ont assez d\u2019agitation pour s\u2019échapper (émission thermoélectronique). Plus on chauffe, plus il en sort.'],
- anode:['L\u2019anode et la tension','La tension se mesure entre le filament et la plaque percée. À +54 V, chaque électron qui traverse gagne 54 électron-volts : c\u2019est la définition de l\u2019électron-volt. Ça donne 4 400 km/s. Les électrons qui touchent la plaque repartent dans le circuit : c\u2019est le courant que débite l\u2019alimentation.'],
- tube:['Comme une vieille télé','Les téléviseurs à tube cathodique avaient exactement ce canon, avec des milliers de volts. Des bobines déviaient le faisceau pour balayer l\u2019écran, et les points d\u2019impact faisaient briller des grains de luminophore.'],
- dgbilles:['Pourquoi des billes ne feraient pas de pic','Une bille rebondit sur l\u2019atome qu\u2019elle touche, dans une direction qui dépend de l\u2019endroit exact du choc. Sur des millions de chocs, ça donne une nappe régulière. Rien ne favoriserait 51° plutôt que 45°, et surtout l\u2019angle ne dépendrait pas de la vitesse.'],
- tombe:['Pourquoi il ne tombe pas sur le noyau','Pour être sur le noyau, l’électron devrait tenir dans un espace minuscule. Or c’est une onde : la serrer dans un petit espace, c’est raccourcir ses ondulations, et une onde plus serrée transporte plus d’énergie de mouvement (relation de de Broglie). Diviser la taille par 2 multiplie cette énergie par 4, alors que l’attraction ne gagne qu’un facteur 2. En dessous d’une certaine taille, se rapprocher coûte plus qu’il ne rapporte.'],
- agite:['L’agitation, ce n’est pas de la chaleur','C’est l’énergie de mouvement qui vient du simple fait d’être une onde enfermée (principe d’incertitude de Heisenberg) : plus on sait où est l’électron, moins sa vitesse est fixée, et elle est en moyenne plus grande. Elle existe même au zéro absolu.'],
- rayonne:['Pourquoi il ne rayonne pas en permanence','Au fond du creux, le nuage est immobile : sa forme ne change pas dans le temps. Rien n’oscille, donc il n’y a pas d’antenne et pas de lumière émise. L’atome ne rayonne que pendant une transition, quand deux formes se superposent et font balancer la charge (voir plus bas).'],
- arrache:['Pourquoi il n’est pas arraché','Il faut 13,6 eV d’un coup pour l’hydrogène, environ 6 eV pour un électron externe du gallium. L’agitation thermique à 20 °C ne fournit qu’environ 0,025 eV par choc, et la lumière visible de 1,7 à 3 eV. Ça ne suffit pas, donc les atomes restent entiers. Une flamme, un arc électrique ou des UV, eux, peuvent y arriver.'],
- rutherford:['Le modèle planétaire était faux','Si l’électron tournait comme une planète, il serait une charge qui oscille en permanence : il rayonnerait, perdrait son énergie et s’écraserait sur le noyau en environ 10⁻¹¹ seconde. C’est ce paradoxe qui a mené à la mécanique quantique (Bohr 1913, Schrödinger 1926).'],
- onde:['L’électron est une onde','C’est ce que montre l’expérience de Davisson et Germer, juste au-dessus de la section du creux. Autour d’un noyau, cette onde est enfermée et ne peut former que des ondes stationnaires, comme une corde attachée aux deux bouts.'],
- noeuds:['Nœuds et énergie','Sur une corde, la note la plus grave n’a aucun nœud ; la suivante en a un au milieu, et ainsi de suite. Chaque nœud de plus rend l’onde plus « serrée », donc plus énergétique. Autour du noyau c’est pareil : 0 nœud = couche 1, 1 nœud = couche 2, 2 nœuds = couche 3.'],
- combien:['Pourquoi 1, 4, 9 cases ?','En 3D, un nœud peut être une sphère ou un plan, et un plan peut avoir plusieurs orientations. Avec 0 nœud : 1 façon. Avec 1 nœud : la sphère (2s) ou un plan dans 3 orientations (2p), soit 4. Avec 2 nœuds : 9 façons (3s, 3 × 3p, 5 × 3d). C’est simplement le nombre de façons distinctes de placer des nœuds dans l’espace : n².'],
- pauli:['Pourquoi 2 électrons par case ?','Deux électrons sont parfaitement identiques, et la nature interdit à deux électrons d’occuper exactement le même état (principe d’exclusion de Pauli, 1925). Chaque électron a en plus une propriété à deux valeurs, le spin (↑ ou ↓). Une case peut donc accueillir un ↑ et un ↓, pas plus. Ce principe est fondamental : on ne le déduit pas de quelque chose de plus simple, mais sans lui tous les électrons s’entasseraient dans 1s et la chimie n’existerait pas.'],
- ecran:['Pourquoi les couches externes sont moins tenues','Un électron de la couche 3 voit le noyau à travers les électrons des couches 1 et 2, qui masquent une partie de sa charge (effet d’écran). Il est donc plus loin et moins attiré : c’est lui qui participe aux liaisons et qu’on arrache le plus facilement.'],
- huit:['Pourquoi « 8 » compte autant','La couche externe a 1 case s et 3 cases p, soit 8 places. Quand elle est pleine, la case libre suivante est beaucoup plus haute : l’atome n’a rien à gagner à se lier (néon, argon). Quand elle est incomplète, il y a des places basses libres, et partager des électrons avec un voisin permet de les remplir : c’est la liaison.'],
- exceptions:['Petites exceptions','L’ordre de remplissage dessiné est l’ordre habituel. Quelques atomes y dérogent légèrement (chrome, cuivre), parce que les énergies de 4s et 3d sont très proches.'],
- noyau:['Le noyau','Protons et neutrons, au centre. Il est environ 100 000 fois plus petit que le nuage : si l’atome faisait la taille d’un stade, le noyau serait une bille au centre. Celui du gallium a 31 charges +, celui du phosphore 15.'],
- nuage:['Le nuage électronique','En physique quantique, un électron n’a pas de trajectoire. On ne connaît que la probabilité de le trouver à chaque endroit. Le nuage dessiné est cette probabilité : chaque point est un endroit où on pourrait le détecter.'],
- pourquoiLie:['Pourquoi les atomes se lient','Tout système va vers l\u2019énergie la plus basse, comme une bille qui roule au fond d\u2019un creux. Deux atomes proches ont moins d\u2019énergie ensemble que séparés, à condition que leurs ondes s\u2019additionnent. L\u2019énergie en trop part en chaleur. Pour les séparer, il faut la rendre : c\u2019est l\u2019énergie de liaison.'],
- liante:['Orbitale liante','Forme de nuage obtenue en additionnant les nuages des deux atomes : il se renforce entre les noyaux. C’est l’étage bas (la bande de valence). Elle penche un peu côté phosphore, plus « gourmand » en électrons.'],
- antiliante:['Orbitale antiliante','Forme obtenue en soustrayant les deux nuages : ils s’annulent entre les noyaux, il y a un vide au milieu. C’est l’étage haut (la bande de conduction). Elle penche côté gallium.'],
- pourquoiBas:['Pourquoi la liaison libère de l’énergie','Un électron a d’autant moins d’énergie qu’il est proche de charges + qui l’attirent. Dans la liaison, il passe beaucoup de temps entre les deux noyaux, attiré par les deux. Dans la forme antiliante, il évite cette zone. La différence entre les deux, c’est 1,9 eV dans GaInP : l’énergie qui part en lumière.'],
- delocal:['Une seule liaison ? Pas vraiment','Dans le vrai cristal, ni l’électron libre ni le trou ne sont sur une liaison précise. Ce sont des ondes étalées sur des centaines ou des milliers d’atomes. La rencontre se fait quand ces deux ondes se recouvrent. La vue sur une liaison est la version locale de cette histoire.'],
- superpo:['Superposition et antenne','Pendant la transition, l’électron est à la fois un peu dans la forme haute et un peu dans la forme basse. Leur somme donne une charge qui se déplace d’un noyau à l’autre à la fréquence ΔE/h, soit 4,6 × 10¹⁴ Hz pour 1,9 eV. Une charge qui oscille rayonne, exactement comme les électrons d’une antenne radio, mais un million de fois plus vite.'],
- simplif:['Ce qui est simplifié','Les formes sont calculées avec un modèle simple (deux orbitales hybrides sp³ et leur somme ou différence). Les vraies se calculent sur tout le cristal. Les atomes ont en vrai quatre liaisons en tétraèdre ; on n’en montre qu’une. Les noyaux sont dessinés énormes et l’oscillation est ralentie un million de milliards de fois.'],
- yag:['YAG','Grenat d’yttrium et d’aluminium, Y₃Al₅O₁₂ : un cristal transparent, dur et stable. Il sert de logement aux ions cérium.'],
- ce:['Ce³⁺ · Ion cérium','Un atome de cérium qui a perdu trois électrons, à la place d’un atome d’yttrium environ une fois sur cent. Son niveau haut est fait de « marches », ce qui permet d’absorber du bleu et de rendre du jaune.']
-};
-function infoBar(bar,box,keys){
-  if(bar.contains(box)) bar.after(box);
-  bar.innerHTML=''; box.hidden=true; let cur=null;
-  keys.forEach(k=>{ const b=document.createElement('button'); b.className='info'; b.type='button';
-    b.innerHTML='<span class="i" aria-hidden="true">i</span>'; b.appendChild(document.createTextNode(INFO[k][0]));
-    b.setAttribute('aria-expanded',false);
-    b.onclick=()=>{ const all=bar.querySelectorAll('button.info');
-      if(cur===k){ cur=null; box.hidden=true; b.setAttribute('aria-expanded',false); return; }
-      cur=k; box.innerHTML='<b></b><span></span>'; box.firstChild.textContent=INFO[k][0]; box.lastChild.textContent=INFO[k][1];
-      b.after(box); box.hidden=false; all.forEach(c=>c.setAttribute('aria-expanded',c===b)); };
-    bar.appendChild(b); });
+const chips=document.getElementById('chips');
+[{id:'tous',nom:'Tous',couleur:'#E8EEF4'},...K.domaines].forEach(d=>{ const b=document.createElement('button'); b.type='button'; b.dataset.d=d.id;
+  b.innerHTML='<i></i><span></span><small></small>'; b.querySelector('i').style.background=d.couleur; b.querySelector('span').textContent=d.nom;
+  b.querySelector('small').textContent=d.id==='tous'?K.animations.length:count(d.id); b.onclick=()=>setDom(d.id); chips.appendChild(b); });
+const lv=document.getElementById('lvls');
+NIV.forEach(n=>{ const b=document.createElement('button'); b.type='button'; b.textContent=n[0].toUpperCase()+n.slice(1); b.dataset.n=n;
+  b.onclick=()=>{ fNiv=fNiv===n?null:n; render(); }; lv.appendChild(b); });
+document.getElementById('q').addEventListener('input',e=>{ q=e.target.value.trim().toLowerCase(); render(); });
+function setDom(id){ fDom=id; try{ history.replaceState(null,'',id==='tous'?location.pathname:'#'+id); }catch(e){} render(); }
+addEventListener('hashchange',()=>{ const h=location.hash.slice(1); if(dom[h]){ fDom=h; render(); } });
+const norm=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+function render(){
+  [...chips.children].forEach(b=>b.setAttribute('aria-pressed',b.dataset.d===fDom));
+  [...lv.children].forEach(b=>b.setAttribute('aria-pressed',b.dataset.n===fNiv));
+  document.getElementById('catTitle').textContent=fDom==='tous'?'Toutes les animations':dom[fDom].nom;
+  const nq=norm(q);
+  const list=K.animations.filter(a=>(fDom==='tous'||a.domaine===fDom)&&(!fNiv||a.niveaux.includes(fNiv))&&
+    (!nq||norm([a.titre,a.resume,...a.themes].join(' ')).includes(nq))).sort((a,b)=>b.ajout.localeCompare(a.ajout));
+  const g=document.getElementById('cards'); g.innerHTML='';
+  list.forEach(a=>{ const d=dom[a.domaine]; const c=document.createElement('a'); c.className='card'; c.href=a.chemin; c.style.setProperty('--c',d.couleur);
+    c.innerHTML='<div class="thumb"><em></em></div><div class="body"><div class="tags"><span class="d"></span></div><h3></h3><p></p></div>';
+    c.querySelector('em').textContent=a.signe||''; c.querySelector('.d').textContent=d.nom; c.querySelector('h3').textContent=a.titre; c.querySelector('p').textContent=a.resume;
+    const t=c.querySelector('.tags'); a.niveaux.forEach(n=>{ const s=document.createElement('span'); s.textContent=n; t.appendChild(s); }); g.appendChild(c); });
+  const e=document.getElementById('empty'); e.hidden=list.length>0;
+  document.getElementById('emptyText').textContent=q?'Aucune animation ne correspond à « '+q+' ». Essaie un autre mot.':
+    'Les animations de ce domaine arrivent bientôt. En attendant, explore les autres domaines.';
 }
-document.querySelectorAll('.panel').forEach(p=>{ const bar=p.querySelector(':scope > .infobar'); if(!bar) return; const box=p.querySelector(':scope > .infobox');
-  const side=document.createElement('div'); side.className='side'; const h=document.createElement('div'); h.className='sidehead'; h.textContent='Comprendre';
-  side.append(h,bar); if(box) side.append(box); const main=document.createElement('div'); main.className='main'; while(p.firstChild) main.appendChild(p.firstChild); p.append(side,main); p.classList.add('has-side'); });
+render();
+const bl=document.getElementById('blocList');
+(K.blocs||[]).forEach(b=>{ const a=document.createElement('a'); a.href='blocs/voir.html#'+b.id; a.style.textDecoration='none';
+  a.innerHTML='<button type="button" tabindex="-1"></button>'; a.firstChild.textContent=b.titre; bl.appendChild(a); });
 
-/* ================= LE MICROSCOPE ================= */
-const W=400,H=250, Z=setup('cvScope',W,H);
-
-/* --- 0. Pointeur --- */
-function s0(x){ bgLab(x,W,H);
-  x.fillStyle=lg(x,368,0,400,0,[[0,'#121B24'],[1,'#1C2833']]); x.fillRect(370,0,30,H);
-  beam(x,290,125,371,125,1.3); glow(x,372,125,30,C.laser,.5); glow(x,372,125,6,'#FFE0DC',.9);
-  hcyl(x,34,252,125,15,'#56616D');
-  x.beginPath(); x.ellipse(34,125,4.5,15,0,0,7); x.fillStyle='#262E37'; x.fill();
-  for(let gx=56;gx<122;gx+=5){ line(x,gx,111,gx,139,'rgba(0,0,0,.35)',1.3); line(x,gx+1.4,111,gx+1.4,139,'rgba(255,255,255,.07)',1); }
-  rr(x,158,105,30,8,3,lg(x,0,105,0,113,[[0,'#FF6A60'],[1,'#8E1E18']]));
-  hcyl(x,250,288,125,17,'#AEB8C2');
-  x.beginPath(); x.ellipse(288,125,3.4,6.5,0,0,7); x.fillStyle='#04070A'; x.fill(); glow(x,289,125,12,C.laser,.85);
-  lead(x,173,104,173,70); tag(x,'Bouton',173,62,'center');
-  lead(x,268,108,268,70); tag(x,'Tête : diode + lentille',268,62,'center');
-  lead(x,90,140,90,176); tag(x,'Piles dans le tube',90,184,'center');
-  tag(x,'Point sur le mur',392,160,'right');
-}
-/* --- 1. Tête en coupe --- */
-function s1(x){ bgLab(x,W,H);
-  [[48,62],[188,202]].forEach(([a,b])=>{ x.fillStyle=lg(x,0,a,0,b,[[0,'#2A333D'],[.45,'#8D99A5'],[1,'#252D36']]); x.fillRect(0,a,334,b-a); });
-  x.fillStyle='#070B0F'; x.fillRect(0,62,334,126);
-  hcyl(x,-10,40,125,40,'#7E8790');
-  block(x,54,126,74,6,26,'#1C6A48');
-  block(x,68,120,16,6,12,'#1B2026'); block(x,96,121,10,5,9,'#1B2026');
-  [114,125,136].forEach(py=>{ x.fillStyle=lg(x,0,py-1.5,0,py+1.5,[[0,'#5F6A75'],[.5,'#D9E0E6'],[1,'#5F6A75']]); x.fillRect(126,py-1.5,42,3); });
-  x.beginPath(); x.ellipse(170,125,6,31,0,0,7); x.fillStyle=lg(x,164,0,176,0,[[0,'#6B7681'],[.5,'#D3DAE0'],[1,'#58626C']]); x.fill();
-  hcyl(x,173,214,125,22,'#C3CBD3',false);
-  x.beginPath(); x.ellipse(214,125,6.6,22,0,0,7); x.fillStyle=lg(x,208,0,220,0,[[0,'#E5EAEE'],[1,'#7C8792']]); x.fill();
-  x.beginPath(); x.ellipse(215,125,4.5,12,0,0,7); x.fillStyle='rgba(150,200,235,.25)'; x.fill(); x.strokeStyle='rgba(210,235,255,.6)'; x.lineWidth=.8; x.stroke();
-  glow(x,215,125,12,C.laser,.85);
-  cone(x,217,125,296,15,.22);
-  x.beginPath(); x.moveTo(300,98); x.quadraticCurveTo(314,125,300,152); x.quadraticCurveTo(286,125,300,98);
-  x.fillStyle=lg(x,288,98,312,152,[[0,'rgba(200,230,255,.45)'],[.5,'rgba(120,170,210,.18)'],[1,'rgba(200,230,255,.35)']]); x.fill(); x.strokeStyle='rgba(215,238,255,.7)'; x.lineWidth=.8; x.stroke();
-  beam(x,305,125,400,125,1.6);
-  lead(x,20,90,20,32); tag(x,'Pile',20,24,'center');
-  lead(x,90,120,90,32); tag(x,'Circuit',90,24,'center');
-  lead(x,192,104,192,32); tag(x,'Boîtier laser',192,24,'center');
-  lead(x,300,100,300,32); tag(x,'Lentille',300,24,'center');
-  tag(x,'Lumière en éventail',256,226,'center'); lead(x,256,132,256,216);
-  tag(x,'Faisceau parallèle',396,148,'right');
-}
-/* --- 2. Boîtier ouvert --- */
-function s2(x){ bgLab(x,W,H);
-  [100,128,156].forEach(py=>{ x.fillStyle=lg(x,0,py-2.5,0,py+2.5,[[0,'#56606A'],[.5,'#D9E0E6'],[1,'#56606A']]); x.fillRect(0,py-2.5,88,5); });
-  x.beginPath(); x.ellipse(96,128,16,94,0,0,7); x.fillStyle=lg(x,80,0,112,0,[[0,'#5E6873'],[.4,'#E1E6EA'],[1,'#6B7580']]); x.fill();
-  hcyl(x,104,150,92,5,'#C9D0D6');
-  block(x,104,142,128,46,40,'#B87334');
-  cuboid(x,196,128,40,14,16,lg(x,0,128,0,142,[[0,'#6C5DB8'],[.45,'#6C5DB8'],[.46,'#C9382F'],[.55,'#C9382F'],[.56,'#1E8A6C'],[1,'#1E8A6C']]),'#D6A93A','#3A3F58');
-  x.beginPath(); x.moveTo(150,92); x.bezierCurveTo(182,62,214,74,219,121); x.strokeStyle=lg(x,150,70,220,120,[[0,'#F5D27A'],[1,'#A87D24']]); x.lineWidth=1.8; x.stroke();
-  cone(x,242,131,400,34,.26); beam(x,242,131,400,131,.7); glow(x,243,131,14,C.laser,.9);
-  lead(x,220,128,262,60); tag(x,'Puce laser',262,52,'center');
-  lead(x,180,72,150,40); tag(x,"Fil d'or (+)",150,32,'center');
-  lead(x,170,178,170,222); tag(x,'Bloc de cuivre (−)',170,230,'center');
-  tag(x,'Embase et pattes',8,232,'left');
-  tag(x,'Lumière vers la fenêtre →',392,200,'right');
-}
-/* --- 3. Puce 3D --- */
-function s3(x){ bgLab(x,W,H);
-  block(x,24,196,316,22,96,'#B87334');
-  const ox=48, oy=114, w=250, d=72, dx=d*.7, dy=-d*.5;
-  const L=[['#D2A537',6],['#5E50B4',24],['#C9382F',7],['#1F8A6C',22],['#4C555F',16]];
-  let y=oy; L.forEach(([c,h])=>{ x.fillStyle=lg(x,0,y,0,y+h,[[0,lt(c,.12)],[1,dk(c,.2)]]); x.fillRect(ox,y,w,h);
-    poly(x,[ox+w,y,ox+w+dx,y+dy,ox+w+dx,y+h+dy,ox+w,y+h],dk(c,.38)); y+=h; });
-  poly(x,[ox,oy,ox+w,oy,ox+w+dx,oy+dy,ox+dx,oy+dy],lg(x,ox,oy+dy,ox,oy,[[0,'#F0CC6A'],[1,'#B58A28']]));
-  const rx=ox+dx*.45, ry=oy+dy*.45; cuboid(x,rx,ry-5,w,5,8,'#C99A2E','#F6D883','#8F6C1D');
-  line(x,ox,oy,ox,oy+75,'#E8EEF4',3.2);
-  const fx=ox+w+dx*.5, fy=oy+6+24+3.5+dy*.5;
-  glow(x,fx,fy,22,C.laser,.9); beam(x,fx,fy,400,fy,1.1);
-  x.beginPath(); x.moveTo(150,30); x.bezierCurveTo(160,50,rx+120,ry-40,rx+118,ry-6); x.strokeStyle=lg(x,150,30,260,80,[[0,'#F5D27A'],[1,'#A87D24']]); x.lineWidth=1.8; x.stroke();
-  lead(x,rx+60,ry-4,110,56); tag(x,'Ruban (seul passage du courant)',110,48,'center');
-  tag(x,"Fil d'or (+)",150,22,'center');
-  lead(x,ox,oy+40,20,88); tag(x,'Miroir arrière',8,80,'left');
-  lead(x,fx+4,fy-6,350,64); tag(x,'Face nue (pas de miroir)',396,56,'right');
-  tag(x,'p',ox+8,oy+18,'left',C.ink); tag(x,'zone active',ox+30,oy+34,'left',C.ink); tag(x,'n',ox+8,oy+52,'left',C.ink);
-  line(x,ox,234,ox+w,234,C.muted,.8); line(x,ox,230,ox,238,C.muted,.8); line(x,ox+w,230,ox+w,238,C.muted,.8); tag(x,'≈ 0,3 mm',ox+w/2,234,'center');
-}
-
-/* --- 4. Couches en fonctionnement (simulation) --- */
-const REAL=[[30,104],[104,124],[124,198]], ENER=[[30,92],[92,136],[136,198]];
-const XL=24, XR=372;
-let viewK=0, viewTgt=0, on4=true, mir4=true, out4=0, beamI=0, injT=0, rec4=0;
-let E4=[],H4=[],PK=[],FALL=[],SP=[];
-function lay(L){ const a=REAL[L],b=ENER[L]; return [lerp(a[0],b[0],viewK),lerp(a[1],b[1],viewK)]; }
-function floorY(L,up){ const [t,b]=ENER[L], h=b-t, g=L===1?.3:.18; return up?t+g*h:b-g*h; }
-function dispY(c,up){ const [t,b]=lay(c.L); const ry=t+3+c.f*(b-t-6); return lerp(ry,floorY(c.L,up),viewK); }
-function mkC(L,f){ return {x:XL+8+Math.random()*(XR-XL-16),L,f:f===undefined?Math.random():f,vx:0,vf:0}; }
-function init4(){ E4=[];H4=[];PK=[];FALL=[];SP=[];out4=0;beamI=0;
-  for(let k=0;k<11;k++){ E4.push(mkC(2)); H4.push(mkC(0)); } }
-init4();
-function pass(c,isE,up){ if(isE){ if(up) return c.L===2?on4:false; return c.L===1?(!on4||Math.random()<.08):false; }
-  if(up) return c.L===1?(!on4||Math.random()<.08):false; return c.L===0?on4:false; }
-function moveC(c,dt,isE){
-  c.vx=c.vx*.9+(Math.random()-.5)*90; c.x=clamp(c.x+c.vx*dt,XL+4,XR-4);
-  const h=REAL[c.L][1]-REAL[c.L][0];
-  c.vf=c.vf*.9+(Math.random()-.5)*70;
-  let dy=c.vf*dt+(isE?-1:1)*(on4?40:-40)*dt;
-  let f=c.f+dy/h;
-  if(f<0){ if(c.L>0&&pass(c,isE,true)){ c.L--; f=1; } else { f=-f; c.vf=Math.abs(c.vf); } }
-  if(f>1){ if(c.L<2&&pass(c,isE,false)){ c.L++; f=0; } else { f=2-f; c.vf=-Math.abs(c.vf); } }
-  c.f=clamp(f,0,1);
-}
-function recomb(e,h,stim){
-  E4.splice(E4.indexOf(e),1); H4.splice(H4.indexOf(h),1); rec4++;
-  FALL.push({x0:e.x,y0:dispY(e,true),x1:h.x,y1:dispY(h,false),t:0});
-  if(!stim){ if(Math.random()<.32) PK.push({x:h.x,d:Math.random()<.5?1:-1,n:1,ph:Math.random()*6,seen:new Set()});
-    else { const a=(Math.random()<.5?-1:1)*(.5+Math.random()*1.1)+(Math.random()<.5?0:Math.PI); SP.push({x:h.x,y:dispY(h,false),ux:Math.cos(a),uy:Math.sin(a),ph:0,t:0}); } }
-}
-function step4(dt){
-  viewK+=(viewTgt-viewK)*Math.min(1,dt*4);
-  E4.forEach(e=>moveC(e,dt,true)); H4.forEach(h=>moveC(h,dt,false));
-  if(on4){ injT-=dt; if(injT<=0){ injT=.24; if(E4.length<15) E4.push(mkC(2,1)); if(H4.length<15) H4.push(mkC(0,0)); } }
-  for(const e of [...E4]){ if(e.L!==1) continue; const h=H4.find(h=>h.L===1&&Math.abs(h.x-e.x)<11); if(h&&Math.random()<1.4*dt) recomb(e,h,false); }
-  for(let k=PK.length-1;k>=0;k--){ const p=PK[k]; const ox=p.x; p.x+=p.d*150*dt; p.ph+=dt*16;
-    for(const e of [...E4]){ if(e.L!==1||p.seen.has(e)) continue; if((ox-e.x)*(p.x-e.x)>0) continue; p.seen.add(e);
-      const h=H4.find(h=>h.L===1&&Math.abs(h.x-e.x)<16); if(h&&Math.random()<1-Math.pow(.55,p.n)){ recomb(e,h,true); p.n++; } }
-    if(p.x<=XL&&p.d<0){ if(mir4){ p.x=XL; p.d=1; p.seen=new Set(); } else { PK.splice(k,1); continue; } }
-    if(p.x>=XR&&p.d>0){ let o=0; for(let i=0;i<p.n;i++) if(!mir4||Math.random()<.7) o++; out4+=o; beamI+=o; p.n-=o; p.x=XR; p.d=-1; p.seen=new Set(); if(p.n<=0){ PK.splice(k,1); continue; } }
-  }
-  if(PK.length>14) PK.splice(0,PK.length-14);
-  beamI*=Math.exp(-dt*2.2);
-  for(let k=FALL.length-1;k>=0;k--){ FALL[k].t+=dt; if(FALL[k].t>.6) FALL.splice(k,1); }
-  for(let k=SP.length-1;k>=0;k--){ const s=SP[k]; s.t+=dt; s.ph+=dt*16; if(s.t>1.6) SP.splice(k,1); }
-}
-function s4(x){ bgLab(x,W,H);
-  const k=viewK, la=[0,1,2].map(lay);
-  x.fillStyle=lg(x,0,20,0,30,[[0,'#F5D27A'],[1,'#8E6A1E']]); x.fillRect(XL,20,XR-XL,10);
-  const cols=[['#2E2660','#1C1740'],['#6A2020','#3C1111'],['#11463A','#0A2A23']];
-  la.forEach(([t,b],L)=>{ x.fillStyle=lg(x,0,t,0,b,[[0,cols[L][0]],[1,cols[L][1]]]); x.fillRect(XL,t,XR-XL,b-t); });
-  x.fillStyle=lg(x,0,198,0,222,[[0,'#59616B'],[1,'#2A3038']]); x.fillRect(XL,198,XR-XL,24);
-  if(k<.98){ x.save(); x.globalAlpha=(1-k)*.18; for(let yy=36;yy<196;yy+=9) for(let xx=XL+5+((yy/9)%2)*4.5;xx<XR;xx+=9){ x.fillStyle='#DDE6EF'; x.fillRect(xx,yy,1,1); } x.restore(); }
-  const am=(la[1][0]+la[1][1])/2;
-  glow(x,(XL+XR)/2,am,90,C.laser,.08+Math.min(.25,beamI*.02));
-  if(mir4){ x.fillStyle=lg(x,XL-8,0,XL,0,[[0,'#6B7681'],[.5,'#F2F5F8'],[1,'#7B8691']]); x.fillRect(XL-8,26,8,176); }
-  line(x,XR,26,XR,200,'rgba(232,238,244,.6)',1,[4,3]);
-  if(k>.02){ x.save(); x.globalAlpha=k;
-    [0,1,2].forEach(L=>{ const u=floorY(L,true), d=floorY(L,false); line(x,XL+4,u,XR-4,u,'#E8EEF4',1.2); line(x,XL+4,d,XR-4,d,'#E8EEF4',1.2);
-      if(L===0){ txt(x,'étage haut',XL+6,u-7,'left',C.muted); txt(x,'étage bas',XL+6,d-10,'left',C.muted); }
-      for(let xx=XL+30;xx<XR-10;xx+=13){ if(H4.some(h=>h.L===L&&Math.abs(dispX(h)-xx)<7)) continue; bondE(x,xx,d-3.5,2.3); } });
-    x.restore(); }
-  for(const h of H4) hole(x,dispX(h),dispY(h,false)-(k*3.5),3.6,.5+.5*Math.sin(tNow*4+h.x));
-  for(const e of E4) elec(x,dispX(e),dispY(e,true)-(k*3.5),3.3);
-  for(const f of FALL){ const q=ease(clamp(f.t/.25,0,1)); if(f.t<.25) elec(x,lerp(f.x0,f.x1,q),lerp(f.y0,f.y1,q),3.3);
-    else { const r=(f.t-.25)/.35; x.beginPath(); x.arc(f.x1,f.y1,4+r*18,0,7); x.strokeStyle=rgba(C.laser,1-r); x.lineWidth=1.5; x.stroke(); glow(x,f.x1,f.y1,16,C.laser,.6*(1-r)); } }
-  for(const s of SP){ wave(x,s.x+s.ux*s.t*120,s.y+s.uy*s.t*120,s.ux,s.uy,20,3,s.ph,C.hole,1.2,Math.max(0,1-s.t/1.6)); }
-  for(const p of PK){ const A=2.4+1.2*Math.sqrt(p.n); wave(x,p.x,am,p.d,0,26,A,p.ph,C.laser,1.3+.3*Math.sqrt(p.n)); if(p.n>1) tag(x,'×'+p.n,p.x-p.d*13,am-A-12,'center',C.laser); }
-  if(beamI>.05) beam(x,XR,am,400,am,.4+Math.min(2.2,beamI*.18));
-  tag(x,'+',(XL+XR)/2,10,'center',C.gold); tag(x,'−',(XL+XR)/2,236,'center');
-  const names=[['Couche p',C.p],['Zone active',C.act],['Couche n',C.n]];
-  la.forEach(([t,b],L)=>{ if(k<.5) tag(x,names[L][0],XL+6,L===1?(t+b)/2:t+12,'left',names[L][1]); else tag(x,names[L][0]+' · '+(L===1?'1,9 eV':'2,3 eV'),XR-6,(floorY(L,true)+floorY(L,false))/2,'right',names[L][1]); });
-  if(mir4) tag(x,'Miroir',XL+2,214,'left'); tag(x,'Face nue',XR+4,214,'right');
-}
-function dispX(c){ return c.x; }
-
-/* --- 5. Atomes de la zone active --- */
-const AO={x:30,y:64,s:44}, AP=(i,j)=>[AO.x+i*AO.s,AO.y+j*AO.s];
-const metal=[]; for(let j=0;j<4;j++) for(let i=0;i<6;i++) metal.push(((i*7+j*13)%5)<2?IN:GA);
-function slot(i,j,i2,j2,t){ const a=AP(i,j),b=AP(i2,j2); return [lerp(a[0],b[0],t),lerp(a[1],b[1],t)]; }
-const BONDS=[]; for(let j=0;j<4;j++) for(let i=0;i<6;i++){ if(i<5) BONDS.push([i,j,i+1,j]); if(j<3) BONDS.push([i,j,i,j+1]); }
-let sc5=0, T5=0, p5=false;
-const SC=[
- {dur:7.5, hb:[3,1,4,1,.62]},
- {dur:7.5, tb:[1,2,2,2,.38]},
- {dur:8,   hb:[2,1,3,1,.38]}
-];
-const SCTXT=[
- ['Rencontre : un électron libre comble un trou','L’électron libre (rouge) se promène entre les atomes. Il trouve une liaison où il manque un électron : le trou. Il s’y loge. Tenu par la liaison, il a moins d’énergie que libre : la différence, 1,9 eV, part en onde lumineuse, dans une direction au hasard. À droite, la même chose vue en énergie : il tombe de l’étage haut à la place vide de l’étage bas.'],
- ['Absorption : la lumière casse une liaison','Une onde de 1,9 eV arrive sur une liaison complète. Un électron prend son énergie et sort de la liaison : il devient libre, et laisse une place vide, un trou. C’est ça, « exciter » un électron dans un cristal : à droite, il monte d’un étage. Exciter = créer une paire électron + trou.'],
- ['Émission stimulée : la copie','Un électron libre attend au-dessus d’un trou. Une onde passe : elle le secoue à son rythme, il tombe tout de suite dans le trou, et l’onde qu’il émet se colle à la première. L’onde de départ n’a pas été absorbée : 1 onde entre, 2 identiques sortent, même direction, même rythme.']
-];
-function drawLattice(x,isHole,skipE){
-  x.save(); x.translate(14,-12); x.globalAlpha=.32;
-  BONDS.forEach(([i,j,i2,j2])=>{ const a=AP(i,j),b=AP(i2,j2); line(x,a[0],a[1],b[0],b[1],'#3A4654',3); });
-  for(let j=0;j<4;j++) for(let i=0;i<6;i++){ const [px,py]=AP(i,j); sph(x,px,py,(i+j)%2?5:7,(i+j)%2?PH:metal[j*6+i]); }
-  x.restore();
-  BONDS.forEach(([i,j,i2,j2])=>{ const a=AP(i,j),b=AP(i2,j2); line(x,a[0],a[1],b[0],b[1],'#2F3A47',5); line(x,a[0],a[1]-1,b[0],b[1]-1,'#4D5D6E',1.4); });
-  BONDS.forEach(([i,j,i2,j2])=>{ [.38,.62].forEach(t=>{ if(isHole(i,j,i2,j2,t)||skipE(i,j,i2,j2,t)) return; const [sx,sy]=slot(i,j,i2,j2,t); bondE(x,sx,sy,2.6); }); });
-  for(let j=0;j<4;j++) for(let i=0;i<6;i++){ const [px,py]=AP(i,j); const ph=(i+j)%2; sph(x,px,py,ph?7:9.5,ph?PH:metal[j*6+i]); }
-}
-const same=(b,i,j,i2,j2,t)=>b&&b[0]===i&&b[1]===j&&b[2]===i2&&b[3]===j2&&Math.abs(b[4]-t)<.01;
-function ladder(x,st){
-  rr(x,284,22,110,212,10,'rgba(255,255,255,.035)','rgba(232,238,244,.12)',1);
-  txt(x,'Vue énergie',339,36,'center',C.ink,true);
-  const U=84,D=184; line(x,294,U,386,U,'#E8EEF4',1.3); line(x,294,D,386,D,'#E8EEF4',1.3);
-  txt(x,'étage haut',339,U-12,'center'); txt(x,'(électrons libres)',339,U+12,'center');
-  txt(x,'étage bas',339,D+14,'center'); txt(x,'(liaisons)',339,D+27,'center');
-  arrow(x,390,D-2,390,U+3,C.muted,.8); arrow(x,390,U+3,390,D-2,C.muted,.8);
-  const LX=i=>301+i*19;
-  for(let i=0;i<5;i++){ if(st.gap===i) hole(x,LX(i),D-5,3.8,.6); else if(!(st.rise&&st.rise.i===i)) bondE(x,LX(i),D-5,2.8); }
-  (st.up||[]).forEach(([ex,ey])=>elec(x,ex,ey,3.6));
-  (st.ph||[]).forEach(([px,py,a])=>wave(x,px,py,1,0,18,3,tNow*14,C.laser,1.2,a));
-}
-function s5(x){ bgLab(x,W,H);
-  const s=SC[sc5], T=T5;
-  x.save(); x.beginPath(); x.rect(0,0,278,H); x.clip();
-  if(sc5===0){
-    const [hx,hy]=slot(...s.hb);
-    const done=T>3.4;
-    drawLattice(x,(i,j,i2,j2,t)=>!done&&same(s.hb,i,j,i2,j2,t),()=>false);
-    if(!done) hole(x,hx,hy,4.6,.5+.5*Math.sin(T*5));
-    let ex,ey;
-    if(T<2.9){ const u=ease(T/2.9), a=[6,190],c1=[90,210],c2=[150,40],b=[hx,hy-22];
-      const B=(p,q,r,v,t)=>Math.pow(1-t,3)*p+3*Math.pow(1-t,2)*t*q+3*(1-t)*t*t*r+t*t*t*v;
-      ex=B(a[0],c1[0],c2[0],b[0],u); ey=B(a[1],c1[1],c2[1],b[1],u); elec(x,ex,ey,4.4); }
-    else if(T<3.4){ const q=ease((T-2.9)/.5); elec(x,hx,lerp(hy-22,hy,q),4.4); }
-    if(T>3.4){ const r=T-3.4;
-      for(let k=0;k<3;k++){ const R=r*85-k*16; if(R>0){ x.beginPath(); x.arc(hx,hy,R,0,7); x.strokeStyle=rgba(C.laser,Math.max(0,.55-R/260)); x.lineWidth=1.4; x.stroke(); } }
-      glow(x,hx,hy,26,C.laser,Math.max(0,.9-r*1.5));
-      const ux=.8,uy=-.6; wave(x,hx+ux*r*80,hy+uy*r*80,ux,uy,40,5,T*12,C.laser,1.8); }
-    x.restore();
-    const st={gap:T<3.4?3:-1, up:[], ph:[]};
-    const lx=lerp(320,358,clamp(T/2.9,0,1));
-    if(T<2.9) st.up.push([lx,84]); else if(T<3.4) st.up.push([358,lerp(84,179,ease((T-2.9)/.5))]);
-    if(T>3.4) st.ph.push([358+(T-3.4)*30,134,Math.max(0,1-(T-3.4)/1.6)]);
-    ladder(x,st);
-  }
-  else if(sc5===1){
-    const [sx,sy]=slot(...s.tb); const th=1.94; const hit=T>th;
-    drawLattice(x,(i,j,i2,j2,t)=>hit&&same(s.tb,i,j,i2,j2,t),()=>false);
-    if(hit) hole(x,sx,sy,4.6,.5+.5*Math.sin(T*5));
-    if(!hit) wave(x,-40+70*T,sy-9,1,0,40,5,T*12,C.laser,1.8);
-    else if(T<2.4) { glow(x,sx,sy,30,C.laser,.9*(1-(T-th)/.46)); }
-    if(hit){ const q=ease(clamp((T-th)/.6,0,1)); const fx=sx+30*q+(T>2.6?5*Math.sin((T-2.6)*1.6):0), fy=sy-34*q+(T>2.6?4*Math.cos((T-2.6)*2.1):0); elec(x,fx,fy,4.4); }
-    x.restore();
-    const st={gap:hit?1:-1, up:[], ph:[]};
-    if(!hit) st.ph.push([284+clamp((-40+70*T)/276,0,1)*36,134,1]);
-    if(hit){ const q=ease(clamp((T-th)/.6,0,1)); st.up.push([lerp(320,342,q),lerp(179,84,q)]); st.rise={i:1}; }
-    ladder(x,st);
-  }
-  else {
-    const [hx,hy]=slot(...s.hb); const v=75, x0=-40, tc=(hx-x0)/v, td=tc+.15, tf=td+.45;
-    const fallen=T>tf;
-    drawLattice(x,(i,j,i2,j2,t)=>!fallen&&same(s.hb,i,j,i2,j2,t),()=>false);
-    if(!fallen) hole(x,hx,hy,4.6,.5+.5*Math.sin(T*5));
-    const px=x0+v*T, env=Math.max(0,1-Math.abs(px-hx)/45);
-    let ey=hy-24+2*Math.sin(T*2.2), exx=hx;
-    if(T<td) ey+=7*env*Math.sin(T*16);
-    else if(T<tf) ey=lerp(hy-24,hy,ease((T-td)/.45));
-    if(!fallen) elec(x,exx,ey,4.4);
-    wave(x,px,hy-40,1,0,46,5,T*12,C.laser,1.8);
-    if(fallen){ const a=clamp((T-tf)/.3,0,1); wave(x,px,hy-24,1,0,46,5,T*12,C.laser,1.8,a); glow(x,hx,hy,24,C.laser,Math.max(0,.9-(T-tf)*2));
-      if(T>tf+1) tag(x,'2 ondes identiques, même rythme',140,hy-62,'center',C.laser); }
-    x.restore();
-    const st={gap:fallen?-1:2, up:[], ph:[]};
-    const lpx=284+clamp(px/276,0,1)*100;
-    if(!fallen) st.up.push([339,T<td?84+5*env*Math.sin(T*16):lerp(84,179,ease((T-td)/.45))]);
-    st.ph.push([lpx,124,1]); if(fallen) st.ph.push([lpx,140,clamp((T-tf)/.3,0,1)]);
-    ladder(x,st);
-  }
-  txt(x,'≈ 0,25 nm entre deux atomes voisins',8,240,'left',C.muted);
-}
-
-/* --- transitions du zoom --- */
-const SCENES=[s0,s1,s2,s3,s4,s5];
-const FOC=[{x:269,y:125,S:4.2},{x:214,y:125,S:5},{x:241,y:131,S:6.5},{x:150,y:150,S:2.6},{x:200,y:114,S:4.5}];
-const LVL=['Pointeur','Tête','Boîtier','Puce','Couches','Atomes'];
-const SCALE=['≈ 15 cm','≈ 4 cm','≈ 5 mm','≈ 0,3 mm','≈ 2 µm (coupe)','≈ 2 nm'];
-const ZTXT=[
- ['Le pointeur','Un tube avec des piles, un bouton, et dans la tête une diode laser et une lentille. Clique pour ouvrir la tête.'],
- ['La tête, en coupe','Le circuit envoie le courant au boîtier laser. La lumière sort du boîtier en éventail ; la lentille la rend parallèle, ce qui donne un point net sur le mur.'],
- ['Le boîtier ouvert','Capot retiré. La puce, plus petite qu’un grain de sel, est posée au bord d’un bloc de cuivre relié au −. Un fil d’or amène le +. La lumière part vers la droite, comme dans le pointeur.'],
- ['La puce','Une minuscule brique couchée dans le sens du faisceau, faite de couches empilées. Vrai miroir à l’arrière ; à l’avant, le cristal nu renvoie 30 % de la lumière grâce au saut d’indice. Clique pour voir les couches de l’intérieur.'],
- ['Les couches en fonctionnement','Coupe dans la longueur, sous le ruban. La pile pousse les électrons libres (rouges) vers le haut et les trous (anneaux) vers le bas. Ils se rencontrent dans la zone active : chaque rencontre donne un photon. Ceux qui partent dans l’axe rebondissent entre le miroir et la face nue, et se font recopier à chaque passage (×2, ×5…). Essaie la vue énergie, puis coupe le courant ou retire les miroirs.'],
- null
-];
-const ZKEYS=[['piles','circuit','bouton','lentille'],['circuit','boitier','fenetre','lentille','pattes'],['support','fil','baton','pattes'],['ruban','miroir','sortie','elec','p','act','n','algainp'],
- ['electron','trou','pn','milieu','pile','cuvette','bandes','transp','spont','stim','inversion','pasdepit'],['excit','lien','spont','absorb','stim','pourquoi','pasdepit','einstein','al','ga','in','ph','vrai','ressort']];
-let zPos=0,zTgt=0,zAuto=false,zHold=0,zShown=-1,tNow=0;
-const levels=document.getElementById('levels');
-LVL.forEach((n,i)=>{ const b=document.createElement('button'); b.textContent=(i+1)+' · '+n; b.onclick=()=>{ zAuto=false; setAuto(); zTgt=i; }; levels.appendChild(b); });
-function setAuto(){ const b=document.getElementById('zPlay'); b.textContent=zAuto?'Arrêter la visite':'Visite guidée'; b.setAttribute('aria-pressed',zAuto); }
-document.getElementById('zNext').onclick=()=>{ zAuto=false; setAuto(); zTgt=Math.min(5,Math.round(zPos)+1); };
-document.getElementById('zPrev').onclick=()=>{ zAuto=false; setAuto(); zTgt=Math.max(0,Math.round(zPos)-1); };
-document.getElementById('zPlay').onclick=()=>{ zAuto=!zAuto; zHold=0; setAuto(); };
-Z.cv.addEventListener('click',()=>{ zAuto=false; setAuto(); zTgt=Math.min(5,Math.round(zPos)+1); });
-document.getElementById('c4Cur').onclick=e=>{ on4=!on4; e.currentTarget.setAttribute('aria-pressed',on4); e.currentTarget.textContent=on4?'Courant branché':'Courant coupé'; };
-document.getElementById('c4Mir').onclick=e=>{ mir4=!mir4; e.currentTarget.setAttribute('aria-pressed',mir4); e.currentTarget.textContent=mir4?'Miroirs : oui':'Miroirs : non (LED)'; };
-document.getElementById('c4View').onclick=e=>{ viewTgt=viewTgt?0:1; e.currentTarget.setAttribute('aria-pressed',!!viewTgt); };
-function setSc(i){ sc5=i; T5=0; document.querySelectorAll('#sc5 button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.s===i)); if(Math.round(zPos)===5) showCap(); }
-document.querySelectorAll('#sc5 button').forEach(b=>b.onclick=()=>setSc(+b.dataset.s));
-document.getElementById('c5Pause').onclick=e=>{ p5=!p5; e.currentTarget.textContent=p5?'Reprendre':'Pause'; };
-function showCap(){ const r=Math.round(zPos); const T=r===5?SCTXT[sc5]:ZTXT[r];
-  document.getElementById('zTitle').textContent=T[0]; document.getElementById('zText').textContent=T[1]; }
-function drawScope(){
-  const x=Z.ctx; Z.base(); x.clearRect(0,0,W,H);
-  const k=Math.min(4,Math.floor(zPos)), e=ease(clamp(zPos-k,0,1));
-  if(zPos>=5-1e-4) SCENES[5](x);
-  else if(e<1e-4) SCENES[k](x);
-  else { const f=FOC[k], cx=W/2, cy=H/2;
-    x.save(); Z.base(); x.translate(lerp(f.x,cx,e),lerp(f.y,cy,e)); const s1=1+(f.S-1)*e; x.scale(s1,s1); x.translate(-f.x,-f.y); SCENES[k](x); x.restore();
-    x.save(); Z.base(); x.globalAlpha=clamp((e-.25)/.6,0,1); const s2=1/f.S+(1-1/f.S)*e; x.translate(lerp(f.x,cx,e),lerp(f.y,cy,e)); x.scale(s2,s2); x.translate(-cx,-cy); SCENES[k+1](x); x.restore(); }
-  Z.base(); vignette(x,W,H);
-  const r=Math.round(zPos);
-  if(r!==zShown){ zShown=r; showCap();
-    [...levels.children].forEach((b,i)=>b.setAttribute('aria-pressed',i===r));
-    document.getElementById('depth').textContent='Niveau '+(r+1)+' / 6 · '+LVL[r];
-    document.getElementById('scale').textContent=SCALE[r];
-    document.getElementById('lc4').hidden=r!==4; document.getElementById('lc5').hidden=r!==5;
-    infoBar(document.getElementById('zInfo'),document.getElementById('zBox'),ZKEYS[r]); }
-  document.getElementById('c4Out').textContent=out4;
-}
-const HOLD=[3.5,3.5,3.5,4.5,14,23.5];
-function stepScope(dt){
-  if(zAuto&&Math.abs(zPos-zTgt)<1e-3){ zHold+=dt; if(zHold>HOLD[Math.round(zPos)]){ zHold=0; if(zTgt>=5) zTgt=0; else { zTgt++; if(zTgt===5) setSc(0); } } }
-  const sp=(zAuto&&zTgt===0&&zPos>1)?2.2:.7;
-  if(zPos<zTgt) zPos=Math.min(zTgt,zPos+sp*dt); else if(zPos>zTgt) zPos=Math.max(zTgt,zPos-sp*dt);
-  step4(dt);
-  if(!p5){ T5+=dt; if(T5>SC[sc5].dur) setSc((sc5+1)%3); }
-}
-
-/* --- zoom sur le canon --- */
-let dgGun=false, dgHeat=.45, gunE=[], gunFl=[], gunT=0, gunHit=0, gunOut=0;
-const GXC=200, GFL=52, GAN=172;
-function heatCol(h){ const a=[60,64,70], b=[255,90,30], c=[255,236,190]; const m=(p,q,t)=>p.map((v,i)=>Math.round(v+(q[i]-v)*t)); return h<.5?m(a,b,h*2):m(b,c,(h-.5)*2); }
-function stepGun(dt){ gunT+=dt;
-  const rate=Math.pow(dgHeat,3)*90; if(Math.random()<rate*dt) gunE.push({x:GXC+(Math.random()-.5)*8,y:GFL,vx:(Math.random()-.5)*50,vy:Math.random()*20,out:false});
-  const a=dgV*12;
-  for(let k=gunE.length-1;k>=0;k--){ const e=gunE[k]; const py=e.y;
-    if(!e.out){ e.vy+=a*dt; e.vx+=(-(e.x-GXC)*4)*dt; }
-    e.x+=e.vx*dt; e.y+=e.vy*dt;
-    if(!e.out&&py<GAN&&e.y>=GAN){ if(Math.abs(e.x-GXC)<5){ e.out=true; e.vx*=.3; gunOut++; } else { gunFl.push({x:e.x,y:GAN,t:.3}); gunHit++; gunE.splice(k,1); continue; } }
-    if(e.y>262||e.x<112||e.x>288) gunE.splice(k,1); }
-  for(let k=gunFl.length-1;k>=0;k--){ gunFl[k].t-=dt; if(gunFl[k].t<=0) gunFl.splice(k,1); }
-}
-function battery(x,cx,cy,lab,sub){ line(x,cx-5,cy-5,cx+5,cy-5,'#E8EEF4',3.5); line(x,cx-10,cy+3,cx+10,cy+3,'#E8EEF4',2); txt(x,'−',cx+14,cy-6,'left','#5AA9FF',true); txt(x,'+',cx+14,cy+5,'left',C.laser,true);
-  tag(x,lab,cx,cy-24,'center',C.ink); if(sub) txt(x,sub,cx,cy+18,'center',C.muted); }
-function drawGun(x){
-  rr(x,112,6,176,256,18,'rgba(160,200,235,.04)','rgba(200,230,255,.28)',1.2); txt(x,'vide',122,252,'left',C.muted);
-  const hc=heatCol(dgHeat), hs='rgb('+hc+')';
-  line(x,186,0,186,22,'#9AA6B2',1.5); line(x,214,0,214,22,'#9AA6B2',1.5);
-  x.beginPath(); x.moveTo(186,22); x.lineTo(GXC,GFL); x.lineTo(214,22); x.strokeStyle=hs; x.lineWidth=2.4; x.stroke();
-  if(dgHeat>.2){ glow(x,GXC,40,30*dgHeat,'#'+hc.map(v=>v.toString(16).padStart(2,'0')).join(''),.55*dgHeat); }
-  x.strokeStyle='#6E7883'; x.lineWidth=4; x.beginPath(); x.moveTo(160,30); x.lineTo(160,66); x.lineTo(188,66); x.moveTo(240,30); x.lineTo(240,66); x.lineTo(212,66); x.stroke();
-  x.fillStyle=lg(x,0,GAN,0,GAN+8,[[0,'#C9D2DB'],[1,'#5E6873']]); x.fillRect(120,GAN,GXC-5-120,8); x.fillRect(GXC+5,GAN,280-GXC-5,8);
-  if(gunE.length){ for(let yy=80;yy<GAN-6;yy+=22) arrow(x,268,yy,268,yy+14,'rgba(232,238,244,.25)',1); txt(x,'les électrons',266,GAN-58,'right',C.muted); txt(x,'accélèrent',266,GAN-46,'right',C.muted); }
-  for(const f of gunFl) glow(x,f.x,f.y,8,'#FFB547',f.t*2.5);
-  for(const e of gunE){ const sp=Math.hypot(e.vx,e.vy), L=clamp(sp/40,0,16); if(L>2) line(x,e.x,e.y-L,e.x,e.y,rgba(C.laser,.45),2); elec(x,e.x,e.y,2.3); }
-  line(x,214,14,340,14,'#9AA6B2',1); line(x,340,14,340,106,'#9AA6B2',1);
-  battery(x,340,114,'Tension U = '+dgV+' V','les accélère');
-  line(x,340,120,340,176,'#9AA6B2',1); line(x,340,176,281,176,'#9AA6B2',1);
-  tag(x,'← courant de chauffage',180,8,'right',C.muted);
-  tag(x,'Cathode (−)',152,36,'right',hs); txt(x,'filament chaud',148,54,'right',C.muted);
-  tag(x,'Wehnelt',152,82,'right',C.muted); txt(x,'resserre le faisceau',148,100,'right',C.muted);
-  tag(x,'Anode (+)',108,170,'right',C.ink); txt(x,'plaque percée',104,188,'right',C.muted);
-  const v=Math.sqrt(2*dgV*1.602e-19/9.109e-31)/1000;
-  tag(x,'Énergie gagnée : '+dgV+' eV',8,212,'left',C.ink); tag(x,'Vitesse : '+Math.round(v).toLocaleString('fr-FR')+' km/s',8,234,'left',C.ink);
-  tag(x,'vers le cristal ↓',GXC+8,250,'left',C.laser);
-}
-/* ================= Davisson et Germer ================= */
-const DG=setup('cvDG',400,260);
-let dgV=54, dgWave=true, dgView=false, dgE=[], dgMarks=[], dgHist=new Array(90).fill(0), dgN=0, dgT=0;
-const DGd=.215, OXd=200, OYd=212, RSd=118, SPd=20;
-const dgLam=()=>1.226/Math.sqrt(dgV);
-const dgTh0=()=>{ const s=dgLam()/DGd; return s<1?Math.asin(s):null; };
-function dgI(th){ if(!dgWave) return .3+.5*Math.cos(th); const t0=dgTh0(); let v=.22+.12*Math.cos(th);
-  if(t0!==null) v+=1.3*(Math.exp(-Math.pow((th-t0)/.09,2))+Math.exp(-Math.pow((th+t0)/.09,2))); return v; }
-function dgSample(){ for(let k=0;k<300;k++){ const th=(Math.random()*2-1)*1.52; if(Math.random()*1.8<dgI(th)) return th; } return 0; }
-function dgClear(){ dgE=[]; dgMarks=[]; dgHist=new Array(90).fill(0); dgN=0; }
-document.querySelectorAll('#dgSeg button').forEach(b=>b.onclick=()=>{ dgWave=b.dataset.w==='1'; document.querySelectorAll('#dgSeg button').forEach(c=>c.setAttribute('aria-pressed',c===b)); dgClear(); dgCap(); });
-document.getElementById('dgView').onclick=e=>{ dgView=!dgView; e.currentTarget.setAttribute('aria-pressed',dgView); dgCap(); };
-document.getElementById('dgClear').onclick=dgClear;
-document.getElementById('dgGun').onclick=e=>{ dgGun=!dgGun; e.currentTarget.setAttribute('aria-pressed',dgGun); gunE=[]; gunFl=[]; dgCap(); };
-document.getElementById('dgHt').oninput=e=>{ dgHeat=e.target.value/100; document.getElementById('dgHtv').textContent=e.target.value+' %'; dgCap(); };
-document.getElementById('dgVr').oninput=e=>{ dgV=+e.target.value; document.getElementById('dgVv').textContent=dgV+' V'; dgClear(); dgCap(); };
-function dgCap(){ const l=dgLam(), t0=dgTh0();
-  document.getElementById('dgRead').textContent='Longueur d’onde de l’électron : '+l.toFixed(3).replace('.',',')+' nm · écart entre rangées d’atomes : 0,215 nm'+(dgWave?(t0!==null?' · angle prévu : '+Math.round(t0*180/Math.PI)+'°':' · onde trop longue : pas de pic'):'');
-  let T;
-  if(dgGun) T=['Le canon à électrons, vu de près','Un filament de tungstène chauffé vers 2 000 °C (la cathode). L\u2019agitation thermique fait sauter quelques électrons hors du métal : c\u2019est le réglage « chauffage », qui fixe le débit. En dessous, une plaque percée (l\u2019anode) est mise à +'+dgV+' V par rapport au filament. Les électrons, négatifs, sont attirés et accélèrent dans l\u2019espace entre les deux : chacun gagne '+dgV+' eV. La plupart s\u2019écrasent sur la plaque ; ceux qui passent le trou forment le faisceau et filent vers le cristal à vitesse constante. Le tout est sous vide, sinon ils heurteraient l\u2019air.'];
-  else if(!dgWave) T=['Si les électrons étaient des billes','Chaque bille rebondirait sur un atome au hasard. Les points se répartiraient en nappe, sans direction privilégiée, quelle que soit la vitesse. Ce n’est pas ce qu’on observe.'];
-  else if(dgView) T=['Pourquoi cet angle : les ondes s’additionnent','Chaque atome de la surface renvoie une petite onde circulaire. Dans la plupart des directions, crêtes et creux se mélangent et s’annulent. Dans quelques directions, les crêtes de tous les atomes tombent au même endroit : elles s’additionnent et forment un faisceau. C’est là que les électrons arrivent.'];
-  else T=[dgHeat<.3?'Les électrons arrivent un par un':'Les électrons arrivent en flux','Baisse le chauffage pour les voir un par un. Chaque électron fait un seul point, à un endroit qui semble au hasard. Mais à force, les points s’entassent à un angle précis (51° à 54 V, comme en 1927). Augmente la tension : l’électron va plus vite, son onde est plus courte, et l’angle diminue exactement comme le prévoit de Broglie. Une bille n’aurait aucune raison de faire ça.'];
-  document.getElementById('dgTitle').textContent=T[0]; document.getElementById('dgText').textContent=T[1]; }
-const GW=134, GH=71; const dgOff=document.createElement('canvas'); dgOff.width=GW; dgOff.height=GH; const dgOx=dgOff.getContext('2d'); const dgImg=dgOx.createImageData(GW,GH);
-function stepDG(dt){ dgT+=dt;
-  if(dgGun) stepGun(dt);
-  if(Math.random()<dt*(1+80*Math.pow(dgHeat,3))) dgE.push({ph:0,y:22,th:dgSample()});
-  for(let k=dgE.length-1;k>=0;k--){ const e=dgE[k];
-    if(e.ph===0){ e.y+=280*dt; if(e.y>=OYd){ e.ph=1; e.r=0; } }
-    else { e.r+=280*dt; if(e.r>=RSd){ dgMarks.push([e.th,(Math.random()-.5)*5]); const b=clamp(Math.floor((e.th+Math.PI/2)/Math.PI*90),0,89); dgHist[b]++; dgN++; dgE.splice(k,1); } } }
-  if(dgMarks.length>2500) dgMarks.splice(0,dgMarks.length-2500);
-}
-const dgP=(th,r)=>[OXd+r*Math.sin(th),OYd-r*Math.cos(th)];
-function drawDG(){ const x=DG.ctx; DG.base(); bgLab(x,400,260);
-  if(dgGun){ drawGun(x); return; }
-  if(dgView&&dgWave){ const lp=SPd*dgLam()/DGd, k=2*Math.PI/lp, w=2*Math.PI*1.1*dgT, D=dgImg.data;
-    for(let j=0;j<GH;j++) for(let i=0;i<GW;i++){ const px=i*3+1.5, py=j*3+1.5; let f=0;
-      for(let s=-4;s<=4;s++){ const dx=px-(OXd+s*SPd), dy=py-OYd, r=Math.sqrt(dx*dx+dy*dy)+1; f+=Math.cos(k*r-w)/Math.sqrt(r); }
-      const v=clamp(f*1.1,-1,1), o=(j*GW+i)*4; if(v>0){ D[o]=255;D[o+1]=80;D[o+2]=70; } else { D[o]=90;D[o+1]=160;D[o+2]=255; } D[o+3]=Math.round(Math.pow(Math.abs(v),1.3)*230); }
-    dgOx.putImageData(dgImg,0,0); x.save(); x.imageSmoothingEnabled=true; x.drawImage(dgOff,0,0,402,213); x.restore(); }
-  x.beginPath(); x.arc(OXd,OYd,RSd,-Math.PI/2-1.52,-Math.PI/2+1.52); x.strokeStyle='rgba(232,238,244,.35)'; x.lineWidth=4; x.stroke();
-  const mxh=Math.max(4,...dgHist);
-  for(let b=0;b<90;b++){ if(!dgHist[b]) continue; const th=((b+.5)/90)*Math.PI-Math.PI/2, L=dgHist[b]/mxh*56, a=dgP(th,RSd+6), c=dgP(th,RSd+6+L); line(x,a[0],a[1],c[0],c[1],dgWave?C.laser:C.hole,3.2); }
-  x.save(); x.globalCompositeOperation='lighter'; x.fillStyle=dgWave?'rgba(255,90,80,.55)':'rgba(255,181,71,.55)'; x.beginPath();
-  for(const [th,j] of dgMarks){ const p=dgP(th,RSd+j*.4); x.rect(p[0]-1,p[1]-1,2,2); } x.fill(); x.restore();
-  const t0=dgTh0(); if(dgWave&&t0!==null){ [t0,-t0].forEach(t=>{ const p=dgP(t,RSd+64); line(x,OXd,OYd,p[0],p[1],'rgba(232,238,244,.5)',1,[3,4]); }); const q=dgP(t0,RSd+76); tag(x,Math.round(t0*180/Math.PI)+'°',q[0],q[1],'center',C.ink); }
-  x.fillStyle=lg(x,0,212,0,248,[[0,'#7D8894'],[1,'#3B434C']]); x.fillRect(110,OYd,180,34);
-  for(let r=0;r<3;r++) for(let s=-4;s<=4;s++){ const ax=OXd+s*SPd+(r%2)*10; if(ax<288) sph(x,ax,OYd+4+r*10,r?3.4:4.2,'#C9D2DB'); }
-  tag(x,'Nickel',OXd,234,'center');
-  x.fillStyle=lg(x,186,0,214,0,[[0,'#5E6873'],[.5,'#D3DAE0'],[1,'#5E6873']]); x.fillRect(188,0,24,20); tag(x,'Canon à électrons · U = '+dgV+' V',222,10,'left');
-  line(x,OXd,20,OXd,OYd,'rgba(255,90,80,.18)',3);
-  for(const e of dgE){ const p=e.ph===0?[OXd,e.y]:dgP(e.th,e.r); elec(x,p[0],p[1],2.4); }
-  tag(x,'Arc gris : écran qui détecte les électrons',8,250,'left',C.muted);
-  tag(x,dgN+' détectés',392,250,'right',C.muted);
-}
-dgCap();
-/* ================= L'ATOME SEUL : le creux ================= */
-const WL=setup('cvWell',400,250);
-const HP=[]; for(let k=0;k<1800;k++){ const r=-.5*Math.log(Math.random()*Math.random()*Math.random()+1e-9); const a=Math.random()*Math.PI*2, u=2*Math.random()-1; HP.push([r*Math.sqrt(1-u*u)*Math.cos(a),r*Math.sqrt(1-u*u)*Math.sin(a)]); }
-const EK=r=>13.6/(r*r), EV=r=>-27.2/r, ET=r=>EK(r)+EV(r);
-let wr=3.5, wv=0, wDrag=false;
-const wR=document.getElementById('wR');
-document.getElementById('wFar').onclick=()=>{ wr=3.6; wv=0; };
-document.getElementById('wNear').onclick=()=>{ wr=.28; wv=0; };
-wR.addEventListener('input',()=>{ wDrag=true; wr=wR.value/100; wv=0; });
-wR.addEventListener('change',()=>{ wDrag=false; });
-function stepWell(dt){ if(!wDrag){ const h=.001, F=-(ET(wr+h)-ET(wr-h))/(2*h); wv+=(clamp(F,-60,60)*.45-1.7*wv)*dt; wr=clamp(wr+wv*dt,.2,4); if(wr<=.2||wr>=4) wv=0; wR.value=Math.round(wr*100); }
-  document.getElementById('wRv').textContent=(wr*.0529).toFixed(3).replace('.',',')+' nm'; }
-function drawWell(){ const x=WL.ctx; WL.base(); bgLab(x,400,250);
-  const cx=112, cy=112, sc=26*wr, jig=.5+2.4/(wr*wr);
-  x.save(); x.beginPath(); x.rect(0,0,230,212); x.clip();
-  x.save(); x.globalCompositeOperation='lighter'; x.fillStyle='rgba(255,140,128,.32)'; x.beginPath();
-  for(const p of HP){ const X=cx+p[0]*sc+(Math.random()-.5)*jig, Y=cy+p[1]*sc+(Math.random()-.5)*jig; x.rect(X-.7,Y-.7,1.4,1.4); } x.fill(); x.restore();
-  glow(x,cx,cy,10,'#FFFFFF',.5); sph(x,cx,cy,3,'#F2F6FA'); x.restore();
-  tag(x,'noyau',cx,cy+18,'center');
-  const K=EK(wr), V=EV(wr), T=ET(wr), bs=1.6, bx=150, by=[220,232,244];
-  [[K,'#FF9F43','agitation'],[V,'#5AA9FF','attraction'],[T,'#E8EEF4','total']].forEach(([v,col,lab],i)=>{ const w=clamp(v*bs,-100,100); x.fillStyle=col; x.fillRect(Math.min(bx,bx+w),by[i]-3,Math.abs(w),6); txt(x,lab,8,by[i],'left',col); });
-  line(x,bx,214,bx,250,'rgba(232,238,244,.4)',1); txt(x,'0',bx,209,'center');
-  rr(x,238,10,158,232,10,'rgba(255,255,255,.035)','rgba(232,238,244,.12)',1);
-  txt(x,'Énergie (eV)',317,22,'center',C.ink,true);
-  const X0=248,X1=388,Y0=226,Yt=36, mx=r=>X0+(r-.2)/3.8*(X1-X0), my=e=>Y0-(clamp(e,-30,30)+30)/60*(Y0-Yt);
-  line(x,X0,my(0),X1,my(0),'rgba(232,238,244,.35)',1,[3,3]); txt(x,'0 : électron arraché',X1,my(0)+10,'right');
-  [[EK,'#FF9F43'],[EV,'#5AA9FF'],[ET,'#E8EEF4']].forEach(([f,col])=>{ x.beginPath(); let st=false; for(let r=.2;r<=4;r+=.02){ const e=f(r); if(e>30||e<-30){ st=false; continue; } const X=mx(r),Y=my(e); st?x.lineTo(X,Y):x.moveTo(X,Y); st=true; } x.strokeStyle=col; x.lineWidth=col==='#E8EEF4'?2:1.3; x.stroke(); });
-  line(x,mx(1),my(-13.6),mx(1),my(0),C.hole,1,[2,2]); txt(x,'13,6 eV',mx(1)+4,my(-10),'left',C.hole);
-  txt(x,'taille du nuage →',X1,Y0+10,'right');
-  const bxx=mx(wr), byy=my(ET(wr)); glow(x,bxx,byy-5,14,'#FFFFFF',.35); sph(x,bxx,byy-5,5,'#E8EEF4');
-  if(wr<.6) tag(x,'Trop serré : l’onde s’agite',8,20,'left','#FF9F43');
-  else if(wr>2.2) tag(x,'Trop loin : le noyau le rappelle',8,20,'left','#5AA9FF');
-  else if(Math.abs(wr-1)<.12&&Math.abs(wv)<.1) tag(x,'Au fond du creux : l’atome',8,20,'left',C.ink);
-}
-
-/* ================= Les façons de vibrer ================= */
-const MD=setup('cvModes',400,300);
-const RAD={'1s':r=>Math.exp(-r),'2s':r=>(2-r)*Math.exp(-r/2),'2p':r=>r*Math.exp(-r/2),'3s':r=>(27-18*r+2*r*r)*Math.exp(-r/3),'3p':r=>r*(6-r)*Math.exp(-r/3),'3d':r=>r*r*Math.exp(-r/3),
-  '4s':r=>(192-144*r+24*r*r-r*r*r)*Math.exp(-r/4),'4p':r=>r*(80-20*r+r*r)*Math.exp(-r/4)};
-const ANG={s:[()=>1],p:[(x,y,z,r)=>x/r,(x,y,z,r)=>y/r,(x,y,z,r)=>z/r],d:[(x,y,z,r)=>x*y/(r*r),(x,y,z,r)=>x*z/(r*r),(x,y,z,r)=>y*z/(r*r),(x,y,z,r)=>(x*x-y*y)/(r*r),(x,y,z,r)=>(3*z*z-r*r)/(r*r)]};
-const BOXR={1:6,2:15,3:26,4:40};
-const MCACHE={};
-function modePts(sub,o){ const key=sub+o; if(MCACHE[key]) return MCACHE[key]; const n=+sub[0], R=RAD[sub], A=ANG[sub[1]][o], L=BOXR[n];
-  const f=(x,y,z)=>{ const r=Math.sqrt(x*x+y*y+z*z)+1e-6; return R(r)*A(x,y,z,r); };
-  let mx=0; for(let i=0;i<30000;i++){ const x=(Math.random()*2-1)*L,y=(Math.random()*2-1)*L,z=(Math.random()*2-1)*L; const v=f(x,y,z); mx=Math.max(mx,v*v); }
-  mx*=1.3; const out=[]; let tries=0;
-  while(out.length<2600&&tries<1500000){ tries++; const x=(Math.random()*2-1)*L,y=(Math.random()*2-1)*L,z=(Math.random()*2-1)*L; const v=f(x,y,z); if(Math.random()*mx<v*v) out.push([x/L,y/L,z/L,v>0?1:0]); }
-  return MCACHE[key]=out; }
-const SUBS=[['1s',268],['2s',224],['2p',202],['3s',162],['3p',142],['4s',110],['3d',82],['4p',54]];
-const NB=s=>s[1]==='s'?1:s[1]==='p'?3:5;
-const ORDER=['1s','2s','2p','3s','3p','4s','3d','4p'];
-const ELN=['','H Hydrogène','He Hélium','Li Lithium','Be Béryllium','B Bore','C Carbone','N Azote','O Oxygène','F Fluor','Ne Néon','Na Sodium','Mg Magnésium','Al Aluminium','Si Silicium','P Phosphore','S Soufre','Cl Chlore','Ar Argon','K Potassium','Ca Calcium','Sc Scandium','Ti Titane','V Vanadium','Cr Chrome','Mn Manganèse','Fe Fer','Co Cobalt','Ni Nickel','Cu Cuivre','Zn Zinc','Ga Gallium','Ge Germanium','As Arsenic','Se Sélénium','Br Brome','Kr Krypton'];
-let mdSub='2p', mdO=0, mdZ=15, mdYaw=.6, mdPitch=.35, mdDrag=null, mdUser=false, mdClock=0;
-function fill(Z){ const occ={}; let left=Z; for(const s of ORDER){ const nb=NB(s), cap=2*nb, n=Math.min(cap,left); left-=n; const b=new Array(nb).fill(0);
-    for(let i=0;i<n;i++){ b[i<nb?i:i-nb]++; } occ[s]=b; } return occ; }
-function outer(Z){ const occ=fill(Z); let nmax=0; ORDER.forEach(s=>{ if(occ[s].some(v=>v)) nmax=Math.max(nmax,+s[0]); });
-  let c=0; ['s','p'].forEach(l=>{ const s=nmax+l; if(occ[s]) c+=occ[s].reduce((a,b)=>a+b,0); }); return [nmax,c]; }
-const mdPills=document.getElementById('mdPills');
-ORDER.forEach(s=>{ const b=document.createElement('button'); b.textContent=s; b.onclick=()=>{ mdSub=s; mdO=0; mdText(); }; mdPills.appendChild(b); });
-document.getElementById('mdOri').onclick=()=>{ mdO=(mdO+1)%NB(mdSub); mdText(); };
-const mdZi=document.getElementById('mdZ');
-function setZ(z){ mdZ=z; mdZi.value=z; document.getElementById('mdZv').textContent=z; mdText(); }
-mdZi.oninput=()=>setZ(+mdZi.value);
-document.getElementById('mdP').onclick=()=>setZ(15); document.getElementById('mdGa').onclick=()=>setZ(31); document.getElementById('mdNe').onclick=()=>setZ(10);
-const NOD={'1s':'0 nœud. La façon la plus simple de vibrer : une seule bosse, ronde.','2s':'1 nœud en forme de sphère : une boule, une coquille vide, puis une couronne de signe opposé.','2p':'1 nœud en forme de plan : deux lobes de signes opposés. Il y a 3 orientations (x, y, z), donc 3 cases.',
- '3s':'2 nœuds sphériques.','3p':'2 nœuds : un plan et une sphère. 3 orientations.','3d':'2 nœuds en forme de plans : quatre lobes en trèfle. 5 orientations, donc 5 cases.','4s':'3 nœuds sphériques. Elle se remplit avant 3d, car elle plonge près du noyau.','4p':'3 nœuds. C’est là que se trouve le 3e électron externe du gallium.'};
-function mdText(){ const [el,nm]=ELN[mdZ].split(' '); const [n,c]=outer(mdZ);
-  document.getElementById('mdTitle').textContent='Case '+mdSub+(NB(mdSub)>1?' (orientation '+(mdO+1)+'/'+NB(mdSub)+')':'')+' · '+mdZ+' électron'+(mdZ>1?'s':'')+' : '+nm;
-  document.getElementById('mdText').textContent=NOD[mdSub]+' Pour le '+nm.toLowerCase()+' ('+el+'), la couche externe est la couche '+n+', avec '+c+' électron'+(c>1?'s':'')+' sur 8 places.'+(c===8||(mdZ===2)?' Elle est pleine : la case libre suivante est beaucoup plus haute, donc cet atome ne cherche pas à se lier.':'');
-  [...mdPills.children].forEach(b=>b.setAttribute('aria-pressed',b.textContent===mdSub)); }
-const cvM=MD.cv;
-cvM.addEventListener('pointerdown',e=>{ mdDrag=[e.clientX,e.clientY,0]; cvM.setPointerCapture(e.pointerId); });
-cvM.addEventListener('pointermove',e=>{ if(!mdDrag) return; const dx=e.clientX-mdDrag[0], dy=e.clientY-mdDrag[1]; mdDrag[2]+=Math.abs(dx)+Math.abs(dy); mdYaw+=dx*.01; mdPitch=clamp(mdPitch+dy*.01,-1.3,1.3); mdDrag[0]=e.clientX; mdDrag[1]=e.clientY; if(mdDrag[2]>4) mdUser=true; });
-cvM.addEventListener('pointerup',e=>{ const moved=mdDrag&&mdDrag[2]>4; mdDrag=null; if(moved) return;
-  const r=cvM.getBoundingClientRect(), X=(e.clientX-r.left)/r.width*400, Y=(e.clientY-r.top)/r.height*300;
-  for(const [s,y] of SUBS){ for(let i=0;i<NB(s);i++){ const bx=236+i*18; if(X>bx-2&&X<bx+16&&Y>y-15&&Y<y+3){ mdSub=s; mdO=i; mdText(); return; } } } });
-function drawModes(){ const x=MD.ctx; MD.base(); bgLab(x,400,300);
-  if(!mdUser&&!mdDrag) mdYaw+=.004;
-  const pts=modePts(mdSub,mdO), c=Math.cos(mdYaw), s=Math.sin(mdYaw), cp=Math.cos(mdPitch), sp=Math.sin(mdPitch), CXm=100, CYm=150, U=84;
-  const B=[[],[]];
-  for(const p of pts){ let X=c*p[0]+s*p[2], Z=-s*p[0]+c*p[2]; const Y=cp*p[1]-sp*Z; Z=sp*p[1]+cp*Z; const f=3/(3+Z); B[p[3]].push([CXm+X*U*f,CYm-Y*U*f,f]); }
-  x.save(); x.globalCompositeOperation='lighter';
-  [['255,138,128',B[1]],['111,182,255',B[0]]].forEach(([col,L])=>{ x.fillStyle='rgba('+col+',.42)'; x.beginPath(); for(const q of L){ const r=1.5*q[2]; x.rect(q[0]-r/2,q[1]-r/2,r,r); } x.fill(); }); x.restore();
-  glow(x,CXm,CYm,8,'#FFFFFF',.5); sph(x,CXm,CYm,2.4,'#F2F6FA');
-  const n=+mdSub[0]; txt(x,'Case '+mdSub+' · clique une autre case',10,20,'left',C.ink,true); txt(x,'Taille réelle ×'+[1,4,9,16][n-1]+' (remise à l’échelle)',10,288,'left',C.muted);
-  rr(x,198,8,196,284,10,'rgba(255,255,255,.035)','rgba(232,238,244,.12)',1);
-  txt(x,'Cases, de la plus basse à la plus haute',296,20,'center',C.ink,true);
-  const occ=fill(mdZ), [no]=outer(mdZ);
-  for(const [sname,y] of SUBS){ const nb=NB(sname), shell=+sname[0], col=shell===1?'#9FB3C8':shell===2?'#A193FF':shell===3?'#3FD4A8':'#E3B341';
-    const isOut=(shell===no&&(sname[1]==='s'||sname[1]==='p'));
-    txt(x,sname,214,y-6,'left',col,true);
-    for(let i=0;i<nb;i++){ const bx=236+i*18, sel=sname===mdSub&&i===mdO;
-      rr(x,bx,y-14,14,14,3,isOut?'rgba(255,61,51,.12)':'rgba(255,255,255,.03)',sel?'#FFFFFF':col,sel?1.8:1);
-      const v=occ[sname][i]; if(v>=1){ line(x,bx+4.5,y-3,bx+4.5,y-11,'#E8EEF4',1.4); line(x,bx+2.5,y-9,bx+4.5,y-11,'#E8EEF4',1.4); line(x,bx+6.5,y-9,bx+4.5,y-11,'#E8EEF4',1.4); }
-      if(v>=2){ line(x,bx+9.5,y-11,bx+9.5,y-3,'#E8EEF4',1.4); line(x,bx+7.5,y-5,bx+9.5,y-3,'#E8EEF4',1.4); line(x,bx+11.5,y-5,bx+9.5,y-3,'#E8EEF4',1.4); } } }
-  [['couche 1',268,'#9FB3C8'],['couche 2',219,'#A193FF'],['couche 3',158,'#3FD4A8'],['couche 4',100,'#E3B341']].forEach(([l,y,col])=>txt(x,l,392,y-6,'right',col));
-  txt(x,'↑ et ↓ : 2 électrons par case',296,284,'center',C.muted);
-}
-mdText();
-infoBar(document.getElementById('dgInfo'),document.getElementById('dgBox'),['onde','dgexp','cathode','anode','debroglie','unparun','dgbilles','tube']);
-infoBar(document.getElementById('wInfo'),document.getElementById('wBox'),['tombe','agite','rayonne','arrache','rutherford']);
-infoBar(document.getElementById('mdInfo'),document.getElementById('mdBox'),['onde','noeuds','combien','pauli','ecran','huit','exceptions']);
-/* ================= ZOOM ULTIME : liaison 3D ================= */
-const BQ=setup('cvBond',400,270);
-const A0=.55, NUC=1;
-function hyb(dx,dy,dz,ux){ const r=Math.sqrt(dx*dx+dy*dy+dz*dz)+1e-6; return Math.exp(-r/A0)*(1+1.73*dx*ux/A0); }
-function psi(x,y,z){ const g=hyb(x+NUC,y,z,1), p=hyb(x-NUC,y,z,-1); return [g-.8*p,.8*g+p]; }
-let Na=0,Nb=0,EM=0;
-for(let x=-4;x<=4;x+=.1) for(let y=-3;y<=3;y+=.1) for(let z=-3;z<=3;z+=.1){ const [a,b]=psi(x,y,z); Na+=a*a; Nb+=b*b; }
-for(let x=-4;x<=4;x+=.1) for(let y=-3;y<=3;y+=.1) for(let z=-3;z<=3;z+=.1){ const [a,b]=psi(x,y,z); EM=Math.max(EM,a*a/Na+b*b/Nb); }
-const sNa=Math.sqrt(Na), sNb=Math.sqrt(Nb);
-const MOL=[]; while(MOL.length<9000){ const x=-4+8*Math.random(), y=-3+6*Math.random(), z=-3+6*Math.random(); const [a,b]=psi(x,y,z); const an=a/sNa, bn=b/sNb, e=an*an+bn*bn;
-  if(Math.random()*EM<e) MOL.push([x,y,z,an,bn,e]); }
-function gauss(){ return Math.sqrt(-2*Math.log(Math.random()+1e-9))*Math.cos(2*Math.PI*Math.random()); }
-function dirR(r){ const u=2*Math.random()-1, t=2*Math.PI*Math.random(), s=Math.sqrt(1-u*u); return [r*s*Math.cos(t),r*s*Math.sin(t),r*u]; }
-const CORE=[], VAL=[];
-for(let k=0;k<700;k++) CORE.push([gauss()*.2,gauss()*.2,gauss()*.2]);
-for(let k=0;k<1400;k++){ const r=-.34*Math.log(Math.random()*Math.random()*Math.random()+1e-9); VAL.push(dirR(r)); }
-let yaw=-.25, yaw0=-.25, pitch=.3, drag=null, userRot=false, bS=0, bT=0;
-const cvB=BQ.cv;
-cvB.addEventListener('pointerdown',e=>{ drag=[e.clientX,e.clientY]; userRot=true; cvB.setPointerCapture(e.pointerId); cvB.style.cursor='grabbing'; });
-cvB.addEventListener('pointermove',e=>{ if(!drag) return; yaw0=yaw+=(e.clientX-drag[0])*.01; pitch=clamp(pitch+(e.clientY-drag[1])*.01,-1.3,1.3); drag=[e.clientX,e.clientY]; });
-['pointerup','pointercancel'].forEach(t=>cvB.addEventListener(t,()=>{ drag=null; cvB.style.cursor='grab'; }));
-const CX=140, CY=136, UU=38;
-function P3(x,y,z){ const c=Math.cos(yaw), s=Math.sin(yaw), cp=Math.cos(pitch), sp=Math.sin(pitch);
-  let X=c*x+s*z, Z=-s*x+c*z; const Y=cp*y-sp*Z; Z=sp*y+cp*Z; const f=7/(7+Z); return [CX+X*UU*f, CY-Y*UU*f, f]; }
-function cloud(x,pts,rgb,afn,base,ox,sx){ const B=[]; for(let i=0;i<12;i++) B.push([]);
-  for(const p of pts){ const a=afn(p); if(a<=.004) continue; const q=P3(p[0]*(sx||1)+(ox||0),p[1],p[2]); B[Math.min(11,Math.floor(Math.min(1,a)*11.99))].push(q); }
-  x.save(); x.globalCompositeOperation='lighter';
-  B.forEach((L,i)=>{ if(!L.length) return; x.fillStyle='rgba('+rgb+','+(base*(i+.5)/12)+')'; x.beginPath(); for(const q of L){ const s=1.35*q[2]; x.rect(q[0]-s/2,q[1]-s/2,s,s); } x.fill(); });
-  x.restore(); }
-const BSTEP=[
- {d:4,t:['Deux atomes, chacun avec son nuage','Le noyau est au centre, 100 000 fois plus petit que l’atome (ici dessiné bien trop gros). Le nuage n’est pas une boule qui tourne : c’est la carte des endroits où l’électron a des chances d’être trouvé, plus dense là où il est souvent. Le petit nuage serré (gris) : les électrons du cœur, qui ne servent à rien ici. Le nuage externe : les électrons de valence, ceux qui vont faire la liaison.']},
- {d:5,t:['La liaison : deux électrons partagés','On rapproche les atomes. Leurs nuages externes se fondent en un seul nuage, gonflé entre les deux noyaux. Deux électrons l’occupent. Placé là, chaque électron est attiré par les deux noyaux à la fois : son énergie baisse (à droite). C’est cette baisse qui tient les atomes ensemble. C’est l’étage bas.']},
- {d:5,t:['Le trou : il manque un électron','Un électron est parti (aspiré par le + de la pile). Même forme de nuage, mais occupé par un seul électron : il est deux fois moins dense. Les charges des noyaux ne sont plus entièrement compensées : il reste une charge +. Voilà ce qu’est un trou. En vrai, ce manque n’est pas sur une seule liaison : il est étalé sur des centaines de liaisons voisines.']},
- {d:5,t:['L’électron libre : un nuage qui évite le milieu','Un électron arrive de la couche n. La place dans la liaison est libre, mais il est dans une autre forme de nuage, dite antiliante : il y a un vide entre les noyaux, et le nuage déborde vers l’extérieur. Il évite justement l’endroit où l’attraction est la plus forte : son énergie est plus haute, de 1,9 eV. Dans le vrai cristal, ce nuage s’étale sur des milliers d’atomes.']},
- {d:10,t:['La chute : un nuage qui balance','Pendant la transition, l’électron est un mélange des deux formes. En se superposant, elles créent un nuage qui balance d’un noyau à l’autre, 4,6 × 10¹⁴ fois par seconde (ici ralenti un million de milliards de fois). Une charge qui oscille, c’est une antenne : elle rayonne une onde électromagnétique, surtout perpendiculairement à la liaison. L’onde emporte l’énergie ; le mélange passe peu à peu à 100 % « liaison » et l’oscillation s’arrête. Énergie emportée : 1,9 eV.']},
- {d:9,t:['Stimulée : l’onde qui passe impose le rythme','Une onde de même fréquence traverse la liaison. Son champ électrique pousse le nuage d’un côté puis de l’autre : l’oscillation démarre tout de suite, en phase avec elle. L’onde que rayonne l’électron s’ajoute exactement à celle qui passe : après la liaison, l’onde est plus forte. C’est la copie, et c’est le seul moyen d’obtenir un faisceau.']},
- {d:6,t:['Pourquoi les nuages se lient','Lâche les deux atomes. Quand leurs nuages se recouvrent « en phase », les deux ondes s\u2019additionnent entre les noyaux : l\u2019électron y est attiré par deux noyaux et a plus de place pour s\u2019étaler, donc son énergie baisse (courbe pleine, à droite). Comme une bille dans un creux, les atomes roulent vers le fond, le dépassent, reviennent : ils vibrent. Chaque vibration cède un peu d\u2019énergie au cristal (chaleur), jusqu\u2019à se poser à 0,24 nm. Plus près, les noyaux se repoussent et la courbe remonte. Essaie « en opposition » : les ondes s\u2019annulent entre les noyaux, la courbe ne fait que monter, et les atomes se repoussent.']}
-];
-const bdSteps=document.getElementById('bdSteps');
-const BORD=[0,6,1,2,3,4,5];
-['Atomes','Pourquoi','Liaison','Trou','Libre','Chute','Copie'].forEach((n,k)=>{ const b=document.createElement('button'); b.textContent=(k+1)+' · '+n; b.onclick=()=>bGo(BORD[k]); bdSteps.appendChild(b); });
-function bGo(i){ bS=i; bT=0; document.getElementById('bdTitle').textContent=BSTEP[i].t[0]; document.getElementById('bdText').textContent=BSTEP[i].t[1];
-  [...bdSteps.children].forEach((b,k)=>b.setAttribute('aria-pressed',BORD[k]===i)); document.getElementById('lcAp').hidden=i!==6; if(i===6){ apMode='b'; document.querySelectorAll('#apSeg button').forEach(c=>c.setAttribute('aria-pressed',c.dataset.m==='b')); apReset(); } }
-document.getElementById('bdPrev').onclick=()=>bGo(BORD[Math.max(0,BORD.indexOf(bS)-1)]);
-document.getElementById('bdNext').onclick=()=>bGo(BORD[Math.min(6,BORD.indexOf(bS)+1)]);
-document.getElementById('bdReplay').onclick=()=>bGo(bS);
-const FV=1.1, OM=2*Math.PI*FV, VW=55;
-let RINGS=[], ringT=0;
-function theta(){ if(bS===4) return Math.PI/2*ease(clamp((bT-1)/6.5,0,1)); if(bS===5) return Math.PI/2*ease(clamp((bT-2.2)/3.2,0,1)); return 0; }
-let bClock=0;
-function stepBond(dt){ bT+=dt; bClock+=dt; if(bS===6) stepAp(dt); if(!userRot&&!drag) yaw=yaw0+.55*Math.sin(bClock*.18);
-  if(bS===4){ ringT-=dt; if(ringT<=0){ ringT=1/FV; const th=theta(); const a=Math.sin(2*th); if(a>.03) RINGS.push({t0:bT,a}); } }
-  else RINGS=[];
-  if(bS===4&&bT<.05) RINGS=[];
-}
-function drawBond(){ const x=BQ.ctx; BQ.base(); bgLab(x,400,270);
-  if(bS===6){ drawAp(x); return; }
-  const T=bT, th=theta(), c=Math.cos(th), s=Math.sin(th);
-  const sep = bS===0?2.1: bS===1? lerp(2.1,1,ease(clamp(T/2.2,0,1))) : 1;
-  const kMol = bS===0?0: bS===1? ease(clamp((T-1)/1.6,0,1)) : 1;
-  const nBond = bS<2?2: bS===2? lerp(2,1,ease(clamp(T/1.4,0,1))) : 1;
-  const kFree = bS<3?0: bS===3? ease(clamp(T/1.6,0,1)) : 1;
-  x.save(); x.beginPath(); x.rect(0,0,282,270); x.clip();
-  const ax0=P3(-1,0,0), ax1=P3(1,0,0), al=Math.atan2(ax1[1]-ax0[1],ax1[0]-ax0[0]);
-  if(bS===5){ const A=.35; for(let k=-2;k<12;k++){ const y=-20+((T*VW)%(VW/FV))+k*(VW/FV); if(y<0||y>270) continue;
-      const tp=T-(y-CY)/VW; const gain=y>CY? (Math.PI/2*ease(clamp((tp-2.2)/3.2,0,1)))/(Math.PI/2) : 0;
-      const ar=A*(1+1.2*gain); x.save(); x.globalCompositeOperation='lighter'; line(x,8,y,274,y,rgba(C.laser,ar),1.5+gain*1.5); x.restore(); }
-    tag(x,'Onde qui arrive ↓',12,42,'left',C.laser); if(T>4.5) tag(x,'Après la liaison : onde plus forte',12,252,'left',C.laser); }
-  for(const r of RINGS){ const R=(T-r.t0)*VW; if(R<6||R>320) continue; const fade=r.a*(1-R/320);
-    for(let k=0;k<48;k++){ const a0=k/48*2*Math.PI, a1=(k+1)/48*2*Math.PI, pat=Math.pow(Math.sin((a0+a1)/2-al),2);
-      x.beginPath(); x.arc(CX,CY,R,a0,a1); x.strokeStyle=rgba(C.laser,.7*fade*pat); x.lineWidth=2; x.stroke(); } }
-  [[-sep,'#9FB3C8'],[sep,'#9FB3C8']].forEach(([o])=>cloud(x,CORE,'159,179,200',()=>1,.5,o));
-  if(kMol<1){ cloud(x,VAL,'255,156,148',()=>1,.42*(1-kMol),-sep); cloud(x,VAL,'255,156,148',()=>1,.42*(1-kMol),sep); }
-  if(kMol>0){ const bf=nBond-(bS>=4?0:0);
-    cloud(x,MOL,'255,156,148',p=>(p[4]*p[4]/p[5])*.5*bf,.75*kMol); }
-  if(kFree>0){ let afn;
-    if(bS<4) afn=p=>(p[3]*p[3]/p[5])*.55;
-    else { const ph=bS===5? OM*(T-2.2-(CY-0)/VW*0) : OM*T; const cc=Math.cos(ph);
-      afn=p=>{ const a=p[3],b=p[4]; return (c*c*a*a+s*s*b*b+2*c*s*a*b*cc)/p[5]*.55; }; }
-    cloud(x,MOL,'255,70,60',afn,.85*kFree); }
-  if(bS>=2){ const hk= bS===2? ease(clamp(T/1.4,0,1)) : bS>=4? 1-s*s : 1; const q=P3(0,0,0); if(hk>.02){ glow(x,q[0],q[1],34,C.hole,.35*hk); x.beginPath(); x.arc(q[0],q[1],9,0,7); x.strokeStyle=rgba(C.hole,.9*hk); x.lineWidth=1.6; x.stroke(); txt(x,'+',q[0],q[1],'center',C.hole,true); } }
-  [[-sep,'Ga','31+'],[sep,'P','15+']].forEach(([o,n,z])=>{ const q=P3(o,0,0); glow(x,q[0],q[1],10,'#FFFFFF',.5); sph(x,q[0],q[1],2.6*q[2],'#F2F6FA'); tag(x,'noyau '+n+' ('+z+')',q[0],q[1]+(o<0?-40:40),'center'); });
-  if(bS>=4&&s*c>.05){ const d=Math.cos(bS===5?OM*(T-2.2):OM*T)*s*c*2; const m=P3(0,1.75,0), a=P3(d*.9,1.75,0); arrow(x,m[0],m[1],a[0],a[1],'#FFD6D2',1.6); tag(x,'la charge balance',m[0]+40,m[1]-14,'left','#FFD6D2'); }
-  x.restore();
-  rr(x,288,14,106,242,10,'rgba(255,255,255,.035)','rgba(232,238,244,.12)',1);
-  txt(x,'Énergie',341,30,'center',C.ink,true);
-  const YU=66, YA=120, YB=190;
-  line(x,298,YU,384,YU,'#E8EEF4',1.2); line(x,298,YA,384,YA,'rgba(232,238,244,.5)',1,[3,3]); line(x,298,YB,384,YB,'#E8EEF4',1.2);
-  txt(x,'électron libre',341,YU-10,'center'); txt(x,'atomes séparés',341,YA+12,'center'); txt(x,'dans la liaison',341,YB+13,'center');
-  arrow(x,292,YB-2,292,YU+3,C.muted,.8); arrow(x,292,YU+3,292,YB-2,C.muted,.8); txt(x,'1,9 eV',296,YU+24,'left',C.act);
-  const k1=bS===0?0:bS===1?ease(clamp((T-.8)/1.8,0,1)):1;
-  const y1=lerp(YA,YB,k1);
-  sph(x,326,y1-5,3.4,BOND);
-  if(bS<2) sph(x,352,y1-5,3.4,BOND);
-  else if(bS===2&&T<1.4){ const q=ease(T/1.4); sph(x,352+q*30,lerp(YB-5,YB-40,q),3.4,BOND,1-q); hole(x,352,YB-5,4,q); }
-  else { const hk=bS>=4?1-s*s:1; if(hk>.05) hole(x,352,YB-5,4,.6*hk); }
-  if(bS===1&&T>1.2&&T<4) txt(x,'énergie libérée',341,YA+30,'center',C.hole);
-  if(bS>=3){ const yy=bS>=4? lerp(YU,YB,s*s):YU; elec(x,352,yy-5,3.6*Math.max(kFree,.01)); }
-  if(bS>=4&&s*s>.02&&s*s<.98) txt(x,'l’onde emporte',341,YA+30,'center',C.laser);
-}
-/* --- étape « pourquoi ils se lient » --- */
-let apD=4.4, apV=0, apMode='b', apDrag=false, apHeat=[], apT=0;
-const D0=2, AM=1.3, NMU=.118;
-const EB=d=>Math.pow(1-Math.exp(-AM*(d-D0)),2)-1, EA=d=>.9*Math.exp(-1.1*(d-D0));
-const EF=d=>apMode==='b'?EB(d):EA(d);
-function apReset(){ apD=apMode==='b'?4.4:2.3; apV=0; apHeat=[]; apT=0; }
-document.querySelectorAll('#apSeg button').forEach(b=>b.onclick=()=>{ apMode=b.dataset.m; document.querySelectorAll('#apSeg button').forEach(c=>c.setAttribute('aria-pressed',c===b)); apReset(); });
-document.getElementById('apGo').onclick=()=>apReset();
-const apR=document.getElementById('apR');
-apR.addEventListener('input',()=>{ apDrag=true; apD=apR.value/10; apV=0; });
-apR.addEventListener('change',()=>{ apDrag=false; });
-function stepAp(dt){ apT+=dt;
-  if(!apDrag){ const h=.001, F=-(EF(apD+h)-EF(apD-h))/(2*h); const g=.55; apV+=(F*3-g*apV)*dt; apD+=apV*dt;
-    if(apD>4.6){ apD=4.6; apV=0; } if(apD<1.3){ apD=1.3; apV=Math.abs(apV); }
-    const P=apMode==='b'?g*apV*apV:0; if(Math.random()<P*2.2*dt*20){ const a=Math.random()*Math.PI*2; apHeat.push({x:0,y:0,z:0,ux:Math.cos(a),uy:Math.sin(a),t:0}); } }
-  for(let k=apHeat.length-1;k>=0;k--){ apHeat[k].t+=dt; if(apHeat[k].t>1.4) apHeat.splice(k,1); }
-  if(!apDrag){ apR.value=Math.round(apD*10); }
-  document.getElementById('apRv').textContent=(apD*NMU).toFixed(2).replace('.',',')+' nm';
-}
-function drawAp(x){
-  const d=apD, h=d/2, k=clamp(Math.exp(-1.5*(d-D0)),0,1);
-  x.save(); x.beginPath(); x.rect(0,0,282,270); x.clip();
-  [-h,h].forEach(o=>cloud(x,CORE,'159,179,200',()=>1,.5,o));
-  cloud(x,VAL,'255,156,148',()=>1,.42*(1-k),-h); cloud(x,VAL,'255,156,148',()=>1,.42*(1-k),h);
-  const sx=h/NUC;
-  cloud(x,MOL,'255,156,148',apMode==='b'?(p=>(p[4]*p[4]/p[5])):(p=>(p[3]*p[3]/p[5])),.75*k,0,sx);
-  for(const q of apHeat){ const c=P3(0,0,0), r=q.t*90; glow(x,c[0]+q.ux*r,c[1]+q.uy*r,10,'#FF8A3D',.55*(1-q.t/1.4)); }
-  [[-h,'Ga','31+'],[h,'P','15+']].forEach(([o,n,z])=>{ const q=P3(o,0,0); glow(x,q[0],q[1],10,'#FFFFFF',.5); sph(x,q[0],q[1],2.6*q[2],'#F2F6FA'); tag(x,n,q[0],q[1]+(o<0?-30:30),'center'); });
-  if(apHeat.length>2) tag(x,'chaleur cédée au cristal',12,250,'left','#FF8A3D');
-  if(apMode==='b'&&Math.abs(d-D0)<.25&&Math.abs(apV)<.25) tag(x,'Au fond du creux : la liaison',12,42,'left',C.ink);
-  if(apMode==='a'&&d>3.6) tag(x,'Les atomes se repoussent',12,42,'left',C.ink);
-  x.restore();
-  rr(x,288,14,106,242,10,'rgba(255,255,255,.035)','rgba(232,238,244,.12)',1);
-  txt(x,'Énergie',341,28,'center',C.ink,true);
-  const X0=298,X1=388,Y0=218,Yt=48, mx=dd=>X0+(dd-1.3)/(4.6-1.3)*(X1-X0), my=e=>Y0-(clamp(e,-1.1,1.25)+1.1)/2.35*(Y0-Yt);
-  line(x,X0,my(0),X1,my(0),'rgba(232,238,244,.25)',1,[3,3]); txt(x,'séparés',X1,my(0)-8,'right');
-  line(x,X0,Y0+6,X1,Y0+6,C.muted,.8); txt(x,'distance →',X1,Y0+16,'right');
-  [['b',EB,C.laser,[]],['a',EA,'#FF9C94',[4,3]]].forEach(([m,f,col,dash])=>{ x.beginPath(); x.setLineDash(dash); let st=false;
-    for(let dd=1.3;dd<=4.6;dd+=.03){ const e=f(dd); if(e>1.25){ st=false; continue; } const X=mx(dd),Y=my(e); st?x.lineTo(X,Y):x.moveTo(X,Y); st=true; }
-    x.strokeStyle=col; x.globalAlpha=m===apMode?1:.35; x.lineWidth=m===apMode?2:1.2; x.stroke(); x.globalAlpha=1; x.setLineDash([]); });
-  line(x,mx(D0),my(-1),mx(D0),Y0+6,C.muted,.6,[2,3]); txt(x,'0,24 nm',mx(D0),Y0+28,'center',C.ink);
-  txt(x,'en phase',mx(2.55),my(EB(2.55))+14,'left',C.laser); txt(x,'en opposition',X1,my(EA(1.7))-2,'right','#FF9C94');
-  const bx=mx(d), by=my(EF(d)); glow(x,bx,by-5,14,'#FFFFFF',.35); sph(x,bx,by-5,5,'#E8EEF4');
-}
-bGo(0);
-infoBar(document.getElementById('bdInfo'),document.getElementById('bdBox'),['noyau','nuage','pourquoiLie','liante','antiliante','pourquoiBas','delocal','superpo','simplif']);
-/* ================= BANC 1 : couleur ================= */
-function wl2rgb(w){ let r=0,g=0,b=0;
-  if(w>=380&&w<440){r=-(w-440)/60;b=1;} else if(w>=440&&w<490){g=(w-440)/50;b=1;} else if(w>=490&&w<510){g=1;b=-(w-510)/20;}
-  else if(w>=510&&w<580){r=(w-510)/70;g=1;} else if(w>=580&&w<645){r=1;g=-(w-645)/65;} else if(w>=645&&w<=780){r=1;}
-  let f=0; if(w>=380&&w<420)f=.3+.7*(w-380)/40; else if(w>=420&&w<=700)f=1; else if(w>700&&w<=780)f=.3+.7*(780-w)/80;
-  const c=v=>Math.round(255*Math.pow(v*f,.8)); return [c(r),c(g),c(b)]; }
-function cname(w){ return w<380?'Ultraviolet (invisible)':w<450?'Violet':w<495?'Bleu':w<520?'Cyan':w<565?'Vert':w<590?'Jaune':w<625?'Orange':w<750?'Rouge':'Infrarouge (invisible)'; }
-const pc=v=>Math.round(v*100);
-const ELC={Al:'#C3CCD5',Ga:GA,In:IN}, NMC={As:'#D07BD6',P:PH,N:'#4FA3FF'};
-const FAM={
- algaas:{lab:'Aluminium',max:70,non:'As',nonName:'Arsenic',f:x=>`Al<sub>${x.toFixed(2)}</sub>Ga<sub>${(1-x).toFixed(2)}</sub>As`,
-   E:x=>x<=.45?1.424+1.247*x:1.9+.125*x+.143*x*x, st:x=>x<=.35?0:x<=.45?1:2, mix:x=>[['Al',x],['Ga',1-x]],
-   why:['Émission efficace.','L’aluminium approche de la limite où le gap devient indirect : moins de lumière.','Gap indirect : presque plus de lumière.']},
- algainp:{lab:'Aluminium',max:80,non:'P',nonName:'Phosphore',f:x=>`(Al<sub>${x.toFixed(2)}</sub>Ga<sub>${(1-x).toFixed(2)}</sub>)<sub>0,5</sub>In<sub>0,5</sub>P`,
-   E:x=>x<=.53?1.90+.61*x:2.22+.1*(x-.53), st:x=>x<=.3?0:x<=.53?1:2, mix:x=>[['Al',x/2],['Ga',(1-x)/2],['In',.5]],
-   why:['Émission efficace. C’est le cristal des lasers rouges et des LED rouges à ambre.','On approche de la limite où le gap devient indirect : l’efficacité chute.','Gap indirect : l’énergie part en chaleur.']},
- ingan:{lab:'Indium',max:50,non:'N',nonName:'Azote',f:x=>`In<sub>${x.toFixed(2)}</sub>Ga<sub>${(1-x).toFixed(2)}</sub>N`,
-   E:x=>3.42*(1-x)+.69*x-1.43*x*(1-x), st:x=>x<=.2?0:x<=.32?1:2, mix:x=>[['In',x],['Ga',1-x]],
-   why:['Émission efficace : LED bleues, violettes et ultraviolettes.','Beaucoup d’indium : le cristal se déforme, l’efficacité baisse (LED vertes).','Trop d’indium : le cristal est plein de défauts.']}
-};
-let fam='algainp', famx=0;
-const LAT=setup('cvLat',400,160), SPC=setup('cvSpec',400,100);
-const latR=[]; for(let k=0;k<200;k++) latR.push(Math.random());
-function famUpdate(){
-  const F=FAM[fam], x=famx/100, E=F.E(x), lam=1239.8/E, s=F.st(x), rgb=wl2rgb(lam);
-  document.getElementById('famLab').textContent=F.lab; document.getElementById('famXv').textContent=famx+' %';
-  document.getElementById('famF').innerHTML=F.f(x);
-  document.getElementById('famE').textContent='gap '+E.toFixed(2).replace('.',',')+' eV';
-  document.getElementById('famL').textContent='λ ≈ '+Math.round(lam)+' nm'; document.getElementById('famC').textContent=cname(lam);
-  const vis=lam>=380&&lam<=780, sw=document.getElementById('swatch');
-  sw.style.background=vis?`radial-gradient(circle at 35% 30%, rgba(255,255,255,.55), rgb(${rgb}) 45%, rgba(0,0,0,.4))`:'transparent';
-  sw.style.boxShadow=vis&&s<2?`0 0 ${s?14:28}px rgb(${rgb})`:'none';
-  sw.style.borderStyle=vis?'solid':'dashed'; sw.style.opacity=s===2?.35:s===1?.75:1;
-  const st=document.getElementById('famS'); st.textContent=F.why[s]; st.style.setProperty('--st',['var(--n)','var(--hole)','var(--laser)'][s]);
-  const mx=F.mix(x).filter(m=>m[1]>.001);
-  document.getElementById('latLeg').innerHTML=mx.map(([el,v])=>`<span><i class="dot" style="background:${ELC[el]};box-shadow:none"></i>${el} : ${pc(v)} % des places de métal</span>`).join('')+
-    `<span><i class="dot" style="background:${NMC[F.non]};box-shadow:none"></i>${F.non} (${F.nonName}) : une place sur deux</span>`;
-}
-function drawLat(){ const x=LAT.ctx; LAT.base(); bgLab(x,400,160);
-  const F=FAM[fam], mx=F.mix(famx/100);
-  const P=(i,j)=>[30+i*25,22+j*23];
-  for(let j=0;j<6;j++) for(let i=0;i<15;i++){ const [cx,cy]=P(i,j); if(i<14){ const [bx,by]=P(i+1,j); line(x,cx,cy,bx,by,'#2F3A47',3); } if(j<5){ const [bx,by]=P(i,j+1); line(x,cx,cy,bx,by,'#2F3A47',3); } }
-  for(let j=0;j<6;j++) for(let i=0;i<15;i++){ const [cx,cy]=P(i,j);
-    if((i+j)%2===0){ const r=latR[j*15+i]; let acc=0, el=mx[mx.length-1][0]; for(const [e,v] of mx){ acc+=v; if(r<acc){el=e;break;} } sph(x,cx,cy,8,ELC[el]); }
-    else sph(x,cx,cy,6,NMC[F.non]); }
-  vignette(x,400,160); }
-const nmX=nm=>16+(nm-350)/600*368;
-function drawSpec(){ const x=SPC.ctx; SPC.base(); x.clearRect(0,0,400,100);
-  for(let nm=350;nm<950;nm+=2){ const v=nm>=380&&nm<=780; x.fillStyle=v?`rgb(${wl2rgb(nm)})`:'#1A2430'; x.fillRect(nmX(nm),26,368/300+.6,18); }
-  [400,500,600,700,800,900].forEach(nm=>{ line(x,nmX(nm),44,nmX(nm),48,C.muted,1); txt(x,nm+'',nmX(nm),56,'center'); });
-  txt(x,'UV',nmX(362),35,'center',C.ink); txt(x,'infrarouge',nmX(870),35,'center',C.ink);
-  const F=FAM[fam];
-  for(let k=0;k<F.max;k++){ const la=1239.8/F.E(k/100), lb=1239.8/F.E((k+1)/100), s=F.st(k/100);
-    line(x,nmX(clamp(la,350,950)),72,nmX(clamp(lb,350,950)),72,[C.ink,C.muted,C.line][s],6); }
-  txt(x,'Plage possible avec '+document.querySelector('#famSeg [aria-pressed="true"]').textContent,16,90,'left');
-  const lam=clamp(1239.8/F.E(famx/100),350,950), m=nmX(lam);
-  poly(x,[m,24,m-6,12,m+6,12],C.ink); line(x,m,24,m,76,C.ink,1.5); }
-document.querySelectorAll('#famSeg button').forEach(b=>b.onclick=()=>{ fam=b.dataset.f; document.querySelectorAll('#famSeg button').forEach(c=>c.setAttribute('aria-pressed',c===b));
-  const s=document.getElementById('famX'); s.max=FAM[fam].max; famx=Math.min(famx,FAM[fam].max); s.value=famx; famUpdate(); });
-document.getElementById('famX').oninput=e=>{ famx=+e.target.value; famUpdate(); };
-famUpdate();
-
-/* ================= BANC 2 : LED blanche ================= */
-const WH=setup('cvWhite',400,240), BLUE='#4D7DFF', YEL='#F2C230';
-let wk=.45, wph=[], wGr=[], wFl=[], wB=0, wY=0, wT=0;
-for(let k=0;k<52;k++) wGr.push({x:46+Math.random()*148,y:100+Math.random()*54,r:1.8+Math.random()*1.6});
-document.getElementById('phos').oninput=e=>{ wk=e.target.value/100; document.getElementById('phosV').textContent=e.target.value+' %'; wB=0; wY=0; };
-function stepWhite(dt){
-  wT-=dt; if(wT<=0){ wT=.06; const a=-Math.PI/2+(Math.random()-.5)*1.1; wph.push({x:96+Math.random()*48,y:184,vx:Math.cos(a)*110,vy:Math.sin(a)*110,c:0,ph:0}); }
-  for(let k=wph.length-1;k>=0;k--){ const p=wph[k]; p.x+=p.vx*dt; p.y+=p.vy*dt; p.ph+=dt*(p.c?10:20);
-    if(p.c===0&&p.y>96&&p.y<156&&p.x>42&&p.x<198&&Math.random()<wk*4.2*dt){ let g=wGr[0],d=1e9; for(const q of wGr){ const dd=(q.x-p.x)**2+(q.y-p.y)**2; if(dd<d){d=dd;g=q;} }
-      wFl.push({x:g.x,y:g.y,t:.4}); p.x=g.x; p.y=g.y; p.c=1; const a=-Math.PI/2+(Math.random()-.5)*2.2; p.vx=Math.cos(a)*90; p.vy=Math.sin(a)*90; }
-    if(p.y<14||p.y>210||p.x<6||p.x>230){ if(p.y<14){ p.c?wY++:wB++; } wph.splice(k,1); } }
-  for(let k=wFl.length-1;k>=0;k--){ wFl[k].t-=dt; if(wFl[k].t<=0) wFl.splice(k,1); }
-}
-function drawWhite(){ const x=WH.ctx; WH.base(); bgLab(x,400,240);
-  x.beginPath(); x.moveTo(30,196); x.lineTo(30,74); x.bezierCurveTo(30,10,210,10,210,74); x.lineTo(210,196); x.closePath();
-  x.fillStyle=lg(x,30,0,210,0,[[0,'rgba(200,225,255,.10)'],[.3,'rgba(255,255,255,.04)'],[1,'rgba(200,225,255,.08)']]); x.fill(); x.strokeStyle='rgba(220,235,255,.35)'; x.lineWidth=1; x.stroke();
-  block(x,30,196,180,12,10,'#7C8792');
-  rr(x,94,186,52,10,2,lg(x,0,186,0,196,[[0,'#7FA2FF'],[1,'#2A49B8']])); glow(x,120,186,40,BLUE,.55);
-  x.save(); x.globalAlpha=.12+.3*wk; x.fillStyle=YEL; x.fillRect(42,96,156,60); x.restore();
-  for(const g of wGr) sph(x,g.x,g.y,g.r,YEL,.3+.7*Math.min(1,wk*1.5));
-  for(const f of wFl){ glow(x,f.x,f.y,12,YEL,f.t*1.8); }
-  for(const p of wph){ const l=Math.hypot(p.vx,p.vy); wave(x,p.x,p.y,p.vx/l,p.vy/l,14,p.c?3:2.4,p.ph,p.c?YEL:BLUE,1.4); }
-  tag(x,'Puce InGaN bleue',120,226,'center'); tag(x,'Luminophore',120,84,'center');
-  const a=1-Math.exp(-wk*2.3), fb=1-a, fy=.8*a, yf=fy/(fy+fb);
-  const X0=236,X1=384,Y0=150,Yt=28, nx=nm=>X0+(nm-400)/300*(X1-X0);
-  line(x,X0,Y0,X1,Y0,C.muted,1); [400,500,600,700].forEach(nm=>{ line(x,nx(nm),Y0,nx(nm),Y0+4,C.muted,1); txt(x,nm+'',nx(nm),Y0+12,'center'); });
-  txt(x,'Spectre émis',X0,16,'left',C.ink);
-  const S=nm=>fb*Math.exp(-Math.pow((nm-450)/11,2))+fy*.42*Math.exp(-Math.pow((nm-565)/55,2));
-  let mv=0; for(let nm=400;nm<=700;nm+=2) mv=Math.max(mv,S(nm)); mv=Math.max(mv,.05);
-  for(let nm=400;nm<700;nm+=2){ const h=S(nm)/mv*(Y0-Yt-6); x.fillStyle=`rgb(${wl2rgb(nm)})`; x.fillRect(nx(nm),Y0-h,(X1-X0)/150+.4,h); }
-  const mixc=[0,1,2].map(i=>(1-yf)*[.2,.35,1][i]+yf*[1,.82,.15][i]), m=Math.max(...mixc), col=mixc.map(v=>Math.round(255*v/m));
-  glow(x,258,198,30,'#'+col.map(v=>v.toString(16).padStart(2,'0')).join(''),.5); x.beginPath(); x.arc(258,198,14,0,7); x.fillStyle=`rgb(${col})`; x.fill();
-  const name=wk<.04?'Bleu pur (pas de poudre)':yf<.42?'Blanc froid, bleuté':yf<.62?'Blanc neutre':yf<.8?'Blanc chaud':'Jaunâtre : trop de poudre';
-  txt(x,'Couleur perçue',280,192,'left',C.muted); txt(x,name,280,206,'left',C.ink);
-  document.getElementById('wB').textContent=wB; document.getElementById('wY').textContent=wY;
-}
-for(let k=0;k<180;k++) stepWhite(1/60);
-
-/* --- ion cérium --- */
-const CE=setup('cvCe',400,240);
-let ceT=0, cePaused=false, ceStage=-1; const CEEND=9;
-document.getElementById('ceReplay').onclick=()=>{ ceT=0; };
-document.getElementById('cePause').onclick=e=>{ cePaused=!cePaused; e.currentTarget.textContent=cePaused?'Reprendre':'Pause'; };
-const CEX=84,CEY=110, LV=[58,68,78,88];
-function ceElY(t){ if(t<1.6) return 206; if(t<2.1) return lerp(206,LV[0],ease((t-1.6)/.5));
-  if(t<4.5){ const k=Math.min(3,Math.floor((t-2.1)/.6)); const f=ease(clamp((t-2.1-k*.6)/.25,0,1)); return LV[k]+(LV[Math.min(3,k+1)]-LV[k])*(k<3?f:0); }
-  if(t<5.6) return LV[3]; if(t<6.1) return lerp(LV[3],206,ease((t-5.6)/.5)); return 206; }
-function drawCe(){ const x=CE.ctx; CE.base(); bgLab(x,400,240); const t=ceT;
-  const heat=(t>2.1&&t<4.5)?Math.max(0,1-((t-2.1)%.6)/.4):0;
-  for(let j=0;j<6;j++) for(let i=0;i<7;i++){ const px=24+24*i, py=46+24*j, ce=(i===2&&j===2);
-    const near=Math.abs(i-2)<=1&&Math.abs(j-2)<=1&&!ce, sh=near?heat*2.4*Math.sin(t*60+i*3+j):0;
-    if(ce) glow(x,px,py,22,C.gold,.35);
-    sph(x,px+sh,py-sh*.6,ce?9:(i+j)%2?4.5:6.5,ce?C.gold:(i+j)%2?'#D8DEE4':'#7F8B97'); }
-  lead(x,CEX-4,CEY-6,130,30); tag(x,'ion Ce³⁺',130,22,'left');
-  if(heat>0){ glow(x,CEX-12,CEY,40,'#FF8A3D',.25*heat); tag(x,'Les voisins vibrent : chaleur',10,224,'left',C.hole); }
-  const BL='#4D7DFF';
-  if(t<1.7){ const fx=-10+(CEX+10)*clamp(t/1.6,0,1); wave(x,fx,CEY,1,0,42,4.5,t*18,BL,1.8); }
-  if(t>1.6&&t<2.2) glow(x,CEX,CEY,30,BL,.9*(1-(t-1.6)/.6));
-  if(t>6.1){ const d=(t-6.1)*70; wave(x,CEX-.6*d,CEY-.8*d,-.6,-.8,42,4.5,t*10,YEL,1.8); }
-  if(t>5.6&&t<6.4) glow(x,CEX,CEY,30,YEL,.9*(1-(t-5.6)/.8));
-  const L0=232,L1=322;
-  rr(x,214,14,176,214,10,'rgba(255,255,255,.035)','rgba(232,238,244,.12)',1);
-  txt(x,'Niveaux du cérium',300,28,'center',C.ink,true);
-  LV.forEach((y,k)=>line(x,L0,y,L1,y,'#E8EEF4',k===0||k===3?1.4:.7)); line(x,L0,206,L1,206,'#E8EEF4',1.4);
-  txt(x,'haut',L1+6,58,'left'); txt(x,'marches',L1+6,74,'left'); txt(x,'bas',L1+6,206,'left');
-  if(t>=1.6){ const k=clamp((t-1.6)/.5,0,1); arrow(x,242,206,242,206-(206-LV[0]-2)*k,BL,1.6); if(k>=1) txt(x,'2,75 eV',248,140,'left',BL); }
-  if(t>=2.1){ const k=clamp((t-2.1)/2.4,0,1); line(x,272,LV[0],272,LV[0]+(LV[3]-LV[0])*k,C.hole,1.5,[2,2]); }
-  if(t>=5.6){ const k=clamp((t-5.6)/.5,0,1); arrow(x,302,LV[3],302,LV[3]+(204-LV[3])*k,YEL,1.6); if(k>=1) txt(x,'2,2 eV',298,160,'right',YEL); }
-  elec(x,t>=2.1&&t<5.6?272:(t>=5.6?302:242),ceElY(t)-5,4);
-  const s=t<1.6?0:t<2.1?1:t<4.5?2:t<5.6?3:4;
-  if(s!==ceStage){ ceStage=s; const T=[
-    ['1. Un photon bleu arrive','Dans le grain de YAG sont cachés quelques ions cérium (Ce³⁺). Ce sont eux qui font tout le travail.'],
-    ['2. Absorption','L’électron du cérium prend toute l’énergie du photon bleu (2,75 eV) et saute du niveau bas au niveau haut. Le photon bleu disparaît.'],
-    ['3. Il descend les marches','Le niveau haut du cérium est une série de marches. L’électron les descend en secouant les atomes voisins : environ 0,5 eV partent en chaleur.'],
-    ['4. Il attend','Sur la dernière marche, l’électron reste un court instant (quelques dizaines de nanosecondes).'],
-    ['5. Émission d’un photon jaune','Il retombe sur le niveau bas. Il ne lui reste qu’environ 2,2 eV à rendre : le photon émis est jaune (vers 560 nm).']][s];
-    document.getElementById('ceTitle').textContent=T[0]; document.getElementById('ceText').textContent=T[1]; }
-}
-
-infoBar(document.getElementById('fInfo'),document.getElementById('fBox'),['gap','algaas','algainp','ingan','al','ga','in','ph','n2','as','indirect','greengap','rvb']);
-infoBar(document.getElementById('wInfo'),document.getElementById('wBox'),['ingan','lumino','stokes','oeil','rgb3']);
-infoBar(document.getElementById('ceInfo'),document.getElementById('ceBox'),['yag','ce','stokes','lumino']);
-
-/* ================= boucle ================= */
-for(let k=0;k<240;k++) step4(1/60);
-let paused=false;
-if(reduce){ p5=true; T5=3.8; cePaused=true; ceT=6.6; document.getElementById('c5Pause').textContent='Reprendre'; document.getElementById('cePause').textContent='Reprendre'; }
-document.getElementById('allPlay').onclick=()=>{ zPos=0; zTgt=0; zHold=0; zAuto=true; setAuto(); on4=true; mir4=true; viewTgt=0;
-  const c=document.getElementById('c4Cur'); c.setAttribute('aria-pressed',true); c.textContent='Courant branché';
-  const m=document.getElementById('c4Mir'); m.setAttribute('aria-pressed',true); m.textContent='Miroirs : oui';
-  document.getElementById('c4View').setAttribute('aria-pressed',false); init4(); setSc(0); p5=false; document.getElementById('c5Pause').textContent='Pause';
-  document.getElementById('scope').scrollIntoView({behavior:reduce?'auto':'smooth'}); };
-let last=performance.now();
-function loop(now){ const dt=Math.min(.05,(now-last)/1000); last=now; tNow+=dt;
-  stepScope(dt); drawScope();
-  stepBond(dt); drawBond();
-  stepWell(dt); drawWell(); drawModes();
-  stepDG(dt); drawDG();
-  stepWhite(dt); drawWhite(); drawLat(); drawSpec();
-  if(!cePaused){ ceT+=dt; if(ceT>CEEND) ceT=0; } drawCe();
-  requestAnimationFrame(loop); }
-requestAnimationFrame(loop);
+/* petite animation d'accueil */
+const H=L.setup('cvHero',400,260); let t=0, ph=[];
+L.loop(dt=>{ t+=dt; const x=H.ctx; H.base(); L.bgLab(x,400,260);
+  for(let j=0;j<4;j++) for(let i=0;i<9;i++){ const px=40+i*40, py=70+j*40; L.sph(x,px,py,(i+j)%2?6:8,(i+j)%2?'#2FBF94':'#7E6BFF'); }
+  if(Math.random()<dt*3) ph.push({x:-20,y:110+Math.floor(Math.random()*2)*40,n:1});
+  ph.forEach(p=>{ p.x+=120*dt; if(Math.random()<dt*.8) p.n++; L.wave(x,p.x,p.y-20,1,0,30,3+p.n,t*12,'#FF3D33',1.4); });
+  ph=ph.filter(p=>p.x<440);
+  L.beam(x,0,230,400,230,1.2); L.vignette(x,400,260); });
 })();
 </script>
-</body></html>
+</body>
+</html>

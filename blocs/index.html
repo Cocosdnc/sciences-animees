@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Modèles réutilisables · Sciences animées</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/css/base.css">
+<style>
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:8px;text-decoration:none;color:var(--ink)}
+.card:hover{border-color:var(--muted)}
+.card h3{margin:0}.card p{margin:0;font-size:14px;color:var(--muted);flex:1}
+.tags{display:flex;flex-wrap:wrap;gap:6px}.tags span{font:500 11px/1 var(--f-mono);color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 8px}
+</style>
+</head>
+<body>
+<div class="topbar"><a class="brand" href="../"><i></i>Sciences animées</a><nav><a href="../#catalogue">Animations</a><a href="./">Modèles</a></nav></div>
+<div class="wrap">
+  <header class="page"><div class="kicker">Boîte à modèles</div><h1>Les modèles, un par un</h1>
+    <p class="lead">Chaque modèle est un bloc autonome. Il sert dans plusieurs animations et plusieurs domaines, et on peut aussi l'ouvrir seul, par exemple pour le projeter en classe.</p></header>
+  <section><div class="grid" id="g"></div></section>
+</div>
+<script src="../data/catalogue.js"></script>
+<script>
+const K=window.CATALOGUE, dom=Object.fromEntries(K.domaines.map(d=>[d.id,d.nom])), g=document.getElementById('g');
+K.blocs.forEach(b=>{ const a=document.createElement('a'); a.className='card'; a.href='voir.html#'+b.id;
+  a.innerHTML='<h3></h3><p></p><div class="tags"></div>'; a.querySelector('h3').textContent=b.titre; a.querySelector('p').textContent=b.resume;
+  const used=K.animations.filter(x=>(x.blocs||[]).includes(b.id)).map(x=>x.titre);
+  [...b.domaines.map(d=>dom[d]),...(used.length?['utilisé dans : '+used.join(', ')]:[])].forEach(t=>{ const s=document.createElement('span'); s.textContent=t; a.querySelector('.tags').appendChild(s); });
+  g.appendChild(a); });
+</script>
+</body>
+</html>
