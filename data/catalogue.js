@@ -36,7 +36,12 @@ window.CATALOGUE={
     {id:'lumiere-soleil-lune-terre', titre:'Combien de temps met la lumière pour arriver sur Terre ?', domaine:'physique', niveaux:['collège'],
      themes:['lumière','vitesse de la lumière','propagation','Lune','Soleil','système solaire','distance'],
      resume:'De la Lune (1,3 s) et du Soleil (8 min 20 s) jusqu\u2019à la Terre, en temps réel ou accéléré, avec la Terre et la Lune à l\u2019échelle.',
-     chemin:'animations/physique/lumiere-soleil-lune-terre/', signe:'8 min 20 s', ajout:'2026-11-11'}
+     chemin:'animations/physique/lumiere-soleil-lune-terre/', signe:'8 min 20 s', ajout:'2026-11-11'},
+    {id:'toucher-atomes', titre:'Que se passe-t-il quand on touche un objet ?', domaine:'physique', niveaux:['collège','lycée','supérieur'],
+     themes:['atome','noyau','nuage électronique','électron','contact','force','toucher','principe de Pauli','van der Waals','répulsion','surface','matière'],
+     resume:'Ton doigt sur une table, vu au niveau des atomes : un noyau 60 000 fois plus petit que son nuage, deux nuages qui se repoussent parce que les places sont déjà prises, et une peau qui ne touche l\u2019objet que par quelques bosses.',
+     chemin:'animations/physique/toucher-atomes/', signe:'0,38 nm', ajout:'2026-11-12',
+     blocs:['orbitales-liantes']}
   ],
   /* Blocs : modèles réutilisables, insérables dans n'importe quelle page avec <div data-bloc="id"></div>.
      - domaines : tous les domaines où le bloc sert (il apparaît dans chacun)

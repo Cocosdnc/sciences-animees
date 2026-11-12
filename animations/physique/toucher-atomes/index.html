@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Que se passe-t-il quand on touche un objet ? · Sciences animées</title>
+<meta name="description" content="Ton doigt touche une table : ce qui se passe au niveau des atomes. Un noyau minuscule, un nuage d'électrons, et pourquoi les nuages de deux objets se repoussent au lieu de se traverser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<style>
+.retenir{margin:0;padding-left:1.2em;max-width:66ch;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.retenir b{color:var(--ink)}
+.lc label.chk{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--muted)}
+.lc label.chk input{accent-color:var(--laser);width:17px;height:17px}
+</style>
+</head>
+<body>
+<div class="topbar"><a class="brand" href="../../../"><i></i>Sciences animées</a><nav><a href="../../../#catalogue">Animations</a><a href="../../../carte.html">Carte des notions</a><a href="../../../blocs/">Modèles</a></nav></div>
+<div class="wrap">
+  <header class="page">
+    <div class="kicker">Physique · 0,38 nm</div>
+    <h1>Que se passe-t-il quand on touche un objet ?</h1>
+    <p class="lead">Ton doigt est fait d’atomes, la table aussi. Chaque atome est un noyau minuscule entouré d’un nuage d’électrons immense à côté. Alors, quand tu touches la table, qu’est-ce qui touche quoi ? Et pourquoi ton doigt ne passe-t-il pas à travers ?</p>
+  </header>
+
+  <!-- ============ ÉTAPE 1 : L'ATOME EST-IL VIDE ? ============ -->
+  <section id="vide">
+    <div class="step">Étape 1</div>
+    <h2>Un noyau minuscule dans un grand nuage</h2>
+    <p class="note">On part d’un atome d’hydrogène entier, puis on zoome vers son centre. Regarde quand le noyau devient enfin visible, et ce que devient le nuage pendant le zoom.</p>
+    <div class="panel">
+      <div class="view"><canvas id="cv1" style="aspect-ratio:400/260" aria-label="Zoom logarithmique depuis un atome d’hydrogène entier jusqu’à son noyau"></canvas><div class="depth" id="z1d">Zoom × 1</div><div class="scale" id="z1s">Cadre : 0,6 nm</div></div>
+      <div class="lc"><button type="button" id="z1go" class="primary">Zoom automatique</button>
+        <label class="slider"><span>Zoom vers le noyau</span><input id="z1" type="range" min="0" max="1000" value="0"><strong id="z1v">× 1</strong></label></div>
+      <div class="caption"><b id="c1b"></b><span id="c1s"></span></div>
+      <div class="infobar" id="ib1"></div><div class="infobox" id="ibx1" hidden></div>
+    </div>
+  </section>
+
+  <!-- ============ ÉTAPE 2 : DEUX ATOMES ============ -->
+  <section id="deux-atomes">
+    <div class="step">Étape 2</div>
+    <h2>Deux atomes qui s’approchent</h2>
+    <p class="note">À gauche, un atome de la surface de ton doigt. À droite, un atome de la surface de l’objet. Rapproche-les avec le curseur, ou lance l’un contre l’autre. En bas, la courbe dit l’énergie qu’il faut payer à chaque distance : là où elle monte, les atomes se repoussent.</p>
+    <div class="panel">
+      <div class="view"><canvas id="cv2" style="aspect-ratio:400/280" aria-label="Deux atomes et leurs nuages d’électrons qui se rapprochent, avec la courbe d’énergie en fonction de la distance"></canvas><div class="scale" id="d2s">d = 0,80 nm</div></div>
+      <div class="lc">
+        <button type="button" id="l20">Lancer comme à 20 °C</button><button type="button" id="l1">Lancer très fort (1 eV)</button>
+        <label class="slider"><span>Distance entre les noyaux</span><input id="d2" type="range" min="22" max="110" value="80"><strong id="d2v">0,80 nm</strong></label></div>
+      <div class="caption"><b id="c2b"></b><span id="c2s"></span></div>
+      <div class="infobar" id="ib2"></div><div class="infobox" id="ibx2" hidden></div>
+    </div>
+    <p class="sources">Sources : courbe de Lennard-Jones avec des paramètres typiques d’un atome de carbone dans une molécule (champs de force OPLS et AMBER : σ ≈ 0,34 nm, creux ≈ 0,004 à 0,005 eV). F. J. Dyson et A. Lenard, « Stability of Matter », J. Math. Phys. 8 (1967) 423. K. Autumn et al., « Evidence for van der Waals adhesion in gecko setae », PNAS 99 (2002) 12252.</p>
+  </section>
+
+  <section id="antiliante">
+    <div class="step">Pour aller plus loin</div>
+    <h2>Pourquoi deux nuages pleins se repoussent</h2>
+    <p class="note">Quand deux ondes d’électrons se superposent, il n’y a que deux façons de les combiner. Si les électrons des deux atomes sont déjà tous en couple, ils doivent occuper <em>les deux</em> : la liante, qui rapproche, et l’antiliante, qui creuse un nœud au milieu et repousse. L’antiliante repousse plus que la liante n’attire : au total, les atomes se repoussent.</p>
+    <div data-bloc="orbitales-liantes"></div>
+  </section>
+
+  <!-- ============ ÉTAPE 3 : DEUX SURFACES ============ -->
+  <section id="surfaces">
+    <div class="step">Étape 3</div>
+    <h2>Ton doigt appuie sur l’objet</h2>
+    <p class="note">En haut, la peau du doigt ; en bas, un objet dur. Chaque point blanc est un noyau, chaque halo est le nuage de son atome. Appuie de plus en plus fort : regarde quels atomes touchent vraiment, et comment la poussée remonte dans la peau par les liaisons (en doré quand elles sont comprimées).</p>
+    <div class="panel">
+      <div class="view"><canvas id="cv3" style="aspect-ratio:400/280" aria-label="Simulation de la peau d’un doigt qui appuie sur la surface d’un objet, atome par atome"></canvas><div class="scale" id="s3s">Poussée 0 %</div></div>
+      <div class="lc">
+        <label class="slider"><span>Appuyer</span><input id="p3" type="range" min="0" max="100" value="0"><strong id="p3v">0 %</strong></label>
+        <label class="chk"><input type="checkbox" id="n3" checked>Nuages</label>
+        <label class="chk"><input type="checkbox" id="t3" checked>Agitation thermique</label>
+        <button type="button" id="r3">Relâcher</button></div>
+      <div class="caption"><b id="c3b"></b><span id="c3s"></span></div>
+      <div class="infobar" id="ib3"></div><div class="infobox" id="ibx3" hidden></div>
+    </div>
+    <p class="sources">Sources : F. P. Bowden et D. Tabor, <i>The Friction and Lubrication of Solids</i>, Oxford (1950), pour la surface de contact réelle. A. Zimmerman, L. Bai et D. Ginty, « The gentle touch receptors of mammalian skin », Science 346 (2014) 950.</p>
+  </section>
+
+  <section id="retenir">
+    <div class="step">À retenir</div>
+    <h2>Alors, est-ce qu’on touche vraiment ?</h2>
+    <ul class="retenir">
+      <li>Un atome, c’est un <b>noyau minuscule</b> (quelques fm) au centre d’un <b>nuage d’électrons</b> des dizaines de milliers de fois plus grand. Presque toute la masse est dans le noyau, mais le nuage occupe l’espace.</li>
+      <li>Quand deux objets se touchent, ce sont leurs <b>nuages qui se rencontrent</b>. Les noyaux restent à environ 0,3 à 0,4 nm les uns des autres : des dizaines de milliers de fois leur taille.</li>
+      <li>Les nuages se repoussent parce que <b>les places sont déjà prises</b> : les électrons des surfaces sont tous en couple (principe de Pauli). Pour se superposer, leurs ondes devraient onduler davantage, et ça coûte une énergie qui grimpe très vite.</li>
+      <li>« Toucher », c’est arriver à la distance où cette <b>répulsion</b> l’emporte. Ton doigt sent la peau qui se déforme parce que ses atomes ne peuvent pas entrer dans ceux de l’objet.</li>
+    </ul>
+  </section>
+</div>
+
+<script src="../../../assets/js/labo.js"></script>
+<script src="../../../assets/js/blocs/orbitales-liantes.js"></script>
+<script>
+(function(){
+const L=Labo, C=L.C;
+L.mountSides();
+const fr=(v,n)=>v.toFixed(n).replace('.',',');
+const big=v=>Math.round(v).toLocaleString('fr-FR');
+const SUP='⁰¹²³⁴⁵⁶⁷⁸⁹';
+const pow10=n=>'10'+(n<0?'⁻':'')+String(Math.abs(n)).split('').map(c=>SUP[+c]).join('');
+function gamma3(b){ return -b*Math.log(Math.random()*Math.random()*Math.random()+1e-12); }
+function dir3(){ const u=2*Math.random()-1, a=Math.random()*Math.PI*2, s=Math.sqrt(1-u*u); return [s*Math.cos(a),s*Math.sin(a)]; }
+function gauss(){ return Math.sqrt(-2*Math.log(Math.random()+1e-12))*Math.cos(2*Math.PI*Math.random()); }
+
+/* =================== ÉTAPE 1 : zoom vers le noyau =================== */
+(function(){
+  const W=400,H=260, V=L.setup('cv1',W,H), A0=5.29e-11, RP=0.84e-15, W0=6e-10, DEC=Math.log10(W0/4e-15);
+  const inp=document.getElementById('z1'), out=document.getElementById('z1v'), zd=document.getElementById('z1d'), zs=document.getElementById('z1s');
+  const cb=document.getElementById('c1b'), cs=document.getElementById('c1s');
+  const INFO={
+    vide:['L’atome est-il vide ?','Presque toute la masse (99,95 % pour l’hydrogène) est dans le noyau. Mais l’espace autour n’est pas « rien » : il est rempli par l’onde de l’électron. On ne peut pas y faire entrer un autre électron comme dans une pièce vide. C’est tout l’objet de l’étape 2.'],
+    nuage:['Un nuage, pas une planète','L’électron n’a pas de trajectoire autour du noyau. Le nuage dit où l’on a des chances de le trouver si on le cherche : chaque point qui clignote est une position où on pourrait le détecter. Le nuage n’a pas de bord net, il s’estompe peu à peu.'],
+    chiffres:['Les vrais chiffres','Nuage de l’hydrogène : environ 0,1 nm de diamètre (rayon de Bohr : 0,053 nm). Noyau (un proton) : 1,7 fm de diamètre, soit 0,000 001 7 nm. Rapport : environ 60 000. Selon l’atome et la façon de mesurer le bord du nuage, ce rapport va d’environ 20 000 à 150 000 : on retient « des dizaines de milliers de fois ».'],
+    bille:['Une image pour se représenter','Si le noyau était une bille de 1 cm, le nuage ferait environ 600 m de large. Mais attention, l’image s’arrête là : ces 600 m ne sont pas un stade vide, ils sont remplis par le nuage de l’électron.'],
+    proba:['Le chiffre sous l’image','« Probabilité que l’électron soit dans le cadre » : si on cherchait l’électron, voici la chance de le trouver dans la zone affichée. Quand on zoome sur le noyau, elle devient minuscule : le noyau occupe une part infime de l’atome.'],
+    simplif:['Ce qui est simplifié','Le nuage est dessiné comme vu à travers (densité projetée sur l’écran). Le noyau est dessiné comme une boule nette, alors qu’il est lui aussi flou. Les points clignotants sont des positions possibles tirées au hasard, pas un film de l’électron qui bouge.']
+  };
+  L.infoBar(document.getElementById('ib1'),document.getElementById('ibx1'),['vide','nuage','chiffres','bille','proba','simplif'],INFO);
+  let s=0, auto=false; const flick=[];
+  inp.oninput=()=>{ auto=false; s=inp.value/1000; };
+  document.getElementById('z1go').onclick=()=>{ if(s>=.999) s=0; auto=true; };
+  function lenTxt(m){ if(m>=1e-10) return fr(m*1e9,m>=1e-9?1:(m>=1e-10?2:3))+' nm'; if(m>=1e-12) return big(m*1e12)+' pm'; return big(m*1e15)+' fm'; }
+  function niceLen(w){ const t=w/4, e=Math.floor(Math.log10(t)); let best=Math.pow(10,e); [1,2,5].forEach(k=>{ if(k*Math.pow(10,e)<=t) best=k*Math.pow(10,e); }); return best; }
+  function probIn(R){ const x=R/A0; return x<1e-3?4/3*x*x*x:1-Math.exp(-2*x)*(1+2*x+2*x*x); }
+  L.onFrame(dt=>{
+    if(auto){ s=Math.min(1,s+dt/7); if(s>=1) auto=false; inp.value=Math.round(s*1000); }
+    const w=W0*Math.pow(10,-DEC*s), k=W/w, cx=W/2, cy=H/2, zoom=W0/w;
+    const x=V.ctx; V.base(); L.bgLab(x,W,H);
+    /* nuage : densité projetée de l'orbitale 1s */
+    const a0=A0*k, f=r=>Math.exp(-2*r)*(1+2*r);
+    if(a0<3000){ const R=5*a0, g=x.createRadialGradient(cx,cy,0,cx,cy,R); for(let i=0;i<=20;i++){ const r=i/4; g.addColorStop(i/20,'rgba(255,140,128,'+(.5*f(r)).toFixed(3)+')'); }
+      x.fillStyle=g; x.fillRect(0,0,W,H); }
+    else { x.fillStyle='rgba(255,140,128,.5)'; x.fillRect(0,0,W,H); }
+    /* positions possibles de l'électron */
+    for(let i=0;i<5;i++){ const r=gamma3(A0/2), d=dir3(); flick.push({x:d[0]*r,y:d[1]*r,t:0}); }
+    for(let i=flick.length-1;i>=0;i--){ const p=flick[i]; p.t+=dt; if(p.t>.9){ flick.splice(i,1); continue; }
+      const X=cx+p.x*k, Y=cy+p.y*k; if(X<-5||X>W+5||Y<-5||Y>H+5) continue; const a=Math.sin(Math.PI*p.t/.9);
+      L.glow(x,X,Y,7,'#FFC2B8',.55*a); x.fillStyle='rgba(255,230,225,'+a.toFixed(2)+')'; x.fillRect(X-1,Y-1,2,2); }
+    /* noyau */
+    const rp=RP*k;
+    if(rp<1.4){ L.glow(x,cx,cy,9,'#FFFFFF',.5); x.beginPath(); x.arc(cx,cy,1.4,0,7); x.fillStyle='#F2F6FA'; x.fill();
+      const sz=rp*2, txt=sz<.01?'noyau : en vrai '+fr(sz,6).replace(/0+$/,'')+' px':'noyau : en vrai '+fr(sz,2)+' px';
+      L.lead(x,cx+3,cy+3,cx+38,cy+34); L.tag(x,txt,cx+38,cy+34,'left'); }
+    else { L.glow(x,cx,cy,rp*2.2,'#FFFFFF',.35); L.sph(x,cx,cy,rp,'#F2F6FA'); L.tag(x,'le noyau : un proton, 1,7 fm',cx,cy+rp+16,'center'); }
+    /* barre d'échelle */
+    const bl=niceLen(w), bp=bl*k; L.line(x,14,H-16,14+bp,H-16,C.ink,2); L.line(x,14,H-21,14,H-11,C.ink,1.5); L.line(x,14+bp,H-21,14+bp,H-11,C.ink,1.5); L.txt(x,lenTxt(bl),14+bp/2,H-28,'center',C.ink);
+    if(s<.06) { L.lead(x,cx+a0*1.6,cy-a0*1.2,cx+a0*1.6+30,cy-a0*1.2-40); L.tag(x,'nuage de l’électron',cx+a0*1.6+30,cy-a0*1.2-40,'left'); }
+    L.vignette(x,W,H);
+    /* textes */
+    const zt='× '+big(zoom); out.textContent=zt; zd.textContent='Zoom '+zt; zs.textContent='Cadre : '+lenTxt(w);
+    const P=probIn(w/2); let pt; if(P>.01) pt=big(P*100)+' %'; else { const n=Math.floor(Math.log10(1/P)), m=1/P/Math.pow(10,n); pt='1 chance sur '+fr(m,0)+' × '+pow10(n); }
+    if(s<.12){ cb.textContent='L’atome d’hydrogène entier'; cs.textContent='Un nuage d’environ 0,1 nm de large. Le noyau est au centre, mais à cette échelle il ferait moins d’un millième de pixel. Probabilité que l’électron soit dans le cadre : '+pt+'.'; }
+    else if(rp<1.4){ cb.textContent='On plonge vers le centre'; cs.textContent='Le nuage n’a ni bord ni grain : de plus près, il paraît juste uniforme. Le noyau reste invisible. Probabilité que l’électron soit dans le cadre : '+pt+'.'; }
+    else { cb.textContent='Le noyau, enfin'; cs.textContent='Il a fallu zoomer '+big(zoom)+' fois. Le cadre ne fait plus que '+lenTxt(w)+' : l’électron n’y est presque jamais ('+pt+'). Le noyau est minuscule, mais le nuage autour, lui, occupe tout l’atome.'; }
+  },V.cv);
+})();
+
+/* =================== ÉTAPE 2 : deux atomes =================== */
+const SIG=.34, EPS=.0045, RMIN=SIG*Math.pow(2,1/6);
+const U=r=>{ const q=Math.pow(SIG/r,6); return 4*EPS*(q*q-q); };
+const F=r=>{ const q=Math.pow(SIG/r,6); return 24*EPS*(2*q*q-q)/r; }; /* > 0 : répulsion, en eV/nm */
+(function(){
+  const W=400,H=280, V=L.setup('cv2',W,H), S=150, CY=70, NUC=5.5e-6;
+  const inp=document.getElementById('d2'), out=document.getElementById('d2v'), ds=document.getElementById('d2s'), cb=document.getElementById('c2b'), cs=document.getElementById('c2s');
+  const INFO={
+    pauli:['Pourquoi ça repousse : les places sont prises','À la surface de ta peau comme de l’objet, chaque électron est déjà en couple avec un autre, de spin opposé, dans une liaison : toutes les places basses sont pleines. Le principe de Pauli interdit d’en ajouter un troisième. Quand les nuages se chevauchent, les électrons des deux atomes doivent donc prendre des formes différentes : leurs ondes se creusent d’un nœud au milieu (l’orbitale antiliante, juste en dessous). Une onde qui ondule plus porte plus d’énergie d’agitation, comme dans « Le creux de l’atome ». Cette énergie grimpe très vite quand on serre : c’est la répulsion.'],
+    elec:['Et la répulsion électrique ?','Chaque atome est neutre : de loin, ses électrons cachent la charge de son noyau. Quand les nuages s’interpénètrent, les électrons se repoussent entre eux, les noyaux aussi, mais chaque noyau attire aussi les électrons de l’autre : ces effets se compensent en grande partie. Dyson et Lenard ont montré en 1967 que sans le principe de Pauli, la matière s’effondrerait sur elle-même. La dureté vient d’abord de Pauli, l’électricité seule n’y suffit pas.'],
+    vdw:['La petite attraction','Le nuage n’est pas figé : à chaque instant, l’électron est un peu plus d’un côté. L’atome devient un minuscule dipôle électrique, qui déforme le nuage voisin, et les deux s’attirent faiblement (force de London, une des forces de van der Waals). Environ 0,0045 eV par paire : 5 fois moins que l’agitation à 20 °C, donc deux atomes isolés ne restent pas collés. Additionnée sur des milliards de paires, elle suffit à tenir un gecko au plafond.'],
+    contact:['Alors, ça se touche ?','Le nuage n’a pas de bord net. « Toucher », c’est arriver à la distance où la répulsion l’emporte : environ 0,3 à 0,4 nm entre noyaux. Dans ce sens, oui, on touche, et c’est même la seule définition possible du contact. Mais les noyaux restent à environ 60 000 fois leur propre taille l’un de l’autre.'],
+    lancer:['Les deux lancers','« Comme à 20 °C » : 0,025 eV, l’énergie typique d’agitation des molécules à température ambiante. L’atome rebondit vers 0,31 nm. « Très fort » : 1 eV, 40 fois plus. Il ne s’approche pourtant que jusqu’à 0,24 nm : le mur monte si vite qu’en pousser 40 fois plus fort ne fait gagner qu’un quart de la distance.'],
+    simplif:['Ce qui est simplifié','La courbe est celle de Lennard-Jones, avec des valeurs typiques pour deux atomes de carbone pris dans des molécules (σ = 0,34 nm, creux de 0,0045 eV). La vraie répulsion monte plutôt comme une exponentielle. Le dessin montre le nuage chassé du milieu ; la vraie redistribution est plus subtile. Vue en 2D, mouvement très ralenti : à 20 °C, les molécules filent à plusieurs centaines de mètres par seconde.']
+  };
+  L.infoBar(document.getElementById('ib2'),document.getElementById('ibx2'),['pauli','elec','vdw','contact','lancer','simplif'],INFO);
+  const N=420, B=.042, DA=[], DB=[];
+  const samp=()=>{ const r=gamma3(B), d=dir3(); return [d[0]*r,d[1]*r]; };
+  for(let i=0;i<N;i++){ DA.push(samp()); DB.push(samp()); }
+  let d=.8, mode='man', v=0, dmin=9, E=0;
+  inp.oninput=()=>{ mode='man'; d=inp.value/100; };
+  function launch(ke){ mode='run'; d=1.05; v=-Math.sqrt(2*ke/.5); dmin=9; E=ke+U(d); }
+  document.getElementById('l20').onclick=()=>launch(.025);
+  document.getElementById('l1').onclick=()=>launch(1);
+  const SQ=.05;
+  function squash(u){ const m=d/2, t=m-SQ; return u>t?t+SQ*(1-Math.exp(-(u-t)/SQ)):u; }
+  function cloud(x,dots,cxp,sgn,col){ const ov=L.clamp((RMIN-d)/.13,0,1); x.save(); x.globalCompositeOperation='lighter'; x.fillStyle=col; x.beginPath();
+    for(const p of dots){ let u=p[0]*sgn, w=p[1]; const u2=squash(u); if(ov>0){ const near=Math.exp(-Math.pow((u2-d/2)/.07,2)); w*=1+1.1*ov*near; }
+      const X=cxp+sgn*u2*S, Y=CY+w*S; x.rect(X-.8,Y-.8,1.6,1.6); } x.fill(); x.restore(); }
+  function arrowLen(f){ return 11*Math.log10(1+Math.abs(f)/.004); }
+  L.onFrame(dt=>{
+    if(mode==='run'){ const n=60, h=dt/n; for(let i=0;i<n;i++){ v+=F(d)/.5*h; d+=v*h; } dmin=Math.min(dmin,d);
+      if(d>1.08&&v>0){ mode='done'; d=1.08; } inp.value=Math.round(L.clamp(d,.22,1.1)*100); }
+    for(let i=0;i<14;i++){ DA[(Math.random()*N)|0]=samp(); DB[(Math.random()*N)|0]=samp(); }
+    const x=V.ctx; V.base(); L.bgLab(x,W,H);
+    const xa=W/2-d/2*S, xb=W/2+d/2*S, u=U(d), f=F(d);
+    /* zone où les places sont prises */
+    if(d<RMIN){ const a=L.clamp(u/.25,0,1)*.55+.12; const g=x.createLinearGradient(W/2-26,0,W/2+26,0); g.addColorStop(0,'rgba(255,61,51,0)'); g.addColorStop(.5,'rgba(255,61,51,'+a.toFixed(2)+')'); g.addColorStop(1,'rgba(255,61,51,0)');
+      x.fillStyle=g; x.fillRect(W/2-26,CY-55,52,110); }
+    cloud(x,DA,xa,1,'rgba(255,180,165,.30)'); cloud(x,DB,xb,-1,'rgba(150,200,255,.30)');
+    [xa,xb].forEach(X=>{ L.glow(x,X,CY,7,'#FFFFFF',.55); x.beginPath(); x.arc(X,CY,1.6,0,7); x.fillStyle='#F2F6FA'; x.fill(); });
+    L.tag(x,'atome du doigt',8,CY-34,'left','#FFC2B8'); L.tag(x,'atome de l’objet',W-8,CY-34,'right','#A9D2FF');
+    /* forces */
+    const al=arrowLen(f), ay=CY+48;
+    if(al>2){ const col=f>0?'#FF9F43':'#5AA9FF', s=f>0?-1:1; L.arrow(x,xa,ay,xa+s*al,ay,col,2); L.arrow(x,xb,ay,xb-s*al,ay,col,2);
+      L.tag(x,f>0?(u>.1?'se repoussent fort':'se repoussent'):'s’attirent un peu',W/2,ay,'center',col); }
+    else L.tag(x,'presque rien',W/2,ay,'center',C.muted);
+    if(d<RMIN&&u>.02) L.tag(x,'places déjà prises',W/2,CY-40,'center','#FF8A80');
+    /* courbe d'énergie */
+    const X0=36,X1=390,Y0=150,Y1=272, D0=.22,D1=1.1, UL=-.007, UH=.032;
+    const mx=r=>X0+(r-D0)/(D1-D0)*(X1-X0), my=e=>Y1-(L.clamp(e,UL,UH)-UL)/(UH-UL)*(Y1-Y0);
+    L.rr(x,6,Y0-8,W-12,Y1-Y0+14,8,'rgba(255,255,255,.03)','rgba(232,238,244,.1)',1);
+    L.line(x,X0,my(0),X1,my(0),'rgba(232,238,244,.35)',1,[3,3]); L.txt(x,'0',X0-6,my(0),'right');
+    L.line(x,X0,my(.025),X1,my(.025),'rgba(227,179,65,.6)',1,[2,3]); L.txt(x,'agitation à 20 °C : 0,025 eV',X1-2,my(.025)-8,'right',C.gold);
+    x.save(); x.beginPath(); x.rect(X0,Y0-6,X1-X0,Y1-Y0+6); x.clip(); x.beginPath(); let st=false;
+    for(let r=D0;r<=D1;r+=.004){ const e=U(r), X=mx(r), Y=my(e); if(e>UH*1.4){ st=false; continue; } st?x.lineTo(X,Y):x.moveTo(X,Y); st=true; }
+    x.strokeStyle=C.ink; x.lineWidth=2; x.stroke(); x.restore();
+    L.line(x,mx(RMIN),my(-EPS)+4,mx(RMIN),Y1,'rgba(232,238,244,.35)',1,[2,2]); L.txt(x,'contact : 0,38 nm',mx(RMIN)+4,Y1-6,'left',C.ink);
+    L.txt(x,'distance entre noyaux →',X1,Y1-6,'right'); x.save(); x.translate(16,(Y0+Y1)/2); x.rotate(-Math.PI/2); L.txt(x,'énergie ↑',0,0,'center',C.ink,true); x.restore();
+    L.txt(x,'mur : ça monte',mx(.26)+4,Y0+16,'left','#FF9F43');
+    if(mode!=='man'&&E<UH) L.line(x,X0,my(E),X1,my(E),'rgba(255,255,255,.5)',1);
+    if(mode!=='man'&&E>=UH) L.txt(x,'énergie du lancer : 1 eV, hors du graphique',X1,Y0+16,'right',C.muted);
+    const bx=mx(L.clamp(d,D0,D1)), by=my(u); L.glow(x,bx,by-5,13,'#FFFFFF',.35); L.sph(x,bx,by-5,5,C.ink);
+    /* textes */
+    out.textContent=fr(d,2)+' nm'; ds.textContent='d = '+fr(d,2)+' nm';
+    const tail=' Les noyaux sont à '+big(Math.round(d/NUC/1000)*1000)+' fois la taille d’un noyau de carbone (5,5 fm).'+((mode==='done'||mode==='run')&&dmin<9?' Distance la plus courte atteinte : '+fr(dmin,2)+' nm.':'');
+    if(d>.7){ cb.textContent='Loin : il ne se passe rien'; cs.textContent='Chaque atome est neutre : son nuage cache la charge de son noyau. Vu de l’autre atome, il n’y a presque rien à sentir.'+tail; }
+    else if(d>RMIN+.04){ cb.textContent='Une toute petite attraction'; cs.textContent='Les nuages se déforment l’un l’autre et s’attirent à peine (force de van der Waals) : un creux de 0,0045 eV, plus faible que l’agitation à 20 °C.'+tail; }
+    else if(d>RMIN-.03){ cb.textContent='Le contact'; cs.textContent='L’énergie est au plus bas, vers 0,38 nm entre noyaux : les nuages se frôlent. C’est ça, « toucher ». Les noyaux, eux, sont à des dizaines de milliers de fois leur taille l’un de l’autre.'+tail; }
+    else { cb.textContent='Trop près : ça repousse, et vite'; cs.textContent='Les nuages se chevauchent, mais toutes les places basses sont déjà prises. Les électrons doivent onduler davantage, avec un nœud au milieu : l’énergie grimpe en flèche. À '+fr(d,2)+' nm, il faut déjà '+(u<1?fr(u,3):fr(u,1))+' eV.'+tail; }
+    L.vignette(x,W,H);
+  },V.cv);
+})();
+
+/* =================== ÉTAPE 3 : deux surfaces =================== */
+(function(){
+  const W=400,H=280, V=L.setup('cv3',W,H), A=14, RH=A*Math.sqrt(3)/2, PXNM=70, RM=RMIN*PXNM, EP=280, KO=140, KF=25, KA=80, GAM=3, MOB=.12, KY=4, FMAX=1200;
+  const inp=document.getElementById('p3'), out=document.getElementById('p3v'), ss=document.getElementById('s3s'), cb=document.getElementById('c3b'), cs=document.getElementById('c3s');
+  const chkN=document.getElementById('n3'), chkT=document.getElementById('t3');
+  const INFO={
+    reel:['La vraie surface de contact','Même polie, une surface est faite de bosses. Ici, seules quelques bosses du doigt touchent l’objet. Appuie plus fort : la peau s’écrase et d’autres bosses arrivent au contact. Entre deux solides durs, la surface réellement en contact est souvent moins de 1 % de la surface apparente (Bowden et Tabor).'],
+    remonte:['Comment la poussée remonte','Les atomes au contact sont repoussés. Ils poussent leurs voisins par les liaisons (en doré quand elles sont comprimées), qui poussent les leurs, et ainsi de suite. La poussée traverse toute la peau jusqu’aux capteurs, et toute la table jusqu’au sol.'],
+    sentir:['Ce que sent ton doigt','Sous la peau, des capteurs (corpuscules de Meissner, cellules de Merkel…) détectent la déformation de la peau et envoient un signal nerveux au cerveau. Tu ne sens pas les atomes un par un : tu sens ta peau qui se déforme, parce que ses atomes ne peuvent pas entrer dans ceux de l’objet.'],
+    traverse:['Pourquoi le doigt ne passe pas à travers','Pour rapprocher vraiment les noyaux, il faudrait vaincre la répulsion de tous les nuages en même temps, et cette répulsion monte en flèche (étape 2). Appuyer plus fort écrase la peau, peut abîmer la surface, mais les atomes ne s’interpénètrent pas : les noyaux restent à plus de 0,25 nm.'],
+    noyaux:['Points blancs et halos','Chaque point blanc est un noyau, dessiné environ 6 000 fois trop gros pour rester visible. Le halo autour est le nuage de l’atome. Dans un même objet, les nuages se recouvrent : c’est la liaison, les électrons y sont partagés. Entre le doigt et l’objet, ils se frôlent sans se mélanger.'],
+    simplif:['Ce qui est simplifié','Vue en 2D, quelques centaines d’atomes au lieu de milliards de milliards. La vraie peau est faite de cellules, de kératine, d’eau et de sébum : sa mollesse vient de cette structure, pas d’atomes plus mous comme ici. Les bosses réelles sont bien plus grandes (micromètres). On ignore la petite attraction de van der Waals et la fine couche d’eau présente sur toute surface à l’air. Les forces sont agrandies.']
+  };
+  L.infoBar(document.getElementById('ib3'),document.getElementById('ibx3'),['noyaux','reel','remonte','sentir','traverse','simplif'],INFO);
+  /* sprites de nuages */
+  function sprite(col){ const c=document.createElement('canvas'), R=32; c.width=c.height=R*2; const g=c.getContext('2d'), gr=g.createRadialGradient(R,R,0,R,R,R);
+    gr.addColorStop(0,L.rgba(col,.55)); gr.addColorStop(.55,L.rgba(col,.22)); gr.addColorStop(1,L.rgba(col,0)); g.fillStyle=gr; g.fillRect(0,0,R*2,R*2); return c; }
+  const SPF=sprite('#FFB4A5'), SPO=sprite('#96C8FF');
+  const P=[]; /* atomes : x,y,vx,vy,x0,y0,b(0 doigt,1 objet),fix,anch */
+  const Y_OBJ_BOT=272, OROWS=6;
+  for(let j=0;j<OROWS;j++){ const y=Y_OBJ_BOT-j*RH, off=(j%2)*A/2; for(let x=4+off;x<W;x+=A){ if(j===OROWS-1&&x>262) continue; P.push({x,y,vx:0,vy:0,x0:x,y0:y,b:1,fix:j===0,anch:false}); } }
+  const bump=x=>Math.max(1*Math.exp(-Math.pow((x-78)/20,2)), .67*Math.exp(-Math.pow((x-196)/26,2)), .9*Math.exp(-Math.pow((x-318)/16,2)));
+  const YF0=40, FROWS=10;
+  for(let j=0;j<FROWS;j++){ const y=YF0+j*RH, off=(j%2)*A/2; for(let x=4+off;x<W;x+=A){ const maxRow=6+Math.round(3*bump(x)); if(j>maxRow) continue;
+    const jx=j?(Math.random()-.5)*2.4:0, jy=j?(Math.random()-.5)*2.4:0; P.push({x:x+jx,y:y+jy,vx:0,vy:0,x0:x+jx,y0:y+jy,b:0,fix:false,anch:j===0,surf:j===maxRow}); } }
+  const BONDS=[];
+  for(let i=0;i<P.length;i++) for(let k=i+1;k<P.length;k++){ const p=P[i],q=P[k]; if(p.b!==q.b) continue; const dx=q.x-p.x, dy=q.y-p.y, r=Math.hypot(dx,dy), lim=p.b?A*1.1:A*1.38;
+    if(r<lim) BONDS.push([i,k,r,p.b?KO:KF]); }
+  const CF=[], CO=[]; P.forEach((p,i)=>{ if(p.b===0&&p.y0>YF0+4*RH) CF.push(i); if(p.b===1&&p.y0<Y_OBJ_BOT-(OROWS-3)*RH) CO.push(i); });
+  const NSURF=P.filter(p=>p.surf).length;
+  let Y=0, VY=0, push=0; let contacts=[], dminPx=99;
+  inp.oninput=()=>{ push=inp.value/100; };
+  document.getElementById('r3').onclick=()=>{ push=0; inp.value=0; };
+  const FX=new Float64Array(P.length), FY=new Float64Array(P.length);
+  function step(h,T){
+    FX.fill(0); FY.fill(0); let Fback=push*FMAX-KY*Y;
+    for(const [i,k,r0,kk] of BONDS){ const p=P[i],q=P[k], dx=q.x-p.x, dy=q.y-p.y, r=Math.hypot(dx,dy)||1e-6, f=kk*(r-r0)/r; FX[i]+=f*dx; FY[i]+=f*dy; FX[k]-=f*dx; FY[k]-=f*dy; }
+    P.forEach((p,i)=>{ if(p.anch){ const ex=p.x-p.x0, ey=p.y-(p.y0+Y); FX[i]-=KA*ex; FY[i]-=KA*ey; } });
+    contacts=[]; dminPx=99;
+    for(const i of CF){ const p=P[i]; for(const k of CO){ const q=P[k], dx=q.x-p.x; if(dx>RM||dx<-RM) continue; const dy=q.y-p.y; if(dy>RM||dy<-RM) continue; const r2=dx*dx+dy*dy; if(r2>RM*RM) continue;
+      const r=Math.sqrt(r2), qq=Math.pow(RM/r,6); let f=12*EP*(qq*qq-qq)/r; f=Math.min(f,4000); FX[i]-=f*dx/r; FY[i]-=f*dy/r; FX[k]+=f*dx/r; FY[k]+=f*dy/r;
+      contacts.push([i,k,f]); Fback-=f*dy/r; if(r<dminPx) dminPx=r; } }
+    const nz=T>0?Math.sqrt(2*GAM*T*h):0;
+    P.forEach((p,i)=>{ if(p.fix) return; const vr=p.b?0:VY; p.vx+=(FX[i]-GAM*p.vx)*h+nz*gauss(); p.vy+=(FY[i]-GAM*(p.vy-vr))*h+nz*gauss(); p.x+=p.vx*h; p.y+=p.vy*h; });
+    VY=L.clamp(MOB*Fback,-120,120); Y+=VY*h;
+  }
+  L.onFrame(dt=>{
+    const T=chkT.checked?20:0; for(let s=0;s<10;s++) step(dt/10,T);
+    const x=V.ctx; V.base(); L.bgLab(x,W,H);
+    if(chkN.checked){ x.save(); x.globalAlpha=.9; P.forEach(p=>{ const sp=p.b?SPO:SPF, r=RM/2*1.25; x.drawImage(sp,p.x-r,p.y-r,r*2,r*2); }); x.restore(); }
+    x.lineCap='round';
+    for(const [i,k,r0] of BONDS){ const p=P[i],q=P[k], r=Math.hypot(q.x-p.x,q.y-p.y), s=(r-r0)/r0;
+      if(s<-.04){ const a=L.clamp((-s-.04)*8,0,1); x.strokeStyle='rgba(227,179,65,'+(.25+.7*a).toFixed(2)+')'; x.lineWidth=.8+1.6*a; }
+      else { x.strokeStyle=p.b?'rgba(154,166,178,.28)':'rgba(255,180,165,.22)'; x.lineWidth=.7; }
+      x.beginPath(); x.moveTo(p.x,p.y); x.lineTo(q.x,q.y); x.stroke(); }
+    const touched=new Set();
+    for(const [i,k,f] of contacts){ const p=P[i],q=P[k]; touched.add(i); L.glow(x,(p.x+q.x)/2,(p.y+q.y)/2,6+L.clamp(f/40,0,12),C.laser,.55); }
+    P.forEach(p=>{ x.beginPath(); x.arc(p.x,p.y,1.15,0,7); x.fillStyle='#F2F6FA'; x.fill(); });
+    /* poussée */
+    if(push>.01){ const l=10+push*26; L.arrow(x,W/2,4,W/2,4+l,C.ink,2.2); }
+    L.tag(x,'peau du doigt',8,12,'left','#FFC2B8'); L.tag(x,'objet dur',8,Y_OBJ_BOT-RH*1.5,'left','#A9D2FF');
+    L.line(x,W-12-A,H-6,W-12,H-6,C.ink,1.5); L.tag(x,'0,2 nm',W-12-A/2,H-17,'center');
+    L.vignette(x,W,H);
+    /* textes */
+    out.textContent=Math.round(push*100)+' %'; ss.textContent='Poussée '+Math.round(push*100)+' %';
+    const nt=touched.size;
+    if(!contacts.length){ cb.textContent=push<.01?'Le doigt au-dessus de l’objet':'Le doigt descend'; cs.textContent='Tant que les nuages ne se frôlent pas, il ne se passe rien. Augmente la poussée.'; }
+    else { cb.textContent=nt+' atome'+(nt>1?'s':'')+' du doigt touche'+(nt>1?'nt':'')+' l’objet';
+      cs.textContent=(nt<NSURF*.35?'Sur environ '+NSURF+' atomes en surface, seuls ceux du bout des bosses touchent.':'La peau s’est écrasée : bien plus d’atomes touchent, mais jamais tous.')+' Les deux noyaux les plus proches sont à '+fr(dminPx/PXNM,2)+' nm : les nuages se repoussent avant que les noyaux ne se rapprochent davantage.'+(push<.6?' Appuie plus : la peau s’écrase et d’autres atomes arrivent au contact.':' La poussée remonte dans la peau par les liaisons comprimées (en doré).'); }
+  },V.cv);
+})();
+
+L.mountBlocs();
+})();
+</script>
+</body>
+</html>

@@ -10,7 +10,7 @@
      même si elle a des applications.
    - liens : [idA, idB, 'nature du lien'] : relations transversales, souvent entre domaines.
    Les domaines eux-mêmes sont définis dans catalogue.js. */
-const D='diode-laser', LL='led-et-laser', SLT='lumiere-soleil-lune-terre', TT='lumiere-tour-de-la-terre';
+const D='diode-laser', TA='toucher-atomes', LL='led-et-laser', SLT='lumiere-soleil-lune-terre', TT='lumiere-tour-de-la-terre';
 window.NOTIONS={
   noeuds:[
     /* ================= PHYSIQUE ================= */
@@ -57,6 +57,11 @@ window.NOTIONS={
          ressources:[{type:'animation',id:LL,titre:'LED et laser'}]},
         {id:'tube-cathodique', titre:'Canon à électrons', parent:'applications-electricite', application:true, resume:'Un filament chaud et une tension : le faisceau des anciennes télévisions et des microscopes électroniques.',
          ressources:[{type:'animation',id:D,ancre:'atomeseul',titre:'Le canon à électrons, vu de près'}]},
+    {id:'forces-contact', titre:'Forces et contact', parent:'physique', resume:'Ce qui se passe quand deux objets se touchent et se poussent.'},
+      {id:'contact-atomes', titre:'Pourquoi deux objets se touchent sans se traverser', parent:'forces-contact', resume:'Les nuages d’électrons des deux surfaces se repoussent vers 0,3 à 0,4 nm entre noyaux : c’est ça, toucher.',
+       ressources:[{type:'animation',id:TA,ancre:'deux-atomes',titre:'Deux atomes qui s’approchent'},{type:'animation',id:TA,ancre:'surfaces',titre:'Le doigt qui appuie, atome par atome'}]},
+      {id:'surface-reelle', titre:'Surface de contact réelle', parent:'forces-contact', resume:'Deux surfaces ne se touchent que par leurs bosses : une petite fraction de la surface apparente.',
+       ressources:[{type:'animation',id:TA,ancre:'surfaces',titre:'Seules les bosses touchent'}]},
     {id:'quantique', titre:'Atome et physique quantique', parent:'physique', resume:'Pourquoi la matière tient : l’électron est une onde.'},
       {id:'dualite', titre:'Onde ou particule', parent:'quantique', resume:'L’électron arrive en un point, mais se propage comme une onde.'},
         {id:'electron-onde', titre:'L’électron est une onde', parent:'dualite', resume:'Des électrons diffractés par un cristal s’accumulent à un angle précis.',
@@ -69,11 +74,12 @@ window.NOTIONS={
         {id:'couches', titre:'Couches et orbitales', parent:'atome-quantique', resume:'Les façons de vibrer d’une onde autour du noyau : 1, 4, 9 cases.',
          ressources:[{type:'bloc',id:'corde-orbitale'},{type:'animation',id:D,ancre:'atomeseul',titre:'Les façons de vibrer'}]},
         {id:'pauli', titre:'Principe de Pauli', parent:'atome-quantique', resume:'Deux électrons au plus par case, de spins opposés.',
-         ressources:[{type:'animation',id:D,ancre:'atomeseul',titre:'Remplir les cases'}]},
+         ressources:[{type:'animation',id:D,ancre:'atomeseul',titre:'Remplir les cases'}],
+         applications:[{type:'animation',id:TA,ancre:'deux-atomes',titre:'Pourquoi deux nuages pleins se repoussent'}]},
     /* ================= CHIMIE ================= */
     {id:'structure-atome', titre:'Structure de l’atome', parent:'chimie', resume:'Noyau, nuage électronique, électrons de valence.'},
-      {id:'noyau-nuage', titre:'Noyau et nuage électronique', parent:'structure-atome', resume:'Un noyau minuscule et un nuage de probabilité 100 000 fois plus grand.',
-       ressources:[{type:'animation',id:D,ancre:'liaison',titre:'Deux atomes et leurs nuages, en 3D'}]},
+      {id:'noyau-nuage', titre:'Noyau et nuage électronique', parent:'structure-atome', resume:'Un noyau minuscule et un nuage de probabilité des dizaines de milliers de fois plus grand (environ 60 000 pour l’hydrogène).',
+       ressources:[{type:'animation',id:TA,ancre:'vide',titre:'Zoomer jusqu’au noyau'},{type:'animation',id:D,ancre:'liaison',titre:'Deux atomes et leurs nuages, en 3D'}]},
       {id:'valence', titre:'Électrons de valence', parent:'structure-atome', resume:'Les électrons de la couche externe, ceux qui font les liaisons.',
        ressources:[{type:'animation',id:D,ancre:'atomeseul',titre:'Phosphore 5, gallium 3'}]},
     {id:'liaison-chimique', titre:'Liaison chimique', parent:'chimie', resume:'Pourquoi les atomes se collent, et combien de liaisons ils font.'},
@@ -83,6 +89,8 @@ window.NOTIONS={
        ressources:[{type:'bloc',id:'orbitales-liantes'},{type:'animation',id:D,ancre:'liaison',titre:'La liaison Ga–P en 3D'}]},
       {id:'octet', titre:'La règle des 8', parent:'liaison-chimique', resume:'Une couche externe de 4 cases, donc 8 places : pleine, l’atome ne cherche plus à se lier.',
        ressources:[{type:'animation',id:D,ancre:'atomeseul',titre:'Pourquoi 8 compte autant'}]},
+      {id:'van-der-waals', titre:'Forces de van der Waals', parent:'liaison-chimique', resume:'Une faible attraction entre nuages qui se déforment l’un l’autre : 0,005 eV par paire, mais des milliards de paires tiennent un gecko.',
+       ressources:[{type:'animation',id:TA,ancre:'deux-atomes',titre:'Le petit creux de la courbe'}]},
     {id:'solides', titre:'Solides et cristaux', parent:'chimie', resume:'Des atomes rangés en réseau, et des propriétés qui en découlent.'},
       {id:'cristaux', titre:'Cristaux et réseaux', parent:'solides', resume:'Un empilement régulier d’atomes.',
        applications:[{type:'animation',id:D,ancre:'couleur',titre:'Le réseau d’un cristal III-V'}]},
@@ -92,6 +100,9 @@ window.NOTIONS={
     {id:'vision', titre:'La vision', parent:'biologie', resume:'Comment l’œil capte la lumière et fabrique les couleurs.'},
       {id:'cones', titre:'Les cônes et la couleur', parent:'vision', resume:'Trois sortes de cônes : c’est pour ça que trois couleurs suffisent à tout recréer.',
        applications:[{type:'animation',id:D,ancre:'blanc',titre:'Pourquoi l’œil voit la LED blanche… blanche'}]},
+    {id:'sens', titre:'Les sens', parent:'biologie', resume:'Comment le corps capte le monde extérieur.'},
+      {id:'toucher', titre:'Le toucher', parent:'sens', resume:'Des capteurs sous la peau détectent sa déformation quand elle appuie sur un objet.',
+       applications:[{type:'animation',id:TA,ancre:'surfaces',titre:'Ce que sent ton doigt'}]},
     /* ================= TERRE ET UNIVERS ================= */
     {id:'systeme-solaire', titre:'Système solaire', parent:'terre-univers', resume:'Le Soleil, la Terre, la Lune et les autres planètes.'},
       {id:'distances', titre:'Distances dans le système solaire', parent:'systeme-solaire', resume:'384 400 km jusqu’à la Lune, 150 millions de km jusqu’au Soleil.',
@@ -130,6 +141,12 @@ window.NOTIONS={
     ['dopage','cristaux','des atomes étrangers dans le réseau'],
     ['spectres-etoiles','longueur-onde','chaque raie a sa couleur'],
     ['sinus','onde-stationnaire','modes = sinus'],
-    ['exponentielle','creux','forme du nuage 1s']
+    ['exponentielle','creux','forme du nuage 1s'],
+    ['contact-atomes','pauli','les places sont déjà prises'],
+    ['contact-atomes','noyau-nuage','ce sont les nuages qui se touchent'],
+    ['contact-atomes','orbitales-mol','l’antiliante repousse'],
+    ['contact-atomes','creux','une onde plus serrée coûte de l’énergie'],
+    ['contact-atomes','van-der-waals','la petite attraction avant le mur'],
+    ['surface-reelle','toucher','ce que sent la peau']
   ]
 };
