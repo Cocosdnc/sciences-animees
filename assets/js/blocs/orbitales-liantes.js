@@ -8,23 +8,25 @@ Labo.defineBloc('orbitales-liantes',{
     el.innerHTML='<div class="panel">'+
       '<div class="view"><canvas style="aspect-ratio:400/300" aria-label="Ondes de deux atomes, leur somme le long de la liaison, le nuage obtenu et la courbe d’énergie"></canvas></div>'+
       '<div class="lc"><div class="seg" role="group" aria-label="Façon d’additionner les ondes"><button type="button" data-m="1" aria-pressed="true">Ondes en phase : liante</button><button type="button" data-m="-1" aria-pressed="false">En opposition : antiliante</button></div>'+
-      '<button type="button" data-a="go">Rapprocher les atomes</button><button type="button" data-a="pot" aria-pressed="false">Montrer l’attraction des noyaux</button>'+
+      '<button type="button" data-a="go">Rapprocher les atomes</button><button type="button" data-a="sq" aria-pressed="false">Montrer la probabilité (le carré)</button><button type="button" data-a="pot" aria-pressed="false">Montrer l’attraction des noyaux</button>'+
       '<label class="slider"><span>Distance entre les noyaux</span><input type="range" min="10" max="70" step="1" value="60"><strong></strong></label></div>'+
       '<div class="caption"><b></b><span></span></div>'+
       '<div class="infobar"></div><div class="infobox" hidden></div></div>';
     const INFO={
-      orbitale:['Qu’est-ce qu’une orbitale ?','C’est la forme de l’onde de l’électron. En chaque point, l’onde a une valeur, positive ou négative (rouge ou bleu). Son carré donne la probabilité de trouver l’électron à cet endroit : c’est le nuage. Une orbitale « de liaison » est simplement l’onde d’un électron partagé par deux noyaux.'],
+      orbitale:['Une onde de probabilité','L’onde dessinée n’est pas de la matière qui ondule : c’est une onde de probabilité (on dit « amplitude »). En chaque point, elle a une valeur, positive ou négative (rouge ou bleu). Son carré donne la probabilité de trouver l’électron à cet endroit : c’est le nuage. Une orbitale est la forme de cette onde ; une orbitale « de liaison » est l’onde d’un électron partagé par deux noyaux.'],
+      negatif:['Une onde négative, ça veut dire quoi ?','Pas une probabilité négative : la probabilité, c’est le carré, jamais négatif. Le signe est une phase, comme pour une corde qui vibre : à un instant, une partie est en haut et l’autre en bas, une demi-période plus tard c’est l’inverse. L’onde de l’électron « tourne » ainsi en permanence entre + et −, au rythme fixé par son énergie, et tout le nuage bat ensemble. Changer + en − partout ne change donc rien de mesurable pour un atome seul. Ce qui compte, c’est le signe de deux ondes l’une par rapport à l’autre, quand elles se superposent.'],
+      physique:['Ce que le signe change physiquement','Active « Montrer la probabilité ». Les tirets dorés : ce qu’on aurait en additionnant simplement les probabilités des deux atomes (a² + b²). La courbe dorée pleine : ce que donne la vraie onde, additionnée puis mise au carré : (a + b)² = a² + b² + 2ab. Le terme 2ab, c’est l’interférence, comme les franges des fentes d’Young. En phase, il est positif : il y a vraiment plus d’électron entre les noyaux. En opposition, il est négatif : il y en a moins, et zéro au milieu. Ça se mesure : la diffraction des rayons X sur les cristaux montre ce surplus d’électrons au milieu des liaisons.'],
+      places:['Deux électrons par orbitale','Chaque orbitale accueille au plus 2 électrons, de spins opposés (principe de Pauli). Si chaque atome apporte 1 électron (couche à moitié vide, comme l’hydrogène), les 2 vont dans la liante : liaison. Si l’un apporte un doublet et l’autre une case vide (phosphore et bore), les 2 vont aussi dans la liante : liaison. Si chacun apporte 2 électrons (couche pleine, comme l’hélium, ou un atome déjà engagé dans ses liaisons), il faut remplir aussi l’antiliante : les atomes se repoussent.'],
       somme:['Pourquoi additionner les ondes ?','Quand l’électron est proche des deux noyaux, son onde ressemble près de chacun à l’onde de l’atome seul. La façon la plus simple de construire l’onde commune est d’additionner les deux ondes atomiques. Une onde peut s’ajouter avec le même signe ou avec le signe inverse : ça donne exactement deux résultats, l’orbitale liante et l’orbitale antiliante.'],
-      signe:['Le signe de l’onde','Une onde monte et descend. Rouge = au-dessus de zéro, bleu = en dessous. Le signe ne se voit pas directement (le nuage, c’est le carré, toujours positif), mais il décide de ce qui arrive quand deux ondes se rencontrent : même signe, elles se renforcent ; signes opposés, elles s’annulent.'],
       noeud:['Le nœud','Dans l’orbitale antiliante, l’onde passe de rouge à bleu au milieu : elle vaut exactement zéro sur un plan entre les deux noyaux. L’électron n’y est jamais. Or c’est justement là qu’il serait le plus attiré.'],
       energie:['Pourquoi l’une lie et l’autre pas','Active « Montrer l’attraction des noyaux » : le creux le plus profond est entre les deux noyaux, là où l’électron est attiré par les deux. L’orbitale liante met beaucoup de nuage dans ce creux : énergie plus basse que l’atome seul, les atomes restent ensemble. L’antiliante vide cette zone : énergie plus haute, les atomes se repoussent.'],
       oscille:['Pourquoi la courbe oscille mais pas le nuage','Une onde stationnaire change de signe en permanence : la courbe du haut monte et descend partout en même temps. Le nuage, lui, est le carré de l’onde : il reste immobile. Seule la forme compte pour la liaison.'],
       exact:['Ce qui est exact, ce qui est simplifié','Les courbes et le nuage sont calculés, pas dessinés à la main : ondes 1s de l’hydrogène, additionnées, puis normalisées. Les énergies sont celles du calcul classique de l’ion H₂⁺ (un électron, deux protons). Le calcul exact donne une liaison un peu plus forte (2,8 eV au lieu d’environ 1,8 eV). Pour Ga–P, les ondes de départ sont des orbitales sp³, mais le principe est le même.'],
       cristal:['Et dans le cristal ?','Dans un cristal, chaque atome a 4 voisins et des milliards de liaisons se couplent. Les orbitales liantes de tout le cristal forment l’étage bas (bande de valence), les antiliantes l’étage haut (bande de conduction). L’écart entre les deux, c’est le gap : 1,9 eV dans la zone active de la diode.']
     };
-    L.infoBar(el.querySelector('.infobar'),el.querySelector('.infobox'),['orbitale','somme','signe','noeud','energie','exact','cristal'],INFO);
+    L.infoBar(el.querySelector('.infobar'),el.querySelector('.infobox'),['orbitale','negatif','somme','physique','noeud','energie','places','exact','cristal'],INFO);
     const V=L.setup(el.querySelector('canvas'),400,300), inp=el.querySelector('input'), out=el.querySelector('.slider strong');
-    let sg=1, R=6, Rt=6, pot=false, t=0, cacheKey='', img=null;
+    let sg=1, R=6, Rt=6, pot=false, sq=false, t=0, cacheKey='', img=null;
     const EH=27.211;
     const S=R=>Math.exp(-R)*(1+R+R*R/3);
     const Epm=(R,s)=>{ const j=(1-(1+R)*Math.exp(-2*R))/R, k=(1+R)*Math.exp(-R); return (-.5+1/R-(j+s*k)/(1+s*S(R)))*EH; };
@@ -33,11 +35,12 @@ Labo.defineBloc('orbitales-liantes',{
     const phiA=(x,R)=>Math.exp(-Math.abs(x+R/2))/Math.sqrt(2*Math.PI*(1+sg*S(R))), phiB=(x,R)=>sg*Math.exp(-Math.abs(x-R/2))/Math.sqrt(2*Math.PI*(1+sg*S(R)));
     const cap=()=>{ const b=el.querySelector('.caption b'), s=el.querySelector('.caption span'), dE=Epm(R,sg)-ref, near=R<3.6;
       if(sg>0){ b.textContent='Liante : les deux ondes ont le même signe';
-        s.textContent=near?'Entre les noyaux, les deux ondes rouges s’additionnent : l’onde commune (trait épais) s’y renforce, et le nuage se concentre entre les deux noyaux. L’électron passe beaucoup de temps là où il est attiré par les deux : son énergie est '+Math.abs(dE).toFixed(1).replace('.',',')+' eV plus basse que dans l’atome seul. Les atomes restent liés.':'Loin l’un de l’autre, chaque atome garde son onde. Rapproche-les et regarde ce que devient leur somme entre les deux noyaux.'; }
+        s.textContent=near?'Entre les noyaux, les deux ondes de probabilité, rouges, s’additionnent : l’onde commune (trait épais) s’y renforce, et le nuage se concentre entre les deux noyaux. L’électron passe beaucoup de temps là où il est attiré par les deux : son énergie est '+Math.abs(dE).toFixed(1).replace('.',',')+' eV plus basse que dans l’atome seul. Les atomes restent liés.':'Loin l’un de l’autre, chaque atome garde son onde. Rapproche-les et regarde ce que devient leur somme entre les deux noyaux.'; }
       else { b.textContent='Antiliante : les deux ondes ont des signes opposés';
-        s.textContent=near?'Entre les noyaux, l’onde rouge et l’onde bleue s’annulent : l’onde commune passe par zéro au milieu (un nœud), et le nuage est repoussé vers l’extérieur. L’électron évite la zone la plus attractive : son énergie est '+(dE>0?dE.toFixed(1).replace('.',',')+' eV plus haute':'à peine plus basse')+' que dans l’atome seul. Les atomes se repoussent.':'Loin l’un de l’autre, le signe ne change rien. Rapproche-les : là où elles se chevauchent, les deux ondes vont s’annuler.'; } };
+        s.textContent=near?'Entre les noyaux, l’onde de probabilité rouge et la bleue s’annulent : l’onde commune passe par zéro au milieu (un nœud), et le nuage est repoussé vers l’extérieur. L’électron évite la zone la plus attractive : son énergie est '+(dE>0?dE.toFixed(1).replace('.',',')+' eV plus haute':'à peine plus basse')+' que dans l’atome seul. Les atomes se repoussent.':'Loin l’un de l’autre, le signe ne change rien. Rapproche-les : là où elles se chevauchent, les deux ondes vont s’annuler.'; } };
     el.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{ sg=+b.dataset.m; el.querySelectorAll('[data-m]').forEach(c=>c.setAttribute('aria-pressed',c===b)); cap(); });
     el.querySelector('[data-a="go"]').onclick=()=>{ R=6.5; Rt=sg>0?2.5:2.5; };
+    el.querySelector('[data-a="sq"]').onclick=e=>{ sq=!sq; e.currentTarget.setAttribute('aria-pressed',sq); };
     el.querySelector('[data-a="pot"]').onclick=e=>{ pot=!pot; e.currentTarget.setAttribute('aria-pressed',pot); };
     inp.addEventListener('input',()=>{ R=Rt=inp.value/10; cap(); });
     const off=document.createElement('canvas'); off.width=140; off.height=40; const ox=off.getContext('2d'), id=ox.createImageData(140,40);
@@ -49,7 +52,7 @@ Labo.defineBloc('orbitales-liantes',{
       const x=V.ctx; V.base(); L.bgLab(x,400,300);
       const os=1;
       x.save(); x.beginPath(); x.rect(0,0,290,300); x.clip();
-      L.txt(x,'L’onde le long de la liaison',8,14,'left',C.ink,true);
+      L.txt(x,'L’onde de probabilité le long de la liaison',8,14,'left',C.ink,true);
       L.line(x,6,Y1,284,Y1,'rgba(232,238,244,.3)',1);
       if(pot){ x.beginPath(); for(let i=0;i<=280;i++){ const xx=(i-139)/PX, v=-1/Math.max(.15,Math.abs(xx+R/2))-1/Math.max(.15,Math.abs(xx-R/2)); const yy=Y1+L.clamp(-v*10,0,40)+2; i?x.lineTo(5+i,yy):x.moveTo(5+i,yy); }
         x.strokeStyle='rgba(90,169,255,.75)'; x.setLineDash([4,3]); x.lineWidth=1.3; x.stroke(); x.setLineDash([]);
@@ -58,8 +61,12 @@ Labo.defineBloc('orbitales-liantes',{
       [[phiA,POS],[phiB,sg>0?POS:NEG]].forEach(([f,col])=>{ x.beginPath(); for(let i=0;i<=280;i++){ const xx=(i-140)/PX, v=f(xx,R)*os; const yy=Y1-v*AMP; i?x.lineTo(5+i,yy):x.moveTo(5+i,yy); } x.strokeStyle=L.rgba(col,.55); x.setLineDash([3,3]); x.lineWidth=1.2; x.stroke(); x.setLineDash([]); });
       let prev=null; for(let i=0;i<=280;i++){ const xx=(i-140)/PX, v=(phiA(xx,R)+phiB(xx,R))*os, X=5+i, Yv=Y1-v*AMP;
         if(prev){ x.beginPath(); x.moveTo(prev[0],prev[1]); x.lineTo(X,Yv); x.strokeStyle=v>=0?POS:NEG; x.lineWidth=2.6; x.stroke(); } prev=[X,Yv]; }
+      if(sq){ const A2=AMP*2.6; const G='#E3B341'; x.save(); x.beginPath(); for(let i=0;i<=280;i++){ const xx=(i-140)/PX, a=phiA(xx,R), b=phiB(xx,R), v=(a+b)*(a+b); const yy=Y1-v*A2; i?x.lineTo(5+i,yy):x.moveTo(5+i,yy); }
+          x.lineTo(285,Y1); x.lineTo(5,Y1); x.closePath(); x.fillStyle=L.rgba(G,.18); x.fill(); x.strokeStyle=G; x.lineWidth=1.8; x.stroke();
+          x.beginPath(); for(let i=0;i<=280;i++){ const xx=(i-140)/PX, a=phiA(xx,R), b=phiB(xx,R), v=a*a+b*b; const yy=Y1-v*A2; i?x.lineTo(5+i,yy):x.moveTo(5+i,yy); } x.strokeStyle=L.rgba(G,.8); x.setLineDash([4,3]); x.lineWidth=1.2; x.stroke(); x.setLineDash([]); x.restore();
+          if(R<4.2){ L.tag(x,(sg>0?'+ 2ab : plus d’électron au milieu':'− 2ab : moins d’électron au milieu'),CX,Y1+22,'center','#E3B341'); } }
       [-1,1].forEach(sd=>{ const X=sx(sd*R/2); L.glow(x,X,Y1,10,'#FFFFFF',.5); L.sph(x,X,Y1,3,'#F2F6FA'); });
-      L.txt(x,'pointillés : onde de chaque atome · trait épais : leur somme',8,30,'left',C.muted);
+      L.txt(x,sq?'doré : probabilité réelle (a + b)² · tirets : a² + b²':'pointillés : onde de chaque atome · trait épais : leur somme',8,30,'left',C.muted);
       if(sg<0&&R<4.2){ L.line(x,CX,Y1-50,CX,Y2+40,'rgba(111,182,255,.5)',1,[2,3]); L.tag(x,'nœud : l’onde vaut zéro, l’électron n’y est jamais',CX,284,'center',NEG); }
       const key=sg+'|'+R.toFixed(3);
       if(key!==cacheKey){ cacheKey=key; let mx=0; const vals=new Float32Array(140*40);

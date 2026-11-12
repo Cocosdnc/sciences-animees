@@ -10,7 +10,7 @@
      même si elle a des applications.
    - liens : [idA, idB, 'nature du lien'] : relations transversales, souvent entre domaines.
    Les domaines eux-mêmes sont définis dans catalogue.js. */
-const D='diode-laser', TA='toucher-atomes', LL='led-et-laser', SLT='lumiere-soleil-lune-terre', TT='lumiere-tour-de-la-terre';
+const D='diode-laser', TA='toucher-atomes', AL='alliage', LL='led-et-laser', SLT='lumiere-soleil-lune-terre', TT='lumiere-tour-de-la-terre';
 window.NOTIONS={
   noeuds:[
     /* ================= PHYSIQUE ================= */
@@ -60,6 +60,8 @@ window.NOTIONS={
     {id:'forces-contact', titre:'Forces et contact', parent:'physique', resume:'Ce qui se passe quand deux objets se touchent et se poussent.'},
       {id:'contact-atomes', titre:'Pourquoi deux objets se touchent sans se traverser', parent:'forces-contact', resume:'Les nuages d’électrons des deux surfaces se repoussent vers 0,3 à 0,4 nm entre noyaux : c’est ça, toucher.',
        ressources:[{type:'animation',id:TA,ancre:'deux-atomes',titre:'Deux atomes qui s’approchent'},{type:'animation',id:TA,ancre:'surfaces',titre:'Le doigt qui appuie, atome par atome'}]},
+      {id:'adhesion', titre:'Coller ou se repousser', parent:'forces-contact', resume:'Au contact, deux surfaces se lient s’il reste des places libres, et se repoussent si tout est déjà en couple : métaux propres dans le vide contre surfaces à l’air.',
+       ressources:[{type:'animation',id:TA,ancre:'couche-incomplete',titre:'Et si la dernière couche n’est pas pleine ?'},{type:'animation',id:AL,ancre:'froid',titre:'Presser deux métaux à froid'}]},
       {id:'surface-reelle', titre:'Surface de contact réelle', parent:'forces-contact', resume:'Deux surfaces ne se touchent que par leurs bosses : une petite fraction de la surface apparente.',
        ressources:[{type:'animation',id:TA,ancre:'surfaces',titre:'Seules les bosses touchent'}]},
     {id:'quantique', titre:'Atome et physique quantique', parent:'physique', resume:'Pourquoi la matière tient : l’électron est une onde.'},
@@ -75,7 +77,7 @@ window.NOTIONS={
          ressources:[{type:'bloc',id:'corde-orbitale'},{type:'animation',id:D,ancre:'atomeseul',titre:'Les façons de vibrer'}]},
         {id:'pauli', titre:'Principe de Pauli', parent:'atome-quantique', resume:'Deux électrons au plus par case, de spins opposés.',
          ressources:[{type:'animation',id:D,ancre:'atomeseul',titre:'Remplir les cases'}],
-         applications:[{type:'animation',id:TA,ancre:'deux-atomes',titre:'Pourquoi deux nuages pleins se repoussent'}]},
+         applications:[{type:'animation',id:TA,ancre:'deux-atomes',titre:'Pourquoi deux nuages pleins se repoussent'},{type:'animation',id:TA,ancre:'couche-incomplete',titre:'Places libres ou places prises'}]},
     /* ================= CHIMIE ================= */
     {id:'structure-atome', titre:'Structure de l’atome', parent:'chimie', resume:'Noyau, nuage électronique, électrons de valence.'},
       {id:'noyau-nuage', titre:'Noyau et nuage électronique', parent:'structure-atome', resume:'Un noyau minuscule et un nuage de probabilité des dizaines de milliers de fois plus grand (environ 60 000 pour l’hydrogène).',
@@ -84,7 +86,7 @@ window.NOTIONS={
        ressources:[{type:'animation',id:D,ancre:'atomeseul',titre:'Phosphore 5, gallium 3'}]},
     {id:'liaison-chimique', titre:'Liaison chimique', parent:'chimie', resume:'Pourquoi les atomes se collent, et combien de liaisons ils font.'},
       {id:'covalente', titre:'Liaison covalente', parent:'liaison-chimique', resume:'Deux électrons partagés entre deux noyaux, à la distance où l’énergie est la plus basse.',
-       ressources:[{type:'animation',id:D,ancre:'liaison',titre:'Pourquoi les nuages se lient'}]},
+       ressources:[{type:'animation',id:D,ancre:'liaison',titre:'Pourquoi les nuages se lient'},{type:'animation',id:TA,ancre:'couche-incomplete',titre:'H + H, P + B : quand le contact crée une liaison'}]},
       {id:'orbitales-mol', titre:'Orbitales liantes et antiliantes', parent:'liaison-chimique', resume:'Deux ondes additionnées en phase (liante) ou en opposition (antiliante).',
        ressources:[{type:'bloc',id:'orbitales-liantes'},{type:'animation',id:D,ancre:'liaison',titre:'La liaison Ga–P en 3D'}]},
       {id:'octet', titre:'La règle des 8', parent:'liaison-chimique', resume:'Une couche externe de 4 cases, donc 8 places : pleine, l’atome ne cherche plus à se lier.',
@@ -94,6 +96,10 @@ window.NOTIONS={
     {id:'solides', titre:'Solides et cristaux', parent:'chimie', resume:'Des atomes rangés en réseau, et des propriétés qui en découlent.'},
       {id:'cristaux', titre:'Cristaux et réseaux', parent:'solides', resume:'Un empilement régulier d’atomes.',
        applications:[{type:'animation',id:D,ancre:'couleur',titre:'Le réseau d’un cristal III-V'}]},
+      {id:'alliage-metal', titre:'Fabriquer un alliage', parent:'solides', resume:'Un alliage mélange les atomes dans un même cristal : on fait fondre, on mélange, on refroidit. Presser à froid ne suffit pas.',
+       ressources:[{type:'animation',id:AL,ancre:'fondre',titre:'Fondre, mélanger, refroidir'},{type:'animation',id:AL,ancre:'froid',titre:'Soudé n’est pas mélangé'}]},
+      {id:'diffusion-solide', titre:'Diffusion dans les solides', parent:'solides', resume:'Les atomes d’un solide ne bougent qu’en sautant dans une place vide, de plus en plus souvent quand on chauffe (loi d’Arrhenius).',
+       ressources:[{type:'animation',id:AL,ancre:'chauffer',titre:'Les atomes sautent de trou en trou'}]},
       {id:'alliages', titre:'Alliages III-V et couleur', parent:'solides', resume:'Doser aluminium, gallium et indium règle l’écart d’énergie, donc la couleur émise.',
        ressources:[{type:'animation',id:D,ancre:'couleur',titre:'Choisir la couleur'}]},
     /* ================= BIOLOGIE ================= */
@@ -147,6 +153,11 @@ window.NOTIONS={
     ['contact-atomes','orbitales-mol','l’antiliante repousse'],
     ['contact-atomes','creux','une onde plus serrée coûte de l’énergie'],
     ['contact-atomes','van-der-waals','la petite attraction avant le mur'],
-    ['surface-reelle','toucher','ce que sent la peau']
+    ['surface-reelle','toucher','ce que sent la peau'],
+    ['adhesion','contact-atomes','places libres ou places prises'],
+    ['adhesion','octet','une couche pleine ne se lie plus'],
+    ['adhesion','alliage-metal','soudé n’est pas mélangé'],
+    ['alliage-metal','diffusion-solide','il faut que les atomes bougent'],
+    ['diffusion-solide','cristaux','des sauts dans le réseau']
   ]
 };

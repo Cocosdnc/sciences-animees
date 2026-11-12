@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Coller deux métaux, est-ce faire un alliage ? · Sciences animées</title>
+<meta name="description" content="Pourquoi deux métaux collés ne deviennent pas un alliage, et comment on en fabrique un : surfaces sales, soudure à froid, atomes qui sautent de trou en trou quand on chauffe, mélange liquide.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<style>
+.retenir{margin:0;padding-left:1.2em;max-width:66ch;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.retenir b{color:var(--ink)}
+.kicker{color:#3FD4A8}
+</style>
+</head>
+<body>
+<div class="topbar"><a class="brand" href="../../../"><i></i>Sciences animées</a><nav><a href="../../../#catalogue">Animations</a><a href="../../../carte.html">Carte des notions</a><a href="../../../blocs/">Modèles</a></nav></div>
+<div class="wrap">
+  <header class="page">
+    <div class="kicker">Chimie · cuivre + nickel</div>
+    <h1>Coller deux métaux, est-ce faire un alliage ?</h1>
+    <p class="lead">Un alliage, c’est un mélange de métaux au niveau des atomes : un atome de nickel ici, un de cuivre à côté. Alors pourquoi ne suffit-il pas de presser un bloc de cuivre contre un bloc de nickel ? Et comment fait-on vraiment ?</p>
+  </header>
+
+  <!-- ============ ÉTAPE 1 : COLLER À FROID ============ -->
+  <section id="froid">
+    <div class="step">Étape 1</div>
+    <h2>Presser deux blocs à froid</h2>
+    <p class="note">À gauche du cuivre, à droite du nickel, à 20 °C. Presse-les l’un contre l’autre, puis tire. Essaie à l’air, puis avec des surfaces parfaitement propres, dans le vide.</p>
+    <div class="panel">
+      <div class="view"><canvas id="cv1" style="aspect-ratio:400/230" aria-label="Un bloc de cuivre et un bloc de nickel pressés puis tirés, à l’air ou dans le vide"></canvas></div>
+      <div class="lc"><div class="seg" role="group" aria-label="Milieu" id="env1"><button type="button" data-e="air" aria-pressed="true">À l’air</button><button type="button" data-e="vide" aria-pressed="false">Propres, dans le vide</button></div>
+        <button type="button" id="presser1" class="primary">Presser</button><button type="button" id="tirer1">Tirer</button></div>
+      <div class="caption"><b id="c1b"></b><span id="c1s"></span></div>
+      <div class="infobar" id="ib1"></div><div class="infobox" id="ibx1" hidden></div>
+    </div>
+  </section>
+
+  <!-- ============ ÉTAPE 2 : CHAUFFER ============ -->
+  <section id="chauffer">
+    <div class="step">Étape 2</div>
+    <h2>Chauffer : les atomes sautent de trou en trou</h2>
+    <p class="note">Les deux blocs sont soudés, sans rien entre eux. Monte la température. Les cercles en pointillés sont des places vides (des lacunes) : un atome ne peut changer de place qu’en sautant dans l’une d’elles. En bas, la part de cuivre dans chaque colonne : regarde la marche s’adoucir.</p>
+    <div class="panel">
+      <div class="view"><canvas id="cv2" style="aspect-ratio:400/270" aria-label="Réseau d’atomes de cuivre et de nickel ; les atomes sautent dans les lacunes et se mélangent quand on chauffe"></canvas><div class="scale" id="s2">20 °C</div></div>
+      <div class="lc">
+        <label class="slider"><span>Température</span><input id="t2" type="range" min="20" max="1080" step="10" value="20"><strong id="t2v">20 °C</strong></label>
+        <button type="button" id="r2">Recommencer</button></div>
+      <div class="caption"><b id="c2b"></b><span id="c2s"></span></div>
+      <div class="infobar" id="ib2"></div><div class="infobox" id="ibx2" hidden></div>
+    </div>
+    <p class="sources">Sources : diffusion du cuivre dans le nickel, D₀ = 0,52 cm²/s et Q = 256 kJ/mol (mesures au-dessus de 650 °C, Université de Nagasaki). Ordre de grandeur des lacunes : environ 1 place sur 10 000 vide près de la fusion.</p>
+  </section>
+
+  <!-- ============ ÉTAPE 3 : FONDRE ============ -->
+  <section id="fondre">
+    <div class="step">Étape 3</div>
+    <h2>Comment on fait vraiment : fondre, mélanger, refroidir</h2>
+    <p class="note">Dans l’industrie, on ne compte pas sur les sauts de trou en trou : on fait fondre. Dans un liquide, les atomes ne sont plus rangés et glissent les uns contre les autres. Fais fondre, attends un peu, puis refroidis.</p>
+    <div class="panel">
+      <div class="view"><canvas id="cv3" style="aspect-ratio:400/270" aria-label="Cuivre et nickel fondus qui se mélangent, puis refroidis en alliage"></canvas><div class="scale" id="s3">Solide · 20 °C</div></div>
+      <div class="lc"><button type="button" id="f3" class="primary">Faire fondre (1 500 °C)</button><button type="button" id="g3">Refroidir</button><button type="button" id="r3">Recommencer</button></div>
+      <div class="caption"><b id="c3b"></b><span id="c3s"></span></div>
+      <div class="infobar" id="ib3"></div><div class="infobox" id="ibx3" hidden></div>
+    </div>
+    <p class="sources">Sources : températures de fusion du cuivre (1 085 °C) et du nickel (1 455 °C) ; cupronickel des pièces de 1 € et 2 € (75 % de cuivre, 25 % de nickel) ; constantan (55 % de cuivre, 45 % de nickel). W. Hume-Rothery, <i>The Structure of Metals and Alloys</i> (1936).</p>
+  </section>
+
+  <section id="retenir">
+    <div class="step">À retenir</div>
+    <h2>Coller, souder, allier</h2>
+    <ul class="retenir">
+      <li><b>À l’air, deux métaux pressés ne se collent pas</b> : leurs surfaces sont couvertes d’oxyde et d’eau, toutes les places sont déjà prises, et les nuages se repoussent.</li>
+      <li><b>Propres et dans le vide, ils se soudent</b> : les électrons des deux surfaces se partagent. Mais chaque atome reste de son côté : soudé n’est pas mélangé.</li>
+      <li>Pour <b>mélanger</b>, il faut que les atomes changent de place. Dans un solide, ils ne peuvent sauter que dans une place vide, et seulement si l’agitation est assez forte : il faut chauffer près de la fusion, et attendre.</li>
+      <li>En pratique, on <b>fait fondre</b> : dans le liquide, les atomes glissent et se mélangent vite. En refroidissant, ils se rangent en un seul cristal mélangé : c’est l’<b>alliage</b>.</li>
+    </ul>
+  </section>
+</div>
+
+<script src="../../../assets/js/labo.js"></script>
+<script>
+(function(){
+const L=Labo, C=L.C;
+L.mountSides();
+const fr=(v,n)=>v.toFixed(n).replace('.',',');
+const CU='#E08A5A', NI='#B9C3CC';
+const SUP='⁰¹²³⁴⁵⁶⁷⁸⁹', pow10=n=>'10'+(n<0?'⁻':'')+String(Math.abs(n)).split('').map(c=>SUP[+c]).join('');
+/* nombre lisible : 3 × 10²⁷, ou 450, ou 0,02 */
+function sci(v){ if(v===0) return '0'; if(v>=.01&&v<1e5) return v>=10?Math.round(v).toLocaleString('fr-FR'):fr(v,v>=1?1:2); const e=Math.floor(Math.log10(v)), m=v/Math.pow(10,e); return fr(m,0)+' × '+pow10(e); }
+function duree(s){ const Y=3.156e7, U=13.8e9*Y;
+  if(s<60) return sci(s)+' s'; if(s<3600) return Math.round(s/60)+' min'; if(s<86400) return fr(s/3600,1)+' h'; if(s<Y) return Math.round(s/86400)+' jours';
+  if(s<1e9*Y) return sci(s/Y)+' ans'; return sci(s/U)+' fois l’âge de l’Univers'; }
+
+/* ---------- réseau triangulaire commun ---------- */
+function lattice(cols,rows,A,x0,y0){ const RH=A*Math.sqrt(3)/2, S=[];
+  for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) S.push({r,c,x:x0+c*A+(r%2)*A/2,y:y0+r*RH});
+  const idx=(r,c)=>(r<0||r>=rows||c<0||c>=cols)?-1:r*cols+c;
+  S.forEach((s,i)=>{ const r=s.r,c=s.c, d=r%2?[0,1]:[-1,0]; s.nb=[idx(r,c-1),idx(r,c+1),idx(r-1,c+d[0]),idx(r-1,c+d[1]),idx(r+1,c+d[0]),idx(r+1,c+d[1])].filter(k=>k>=0); });
+  return S; }
+function atom(x,X,Y,col,r){ L.sph(x,X,Y,r,col); }
+function profile(x,occ,S,cols,X0,X1,Y0,Y1){
+  L.rr(x,X0-6,Y0-14,X1-X0+12,Y1-Y0+22,8,'rgba(255,255,255,.03)','rgba(232,238,244,.1)',1);
+  L.txt(x,'part de cuivre par colonne',X0,Y0-5,'left',C.ink,true); L.txt(x,'100 %',X1,Y0-5,'right',CU);
+  const cnt=new Array(cols).fill(0), tot=new Array(cols).fill(0);
+  S.forEach((s,i)=>{ if(occ[i]>0){ tot[s.c]++; if(occ[i]===1) cnt[s.c]++; } });
+  const w=(X1-X0)/cols; x.fillStyle=L.rgba(CU,.75);
+  for(let c=0;c<cols;c++){ const f=tot[c]?cnt[c]/tot[c]:0, h=f*(Y1-Y0-4); x.fillRect(X0+c*w+1,Y1-h,w-2,h); }
+  L.line(x,X0,Y1,X1,Y1,'rgba(232,238,244,.4)',1); }
+
+/* =================== ÉTAPE 1 : presser à froid =================== */
+(function(){
+  const W=400,H=230, V=L.setup('cv1',W,H), A=13, COLS=11, ROWS=12, RH=A*Math.sqrt(3)/2, Y0=40;
+  const cb=document.getElementById('c1b'), cs=document.getElementById('c1s');
+  const INFO={
+    places:['Pourquoi ça ne colle pas à l’air','En quelques fractions de seconde à l’air, la surface d’un métal se couvre d’une couche d’oxyde (le métal s’est lié à l’oxygène) et de molécules d’eau. Les électrons libres de la surface ont trouvé des partenaires : il n’y a plus de place libre. Pressées l’une contre l’autre, ces couches se repoussent comme ton doigt sur la table.'],
+    vide:['La soudure à froid','Dans le vide, avec des surfaces fraîchement nettoyées, rien ne bouche les places libres. Les électrons des deux métaux se partagent comme à l’intérieur d’un seul métal : les blocs se soudent sans chauffer. Feynman raconte l’expérience avec du cuivre ; dans l’espace, des pièces métalliques peuvent ainsi se gripper.'],
+    bosses:['Même propres, seules les bosses touchent','Ici les surfaces sont parfaitement planes. En vrai, elles sont faites de bosses : seuls les sommets se touchent et se soudent. Pour souder sur toute la surface, on presse très fort pour écraser les bosses : c’est le principe du placage du cuivre et de l’aluminium par laminage.'],
+    pasmelange:['Soudé, mais pas mélangé','Même soudés, les atomes de cuivre restent à gauche et ceux de nickel à droite. Une liaison s’est formée à la frontière, mais personne n’a changé de place. Pour un alliage, il faut que les atomes passent de l’autre côté : c’est l’étape 2.'],
+    bp:['Alliage ou composé ?','Cuivre et nickel forment un alliage : on peut les mélanger dans n’importe quelle proportion, chaque atome prenant une place du même cristal. Le bore et le phosphore, eux, forment un composé (BP) : une proportion fixe, un atome de chaque, rangés dans un ordre précis. Dans les deux cas, il faut d’abord que les atomes puissent bouger, donc chauffer.'],
+    simplif:['Ce qui est simplifié','Vue en 2D, deux blocs de quelques dizaines d’atomes. La couche d’oxyde réelle fait quelques nanomètres, soit une dizaine d’atomes d’épaisseur ; elle est dessinée plus fine. Les molécules d’eau sont symboliques.']
+  };
+  L.infoBar(document.getElementById('ib1'),document.getElementById('ibx1'),['places','vide','pasmelange','bosses','bp','simplif'],INFO);
+  let env='air', state='loin', dx=40, tdx=40, t=0, shake=0;
+  const surf=[]; for(let r=0;r<ROWS;r++) surf.push(r);
+  const mol=[]; for(let r=0;r<ROWS;r++){ mol.push({side:0,y:Y0+r*RH+(Math.random()-.5)*3,k:Math.random()<.5?'O':'w'}); mol.push({side:1,y:Y0+r*RH+(Math.random()-.5)*3,k:Math.random()<.5?'O':'w'}); }
+  const msg=()=>{ if(state==='loin'){ cb.textContent='Deux blocs séparés'; cs.textContent=env==='air'?'Chaque surface est couverte d’oxyde (rouge) et d’eau, comme tout métal à l’air. Presse-les.':'Surfaces propres, sans rien dessus : les atomes du bord ont des électrons sans partenaire. Presse-les.'; }
+    else if(state==='presse'){ cb.textContent=env==='air'?'Pressés, mais pas collés':'Soudés !'; cs.textContent=env==='air'?'Les couches d’oxyde et d’eau se touchent : toutes leurs places sont prises, elles se repoussent. Tire pour voir.':'Les électrons des deux surfaces se partagent : des liaisons (dorées) traversent la frontière. Tire pour voir.'; }
+    else { cb.textContent=env==='air'?'Ça se décolle tout seul':'Impossible de décoller'; cs.textContent=env==='air'?'Rien ne retenait les blocs : la répulsion des nuages empêche juste qu’ils se traversent. Aucun atome n’a changé de bloc.':'Les liaisons tiennent comme à l’intérieur du métal. Mais regarde : chaque atome est resté de son côté. Soudé ne veut pas dire mélangé.'; } };
+  document.querySelectorAll('#env1 [data-e]').forEach(b=>b.onclick=()=>{ env=b.dataset.e; state='loin'; tdx=40; document.querySelectorAll('#env1 [data-e]').forEach(c=>c.setAttribute('aria-pressed',c===b)); msg(); });
+  document.getElementById('presser1').onclick=()=>{ state='presse'; tdx=env==='air'?14:0; msg(); };
+  document.getElementById('tirer1').onclick=()=>{ if(state!=='presse') return; state='tire'; if(env==='air') tdx=40; else shake=1.2; msg(); };
+  msg();
+  L.onFrame(dt=>{ t+=dt; dx+=(tdx-dx)*Math.min(1,dt*4); if(shake>0) shake=Math.max(0,shake-dt);
+    const x=V.ctx; V.base(); L.bgLab(x,W,H);
+    const half=W/2, gapL=half-dx/2, sh=shake>0?Math.sin(t*60)*1.5*shake:0;
+    const XL=gapL-(COLS-1)*A-A/2-4, XR=half+dx/2+4+sh;
+    const L1=lattice(COLS,ROWS,A,XL,Y0), R1=lattice(COLS,ROWS,A,XR,Y0);
+    /* liaisons à la frontière */
+    if(env==='vide'&&dx<2){ x.save(); L1.filter(s=>s.c===COLS-1).forEach(s=>{ R1.filter(q=>q.c===0&&Math.abs(q.r-s.r)<=1).forEach(q=>{ if(Math.hypot(q.x-s.x,q.y-s.y)<A*1.25) L.line(x,s.x,s.y,q.x,q.y,'rgba(227,179,65,.85)',2); }); }); x.restore(); }
+    L1.forEach(s=>atom(x,s.x,s.y,CU,4.6)); R1.forEach(s=>atom(x,s.x,s.y,NI,4.6));
+    if(env==='air'){ const xl=Math.max(...L1.map(s=>s.x))+6.5, xr=Math.min(...R1.map(s=>s.x))-6.5;
+      mol.forEach(m=>{ const X=m.side?xr:xl, d=m.side?-1:1; if(m.k==='O'){ L.sph(x,X,m.y,3.2,'#FF6B5B'); } else { L.sph(x,X+d*1,m.y,3,'#FF6B5B'); L.sph(x,X+d*4,m.y-3,1.8,C.ink); L.sph(x,X+d*4,m.y+3,1.8,C.ink); } }); }
+    L.tag(x,'cuivre',XL+30,22,'center',CU); L.tag(x,'nickel',XR+(COLS-1)*A-30,22,'center',NI);
+    if(env==='air') L.tag(x,'oxyde + eau',half,H-14,'center','#FF8A80'); else if(dx<2) L.tag(x,'liaisons à travers la frontière',half,H-14,'center',C.gold);
+    L.vignette(x,W,H);
+  },V.cv);
+})();
+
+/* =================== ÉTAPE 2 : chauffer (lacunes) =================== */
+const COLS=30, ROWS=14, A=12.4;
+function makeAlloy(nVac){ const S=lattice(COLS,ROWS,A,14,22), occ=new Int8Array(S.length);
+  S.forEach((s,i)=>occ[i]=s.c<COLS/2?1:2);
+  for(let k=0;k<nVac;k++){ let i; do{ i=(Math.random()*S.length)|0; }while(occ[i]===0); occ[i]=0; }
+  return {S,occ}; }
+(function(){
+  const W=400,H=270, V=L.setup('cv2',W,H), NV=12;
+  const inp=document.getElementById('t2'), out=document.getElementById('t2v'), sc=document.getElementById('s2'), cb=document.getElementById('c2b'), cs=document.getElementById('c2s');
+  const D0=5.2e-5, Q=256000, R=8.314, a=2.55e-10, TREF=1050+273.15, SIMREF=700;
+  const D=Tk=>D0*Math.exp(-Q/(R*Tk)), G=Tk=>6*D(Tk)/(a*a);
+  const INFO={
+    lacune:['Pourquoi il faut des places vides','Dans un cristal, les atomes sont serrés : pour qu’un atome bouge, il lui faut une place libre juste à côté. Ces places vides s’appellent des lacunes. Il y en a toujours un peu, et de plus en plus en chauffant : près de la fusion, environ une place sur 10 000. Ici, il y en a beaucoup plus pour qu’on voie quelque chose.'],
+    saut:['Pourquoi il faut chauffer','Pour sauter dans la lacune, l’atome doit écarter ses voisins : il faut une grosse secousse d’agitation thermique. Une telle secousse est d’autant plus rare qu’il fait froid, et pas un peu : chaque centaine de degrés en moins divise le nombre de sauts par 10, 100 ou 1 000. C’est la loi d’Arrhenius.'],
+    froid:['À 20 °C, vraiment jamais ?','À 20 °C, un atome de cuivre dans le nickel fait en moyenne un saut tous les 3 × 10²² ans, mille milliards de fois l’âge de l’Univers (13,8 milliards d’années). Pratiquement, les atomes d’un solide froid ne bougent pas de leur place.'],
+    temps:['Les deux chiffres sous l’image','« En vrai » : le nombre de sauts que fait chaque atome par seconde à cette température. « Pour mélanger sur 1 µm » : le temps qu’il faut pour que le mélange s’étende sur un millième de millimètre de chaque côté de la frontière. À 1 000 °C, environ 5 minutes ; à 700 °C, 6 jours ; à 500 °C, une soixantaine d’années ; à 20 °C, infiniment plus que l’âge de l’Univers.'],
+    melange:['Pourquoi ils se mélangent','Personne ne pousse les atomes vers l’autre côté : chaque saut se fait au hasard. Mais il y a beaucoup plus de façons d’être mélangé que d’être trié. À force de sauts au hasard, on tombe presque toujours sur un état mélangé. C’est la diffusion.'],
+    simplif:['Ce qui est simplifié','Vue en 2D, quelques centaines d’atomes, beaucoup trop de lacunes, et un film très ralenti (le facteur est affiché). Le cuivre et le nickel sont traités comme s’ils sautaient aussi vite l’un que l’autre ; en vrai, le cuivre diffuse plus vite. Les chiffres réels viennent de mesures de la diffusion du cuivre dans le nickel. Sous environ 330 °C, un alliage cuivre-nickel aurait même tendance à se démélanger, mais beaucoup trop lentement pour qu’on le voie.']
+  };
+  L.infoBar(document.getElementById('ib2'),document.getElementById('ibx2'),['lacune','saut','melange','temps','froid','simplif'],INFO);
+  let st=makeAlloy(NV), T=20, acc=0, sims=0;
+  inp.oninput=()=>{ T=+inp.value; };
+  document.getElementById('r2').onclick=()=>{ st=makeAlloy(NV); sims=0; };
+  const hopAnim=[];
+  L.onFrame(dt=>{
+    const Tk=T+273.15, rate=SIMREF*G(Tk)/G(TREF); acc+=rate*dt; let n=Math.min(400,Math.floor(acc)); acc-=Math.floor(acc);
+    const {S,occ}=st;
+    while(n-->0){ let v; do{ v=(Math.random()*S.length)|0; }while(occ[v]!==0); const nb=S[v].nb, j=nb[(Math.random()*nb.length)|0]; if(occ[j]===0) continue; occ[v]=occ[j]; occ[j]=0; sims++; if(hopAnim.length<40) hopAnim.push({from:j,to:v,t:0}); }
+    const x=V.ctx; V.base(); L.bgLab(x,W,H);
+    const moving=new Set(); hopAnim.forEach(h=>{ h.t+=dt*6; moving.add(h.to); });
+    for(let i=hopAnim.length-1;i>=0;i--) if(hopAnim[i].t>=1) hopAnim.splice(i,1);
+    S.forEach((s,i)=>{ if(occ[i]===0){ x.beginPath(); x.setLineDash([2,2]); x.arc(s.x,s.y,4.6,0,7); x.strokeStyle='rgba(232,238,244,.55)'; x.lineWidth=1; x.stroke(); x.setLineDash([]); }
+      else if(!moving.has(i)){ const jg=T>300?(Math.random()-.5)*Math.min(1.6,T/600):0; atom(x,s.x+jg,s.y+jg*.6,occ[i]===1?CU:NI,4.6); } });
+    hopAnim.forEach(h=>{ const a1=S[h.from], b1=S[h.to], e=L.ease(Math.min(1,h.t)); atom(x,L.lerp(a1.x,b1.x,e),L.lerp(a1.y,b1.y,e),occ[h.to]===1?CU:NI,4.6); L.glow(x,L.lerp(a1.x,b1.x,e),L.lerp(a1.y,b1.y,e),9,C.gold,.35); });
+    profile(x,occ,S,COLS,14,388,206,262);
+    L.vignette(x,W,H);
+    /* textes */
+    const g=G(Tk), tmix=Math.pow(1e-6,2)/(2*D(Tk)), slow=g/(SIMREF/(S.length-NV));
+    out.textContent=T+' °C'; sc.textContent=T+' °C · film ralenti ×'+sci(slow);
+    const sauts=g>=1?'chaque atome saute environ '+sci(g)+' fois par seconde':'chaque atome saute environ une fois tous les '+duree(1/g);
+    if(rate*3<1){ cb.textContent=T<200?'Froid : rien ne bouge':'Encore trop froid'; cs.textContent='En vrai, '+sauts+'. Pour mélanger sur 1 µm, il faudrait '+duree(tmix)+'.'; }
+    else if(T<950){ cb.textContent='Quelques sauts, rares'; cs.textContent='En vrai, '+sauts+'. Pour mélanger sur 1 µm : '+duree(tmix)+'. Chaque saut va dans une lacune, au hasard.'; }
+    else { cb.textContent='Chaud : la frontière s’efface'; cs.textContent='En vrai, '+sauts+'. Pour mélanger sur 1 µm : '+duree(tmix)+'. Les atomes passent de l’autre côté au hasard, et le cuivre se répand dans le nickel.'; }
+  },V.cv);
+})();
+
+/* =================== ÉTAPE 3 : fondre =================== */
+(function(){
+  const W=400,H=270, V=L.setup('cv3',W,H), sc=document.getElementById('s3'), cb=document.getElementById('c3b'), cs=document.getElementById('c3s');
+  const INFO={
+    liquide:['Pourquoi le liquide mélange vite','Dans un liquide, les atomes ne sont plus rangés : il y a du jeu partout, plus besoin d’attendre une lacune. Ils glissent sans arrêt les uns contre les autres. Un atome y diffuse environ un million de fois plus vite que dans le solide juste avant la fusion. On brasse en plus, et le mélange est fait en quelques minutes.'],
+    refroidir:['En refroidissant','Le liquide mélangé se range en cristal, mais avec les atomes là où ils étaient : un cuivre ici, un nickel là, dans un seul réseau. C’est une « solution solide » : l’alliage. Le cupronickel (75 % de cuivre, 25 % de nickel) est dans les pièces de 1 € et de 2 €.'],
+    regles:['Tous les métaux ne se mélangent pas','Cuivre et nickel se mélangent en toute proportion parce que leurs atomes ont presque la même taille (0,128 et 0,125 nm), le même rangement en cristal et des électrons semblables : ce sont les règles de Hume-Rothery. Fer et plomb, eux, ne se mélangent presque pas, même liquides : ils se séparent comme l’huile et l’eau.'],
+    acier:['Et l’acier ?','Dans l’acier, les petits atomes de carbone ne prennent pas la place d’un atome de fer : ils se glissent dans les trous entre eux. C’est un autre genre d’alliage, dit d’insertion. Le principe reste le même : il faut chauffer pour que les atomes bougent.'],
+    simplif:['Ce qui est simplifié','Le liquide est dessiné comme un réseau très agité où les atomes échangent leurs places ; un vrai liquide n’a plus de réseau du tout. En vrai, le cuivre fond avant le nickel (1 085 °C contre 1 455 °C). Les rares échanges à longue distance représentent le brassage du liquide. Le refroidissement est instantané ici ; en vrai, il dure de quelques secondes à quelques heures.']
+  };
+  L.infoBar(document.getElementById('ib3'),document.getElementById('ibx3'),['liquide','refroidir','regles','acier','simplif'],INFO);
+  let st=makeAlloy(0), liq=0, target=0, t=0, mixT=0;
+  const jit=st.S.map(()=>[0,0]);
+  document.getElementById('f3').onclick=()=>{ target=1; };
+  document.getElementById('g3').onclick=()=>{ target=0; };
+  document.getElementById('r3').onclick=()=>{ st=makeAlloy(0); target=0; liq=0; mixT=0; };
+  L.onFrame(dt=>{ t+=dt; liq+=(target-liq)*Math.min(1,dt*1.6); if(Math.abs(target-liq)<.01) liq=target;
+    const {S,occ}=st;
+    if(liq>.6){ mixT+=dt; const n=Math.floor(9000*dt*liq); for(let k=0;k<n;k++){ const i=(Math.random()*S.length)|0, nb=S[i].nb, j=Math.random()<.03?(Math.random()*S.length)|0:nb[(Math.random()*nb.length)|0]; const o=occ[i]; occ[i]=occ[j]; occ[j]=o; } }
+    const amp=.6+liq*4.2;
+    jit.forEach(p=>{ p[0]+=(Math.random()-.5)*amp*.9; p[1]+=(Math.random()-.5)*amp*.9; p[0]*=.8; p[1]*=.8; });
+    const x=V.ctx; V.base(); L.bgLab(x,W,H);
+    if(liq>.05){ const g=x.createLinearGradient(0,0,0,200); g.addColorStop(0,'rgba(255,120,40,0)'); g.addColorStop(1,'rgba(255,120,40,'+(.25*liq).toFixed(2)+')'); x.fillStyle=g; x.fillRect(0,0,W,200); }
+    S.forEach((s,i)=>atom(x,s.x+jit[i][0],s.y+jit[i][1],occ[i]===1?CU:NI,4.6));
+    profile(x,occ,S,COLS,14,388,206,262);
+    L.vignette(x,W,H);
+    const cnt=[0,0,0]; occ.forEach(o=>cnt[o]++);
+    if(liq>.6){ sc.textContent='Liquide · 1 500 °C'; cb.textContent='Liquide : tout glisse et se mélange'; cs.textContent='Plus de réseau rigide, plus besoin de lacunes : les atomes échangent leurs places sans arrêt. Regarde le profil en bas devenir plat. Refroidis quand tu veux.'; }
+    else if(liq>.05&&target===1){ sc.textContent='Fusion…'; cb.textContent='Ça fond'; cs.textContent='Les atomes s’agitent tellement que le cristal se défait.'; }
+    else if(mixT>0){ sc.textContent='Solide · 20 °C'; cb.textContent='Refroidi : un alliage'; cs.textContent='Les atomes se sont rangés en un seul cristal, cuivre et nickel mêlés là où le liquide les avait laissés. Ce mélange est figé : à 20 °C, plus rien ne bouge. Moitié cuivre, moitié nickel : c’est proche du constantan (55 % de cuivre), utilisé dans les thermocouples.'; }
+    else { sc.textContent='Solide · 20 °C'; cb.textContent='Cuivre et nickel, soudés'; cs.textContent='Les deux métaux se touchent, mais chacun reste de son côté. Fais fondre.'; }
+  },V.cv);
+})();
+})();
+</script>
+</body>
+</html>

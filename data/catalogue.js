@@ -41,7 +41,11 @@ window.CATALOGUE={
      themes:['atome','noyau','nuage électronique','électron','contact','force','toucher','principe de Pauli','van der Waals','répulsion','surface','matière'],
      resume:'Ton doigt sur une table, vu au niveau des atomes : un noyau 60 000 fois plus petit que son nuage, deux nuages qui se repoussent parce que les places sont déjà prises, et une peau qui ne touche l\u2019objet que par quelques bosses.',
      chemin:'animations/physique/toucher-atomes/', signe:'0,38 nm', ajout:'2026-11-12',
-     blocs:['orbitales-liantes']}
+     blocs:['orbitales-liantes']},
+    {id:'alliage', titre:'Coller deux métaux, est-ce faire un alliage ?', domaine:'chimie', niveaux:['collège','lycée','supérieur'],
+     themes:['alliage','métal','cuivre','nickel','diffusion','lacune','température','fusion','soudure à froid','oxyde','cristal','mélange'],
+     resume:'Presser du cuivre contre du nickel ne les mélange pas : oxyde à l\u2019air, soudure à froid dans le vide, atomes qui sautent de trou en trou quand on chauffe, et fusion pour faire un vrai alliage.',
+     chemin:'animations/chimie/alliage/', signe:'256 kJ/mol', ajout:'2026-11-12'}
   ],
   /* Blocs : modèles réutilisables, insérables dans n'importe quelle page avec <div data-bloc="id"></div>.
      - domaines : tous les domaines où le bloc sert (il apparaît dans chacun)
