@@ -24,7 +24,7 @@ window.CATALOGUE={
      themes:['lumière','laser','LED','électricité','semi-conducteur','atome','électron','émission stimulée','onde','orbitale','liaison','couleur'],
      resume:'Du pointeur aux atomes : couches p et n, émission stimulée, onde de l’électron (Davisson et Germer), orbitales, liaison Ga–P, couleur des LED et LED blanche.',
      chemin:'animations/physique/diode-laser/', signe:'650 nm', ajout:'2026-11-11',
-     blocs:['orbitales-liantes','corde-orbitale']},
+     blocs:['orbitales-liantes','corde-orbitale','pendules-couples']},
     {id:'led-et-laser', titre:'LED et laser', domaine:'physique', niveaux:['collège','lycée'],
      themes:['lumière','LED','laser','diode','pointeur','émission stimulée','photon','jonction p-n'],
      resume:'Même jonction, deux destins pour la lumière : la LED l\u2019émet au hasard, le laser la recopie entre deux miroirs. Le pointeur en coupe, la puce en mille-feuille, et l\u2019émission stimulée en animation.',
@@ -41,7 +41,7 @@ window.CATALOGUE={
      themes:['atome','noyau','nuage électronique','électron','contact','force','toucher','principe de Pauli','van der Waals','répulsion','surface','matière'],
      resume:'Ton doigt sur une table, vu au niveau des atomes : un noyau 60 000 fois plus petit que son nuage, deux nuages qui se repoussent parce que les places sont déjà prises, et une peau qui ne touche l\u2019objet que par quelques bosses.',
      chemin:'animations/physique/toucher-atomes/', signe:'0,38 nm', ajout:'2026-11-12',
-     blocs:['orbitales-liantes']},
+     blocs:['pendules-couples','orbitales-liantes']},
     {id:'alliage', titre:'Coller deux métaux, est-ce faire un alliage ?', domaine:'chimie', niveaux:['collège','lycée','supérieur'],
      themes:['alliage','métal','cuivre','nickel','diffusion','lacune','température','fusion','soudure à froid','oxyde','cristal','mélange'],
      resume:'Presser du cuivre contre du nickel ne les mélange pas : oxyde à l\u2019air, soudure à froid dans le vide, atomes qui sautent de trou en trou quand on chauffe, et fusion pour faire un vrai alliage.',
@@ -62,6 +62,9 @@ window.CATALOGUE={
      script:'assets/js/blocs/orbitales-liantes.js'},
     {id:'corde-orbitale', titre:'De la corde à l\u2019orbitale', domaines:['physique','chimie'], niveaux:['lycée','supérieur'],
      themes:['orbitale','onde stationnaire','nœud','corde','membrane','tambour','atome','couches'], resume:'Ce qu\u2019est une orbitale : la même onde stationnaire sur une corde (1D), une membrane (2D), puis autour du noyau (3D), avec 0 ou 1 nœud.',
-     script:'assets/js/blocs/corde-orbitale.js'}
+     script:'assets/js/blocs/corde-orbitale.js'},
+    {id:'pendules-couples', titre:'Deux pendules couplés, un électron partagé', domaines:['physique','chimie'], niveaux:['collège','lycée','supérieur'],
+     themes:['pendule','oscillateur','couplage','battements','phase','orbitale','liaison','onde','électron'], resume:'Deux pendules reliés par un ressort balancent ensemble ou à contretemps : les mêmes équations qu\u2019un électron partagé entre deux atomes, en orbitale liante ou antiliante.',
+     script:'assets/js/blocs/pendules-couples.js'}
   ]
 };

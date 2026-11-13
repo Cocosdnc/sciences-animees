@@ -39,6 +39,8 @@ window.NOTIONS={
     {id:'ondes', titre:'Ondes', parent:'physique', resume:'Ce qui se propage, interfère, résonne : son, lumière, matière.'},
       {id:'onde-stationnaire', titre:'Ondes stationnaires', parent:'ondes', resume:'Une onde enfermée ne vibre que de certaines façons : nœuds, ventres, harmoniques.',
        ressources:[{type:'bloc',id:'corde-vibrante'},{type:'bloc',id:'corde-orbitale'}]},
+      {id:'oscillateurs-couples', titre:'Oscillateurs couplés', parent:'ondes', resume:'Deux pendules reliés par un ressort : deux façons propres de balancer, ensemble (lent) ou à contretemps (rapide), et des battements entre les deux.',
+       ressources:[{type:'bloc',id:'pendules-couples'}]},
       {id:'interferences', titre:'Interférences', parent:'ondes', resume:'Des ondes qui se renforcent ou s’annulent selon leur décalage.',
        applications:[{type:'animation',id:D,ancre:'atomeseul',titre:'Davisson et Germer : diffraction des électrons'},{type:'bloc',id:'orbitales-liantes'}]},
     {id:'electricite', titre:'Électricité', parent:'physique', resume:'Tension, courant, et ce que font les électrons dans la matière.'},
@@ -88,7 +90,7 @@ window.NOTIONS={
       {id:'covalente', titre:'Liaison covalente', parent:'liaison-chimique', resume:'Deux électrons partagés entre deux noyaux, à la distance où l’énergie est la plus basse.',
        ressources:[{type:'animation',id:D,ancre:'liaison',titre:'Pourquoi les nuages se lient'},{type:'animation',id:TA,ancre:'couche-incomplete',titre:'H + H, P + B : quand le contact crée une liaison'}]},
       {id:'orbitales-mol', titre:'Orbitales liantes et antiliantes', parent:'liaison-chimique', resume:'Deux ondes additionnées en phase (liante) ou en opposition (antiliante).',
-       ressources:[{type:'bloc',id:'orbitales-liantes'},{type:'animation',id:D,ancre:'liaison',titre:'La liaison Ga–P en 3D'}]},
+       ressources:[{type:'bloc',id:'pendules-couples'},{type:'bloc',id:'orbitales-liantes'},{type:'animation',id:D,ancre:'liaison',titre:'La liaison Ga–P en 3D'}]},
       {id:'octet', titre:'La règle des 8', parent:'liaison-chimique', resume:'Une couche externe de 4 cases, donc 8 places : pleine, l’atome ne cherche plus à se lier.',
        ressources:[{type:'animation',id:D,ancre:'atomeseul',titre:'Pourquoi 8 compte autant'}]},
       {id:'van-der-waals', titre:'Forces de van der Waals', parent:'liaison-chimique', resume:'Une faible attraction entre nuages qui se déforment l’un l’autre : 0,005 eV par paire, mais des milliards de paires tiennent un gecko.',
@@ -158,6 +160,7 @@ window.NOTIONS={
     ['adhesion','octet','une couche pleine ne se lie plus'],
     ['adhesion','alliage-metal','soudé n’est pas mélangé'],
     ['alliage-metal','diffusion-solide','il faut que les atomes bougent'],
-    ['diffusion-solide','cristaux','des sauts dans le réseau']
+    ['diffusion-solide','cristaux','des sauts dans le réseau'],
+    ['oscillateurs-couples','orbitales-mol','les mêmes équations']
   ]
 };
