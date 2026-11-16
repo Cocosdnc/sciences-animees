@@ -11,13 +11,13 @@ on:
 permissions:
   contents: write
   issues: write
-concurrency:
-  group: retouche-${{ github.event.issue.number }}
-  cancel-in-progress: true
 jobs:
   retouche:
     if: github.actor == github.repository_owner && (contains(github.event.issue.labels.*.name, 'retouche') || startsWith(github.event.issue.title, 'Retouche')) && (github.event.action != 'labeled' || github.event.label.name == 'retouche')
     runs-on: ubuntu-latest
+    concurrency:
+      group: retouche-${{ github.event.issue.number }}
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -37,6 +37,7 @@ jobs:
 
             ${{ github.event.issue.body }}
 
+            Si cette issue est déjà fermée ou si la modification demandée est déjà faite dans le code, ne change rien et dis-le en commentaire.
             Fais exactement la modification demandée, rien de plus. Respecte les conventions (explications honnêtes, chiffres et unités, couleurs communes, 390 px, réduire les animations).
             Après la modification, lance `node tools/verifier.mjs` et corrige ce qu'il signale.
             Puis fais un commit clair en français sur la branche main et publie-le avec `git push origin main`.
