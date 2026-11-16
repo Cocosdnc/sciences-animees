@@ -10,7 +10,7 @@
      même si elle a des applications.
    - liens : [idA, idB, 'nature du lien'] : relations transversales, souvent entre domaines.
    Les domaines eux-mêmes sont définis dans catalogue.js. */
-const D='diode-laser', AEL='atome-et-liaisons', TA='toucher-atomes', AL='alliage', LL='led-et-laser', VL='vitesse-lumiere';
+const D='diode-laser', AEL='atome-et-liaisons', TA='toucher-atomes', AL='alliage', VL='vitesse-lumiere';
 window.NOTIONS={
   noeuds:[
     /* ================= PHYSIQUE ================= */
@@ -20,7 +20,7 @@ window.NOTIONS={
          ressources:[{type:'animation',id:VL,titre:'Tours de la Terre, trajet depuis la Lune et le Soleil'}]},
       {id:'emission-lumiere', titre:'Émission de lumière', parent:'lumiere', resume:'Comment un atome ou un cristal produit un photon.'},
         {id:'emission', titre:'Émission spontanée et stimulée', parent:'emission-lumiere', resume:'Un électron qui redescend émet un photon : tout seul et au hasard, ou forcé par une onde qui passe, qui est alors recopiée.',
-         ressources:[{type:'animation',id:LL,ancre:'emission',titre:'Les photons qui se recopient'},{type:'animation',id:D,ancre:'scope',titre:'Microscope, niveau Atomes'},{type:'animation',id:AEL,ancre:'liaison',titre:'Le nuage qui balance et rayonne'}]},
+         ressources:[{type:'animation',id:D,ancre:'scope',titre:'Microscope, niveau Atomes'},{type:'animation',id:AEL,ancre:'liaison',titre:'Le nuage qui balance et rayonne'}]},
         {id:'fluorescence', titre:'Absorber puis réémettre', parent:'emission-lumiere', resume:'Un atome absorbe une lumière et en réémet une autre, moins énergétique : la fluorescence des luminophores.',
          ressources:[{type:'animation',id:D,ancre:'blanc',titre:'Dans un grain de poudre : l’ion cérium'}]},
       {id:'couleur-spectre', titre:'Couleur et spectre', parent:'lumiere', resume:'Longueur d’onde, couleurs, et comment on les mélange.'},
@@ -30,10 +30,10 @@ window.NOTIONS={
          applications:[{type:'animation',id:D,ancre:'blanc',titre:'La LED blanche : bleu + jaune'}]},
       {id:'applications-lumiere', titre:'Applications', parent:'lumiere', application:true, resume:'Les objets où ces notions servent.'},
         {id:'led', titre:'LED', parent:'applications-lumiere', application:true, resume:'Une jonction p-n où chaque rencontre électron-trou donne un photon, émis au hasard.',
-         ressources:[{type:'animation',id:LL,ancre:'led-ou-laser',titre:'LED ou diode laser ?'}],
+         ressources:[],
          applications:[{type:'animation',id:D,ancre:'couleur',titre:'Choisir la couleur d’une LED'}]},
         {id:'laser', titre:'Laser', parent:'applications-lumiere', application:true, resume:'La même jonction, plus deux faces réfléchissantes : la lumière se recopie à chaque aller-retour.',
-         ressources:[{type:'animation',id:D,ancre:'scope',titre:'Du pointeur aux atomes'},{type:'animation',id:LL,ancre:'pointeur',titre:'Ce qu’il y a dans un pointeur'}]},
+         ressources:[{type:'animation',id:D,ancre:'scope',titre:'Du pointeur aux atomes'}]},
         {id:'led-blanche', titre:'LED blanche', parent:'applications-lumiere', application:true, resume:'Une puce bleue et une poudre jaune : l’œil additionne les deux et voit du blanc.',
          ressources:[{type:'animation',id:D,ancre:'blanc',titre:'La LED blanche'}]},
     {id:'ondes', titre:'Ondes', parent:'physique', resume:'Ce qui se propage, interfère, résonne : son, lumière, matière.'},
@@ -50,13 +50,13 @@ window.NOTIONS={
         {id:'dopage', titre:'Dopage n et p', parent:'semi-conducteurs', resume:'Un atome qui apporte un électron de plus (n) ou de moins (p) : électrons libres ou trous.',
          ressources:[{type:'animation',id:D,ancre:'scope',titre:'Microscope, niveau Couches'}]},
         {id:'jonction-pn', titre:'Jonction p-n', parent:'semi-conducteurs', resume:'Électrons et trous poussés l’un vers l’autre par la pile se rencontrent au milieu.',
-         ressources:[{type:'animation',id:D,ancre:'scope',titre:'Microscope, niveau Couches'},{type:'animation',id:LL,ancre:'led-ou-laser',titre:'Le principe commun à la LED et au laser'}]},
+         ressources:[{type:'animation',id:D,ancre:'scope',titre:'Microscope, niveau Couches'}]},
         {id:'bandes', titre:'Bandes d’énergie et gap', parent:'semi-conducteurs', resume:'L’étage bas (liaisons) et l’étage haut (électrons libres), séparés par le gap.',
          ressources:[{type:'animation',id:D,ancre:'scope',titre:'Microscope, vue énergie'}],
          applications:[{type:'bloc',id:'energie-liaison'}]},
       {id:'applications-electricite', titre:'Applications', parent:'electricite', application:true, resume:'Les objets où ces notions servent.'},
         {id:'diode', titre:'Diodes électroluminescentes et laser', parent:'applications-electricite', application:true, resume:'Les semi-conducteurs qui transforment le courant en lumière.',
-         ressources:[{type:'animation',id:LL,titre:'LED et laser'}]},
+         ressources:[]},
         {id:'tube-cathodique', titre:'Canon à électrons', parent:'applications-electricite', application:true, resume:'Un filament chaud et une tension : le faisceau des anciennes télévisions et des microscopes électroniques.',
          ressources:[{type:'animation',id:AEL,ancre:'atomeseul',titre:'Le canon à électrons, vu de près'}]},
     {id:'forces-contact', titre:'Forces et contact', parent:'physique', resume:'Ce qui se passe quand deux objets se touchent et se poussent.'},
