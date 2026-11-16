@@ -10,14 +10,14 @@
      même si elle a des applications.
    - liens : [idA, idB, 'nature du lien'] : relations transversales, souvent entre domaines.
    Les domaines eux-mêmes sont définis dans catalogue.js. */
-const D='diode-laser', AEL='atome-et-liaisons', TA='toucher-atomes', AL='alliage', LL='led-et-laser', SLT='lumiere-soleil-lune-terre', TT='lumiere-tour-de-la-terre';
+const D='diode-laser', AEL='atome-et-liaisons', TA='toucher-atomes', AL='alliage', LL='led-et-laser', VL='vitesse-lumiere';
 window.NOTIONS={
   noeuds:[
     /* ================= PHYSIQUE ================= */
     {id:'lumiere', titre:'Lumière', parent:'physique', resume:'Comment la lumière se propage, d’où vient sa couleur, comment la matière l’émet.'},
       {id:'propagation', titre:'Propagation de la lumière', parent:'lumiere', resume:'La lumière se déplace en ligne droite, très vite, mais pas instantanément.'},
         {id:'vitesse-lumiere', titre:'Vitesse de la lumière', parent:'propagation', resume:'300 000 km/s : 7,5 tours de la Terre en une seconde, 1,3 s depuis la Lune, 8 min 20 s depuis le Soleil.',
-         ressources:[{type:'animation',id:TT,titre:'Combien de tours de la Terre en 1 seconde ?'},{type:'animation',id:SLT,titre:'Combien de temps depuis la Lune et le Soleil ?'}]},
+         ressources:[{type:'animation',id:VL,titre:'Tours de la Terre, trajet depuis la Lune et le Soleil'}]},
       {id:'emission-lumiere', titre:'Émission de lumière', parent:'lumiere', resume:'Comment un atome ou un cristal produit un photon.'},
         {id:'emission', titre:'Émission spontanée et stimulée', parent:'emission-lumiere', resume:'Un électron qui redescend émet un photon : tout seul et au hasard, ou forcé par une onde qui passe, qui est alors recopiée.',
          ressources:[{type:'animation',id:LL,ancre:'emission',titre:'Les photons qui se recopient'},{type:'animation',id:D,ancre:'scope',titre:'Microscope, niveau Atomes'},{type:'animation',id:AEL,ancre:'liaison',titre:'Le nuage qui balance et rayonne'}]},
@@ -117,7 +117,7 @@ window.NOTIONS={
     /* ================= TERRE ET UNIVERS ================= */
     {id:'systeme-solaire', titre:'Système solaire', parent:'terre-univers', resume:'Le Soleil, la Terre, la Lune et les autres planètes.'},
       {id:'distances', titre:'Distances dans le système solaire', parent:'systeme-solaire', resume:'384 400 km jusqu’à la Lune, 150 millions de km jusqu’au Soleil.',
-       applications:[{type:'animation',id:SLT,titre:'La Terre et la Lune à l’échelle'}]},
+       applications:[{type:'animation',id:VL,titre:'La Terre et la Lune à l’échelle'}]},
     {id:'etoiles', titre:'Étoiles', parent:'terre-univers', resume:'Ce que la lumière des étoiles nous apprend.'},
       {id:'spectres-etoiles', titre:'La lumière des étoiles', parent:'etoiles', resume:'Raies et couleurs : la composition et la température des étoiles.'},
     /* ================= MATHÉMATIQUES ================= */
