@@ -40,7 +40,7 @@ window.CATALOGUE={
      blocs:['lumiere-blanche','lampes-rvb','molecule-secouee','diffusion-lambda','ciel-de-jour','densite-atmosphere','coucher-de-soleil','onde-particule','diffusion-mie','arc-en-ciel']},
     {id:'oeil-cones', titre:'L’œil et les cônes : pourquoi le bleu est moins net', domaine:'biologie', niveaux:['collège','lycée'],
      themes:['vision','œil','cônes','rétine','couleur','sensibilité','fovéa','bleu','luminosité','acuité'],
-     resume:'Trois sortes de cônes, dont les cônes bleus sont rares (5 à 10 %) et absents du centre de la fovéa : une boule blanche et son ombre, éclairées en bleu, en vert ou en rouge à luminosité égale : en bleu, l\u2019ombre se distingue moins du mur ; une simulation montre le flou de la lentille.',
+     resume:'Trois sortes de cônes, dont les cônes bleus sont rares (5 à 10 %) et absents du centre de la fovéa : une boule blanche sur fond noir, éclairée en bleu, en vert ou en rouge à luminosité égale : on observe ce que l\u2019on voit.',
      chemin:'animations/biologie/oeil-cones/', signe:'5-10 %', ajout:'2026-11-17',
      blocs:['cones-sensibilite','test-cones']},
     {id:'toucher-atomes', titre:'Que se passe-t-il quand on touche un objet ?', domaine:'physique', niveaux:['collège','lycée','supérieur'],
@@ -111,8 +111,8 @@ window.CATALOGUE={
     {id:'cones-sensibilite', titre:'Les trois sortes de cônes', domaines:['biologie','physique'], niveaux:['collège','lycée'],
      themes:['vision','cônes','rétine','sensibilité','couleur','fovéa','longueur d\u2019onde'], resume:'Courbes de sensibilité des cônes L, M et S, et rétine cône par cône : les cônes bleus sont rares et absents du centre de la fovéa.',
      script:'assets/js/blocs/cones-sensibilite.js'},
-    {id:'test-cones', titre:'Test : une boule blanche et son ombre, éclairées en bleu, en vert, en rouge', domaines:['biologie','physique'], niveaux:['collège','lycée'],
-     themes:['vision','cônes','couleur','luminosité','acuité','bleu'], resume:'Une boule blanche et son ombre sur un mur, éclairées en bleu, vert, rouge, jaune ou blanc, à même luminosité : en bleu, l\u2019ombre se fond dans le mur. À droite, la simulation du flou chromatique de l\u2019œil.',
+    {id:'test-cones', titre:'Test : une boule blanche éclairée en bleu, en vert, en rouge', domaines:['biologie','physique'], niveaux:['collège','lycée'],
+     themes:['vision','cônes','couleur','luminosité','acuité','bleu'], resume:'Une boule blanche sur fond noir, éclairée en bleu, vert, rouge ou une autre couleur, à même luminosité : observe ce que tu vois.',
      script:'assets/js/blocs/test-cones.js'}
   ]
 };
