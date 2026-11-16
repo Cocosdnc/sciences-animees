@@ -5,6 +5,8 @@ Chaque animation montre le mécanisme réel, explique le *pourquoi*, et dit touj
 
 Site statique, sans étape de construction : il s'héberge tel quel sur GitHub Pages et s'ouvre aussi en local en double-cliquant sur `index.html`.
 
+**Voir le site : https://cocosdnc.github.io/sciences-animees/**
+
 ## Organisation
 
 ```
