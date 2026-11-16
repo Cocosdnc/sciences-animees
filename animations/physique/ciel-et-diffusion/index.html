@@ -1,0 +1,104 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ciel et diffusion · Sciences animées</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<style>
+section{display:flex;flex-direction:column;gap:14px}
+.step{font:500 12px/1 var(--f-mono);color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+h2{font:700 24px/1.2 var(--f-display);margin:0;text-wrap:balance}
+h3{font:700 18px/1.3 var(--f-display);margin:6px 0 0}
+.note{font-size:15px;max-width:66ch;margin:0;color:var(--ink)}
+.note em{font-style:normal;font-weight:500;color:var(--laser)}
+.sources{font-size:13px;color:var(--muted);max-width:75ch}
+.sources li{margin:3px 0}
+.apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.apps div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;color:var(--muted)}
+.apps b{display:block;color:var(--ink);font:500 15px var(--f-display);margin-bottom:4px}
+.toc{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px}
+</style></head><body>
+<div class="topbar" style="max-width:1080px;margin:0 auto 28px"><a class="brand" href="../../../"><i></i>Sciences animées</a><nav><a href="../../../#catalogue">Animations</a><a href="../../../carte.html">Carte des notions</a><a href="../../../blocs/">Modèles</a></nav></div>
+<div class="wrap">
+<header class="page">
+  <div class="kicker">Lumière · diffusion · atmosphère</div>
+  <h1>Ciel et diffusion</h1>
+  <p class="lead">Pourquoi le ciel est bleu le jour, pourquoi le Soleil devient rouge le soir, et pourquoi les nuages sont blancs. Une seule idée, la diffusion de la lumière par des particules, suivie jusqu'au bout, avec les vrais chiffres : le spectre du Soleil, l'air, l'ozone, l'œil. Les boutons <b>i</b> donnent les explications et disent ce qui est simplifié.</p>
+  <nav class="toc" aria-label="Sommaire"><a href="#blanc">1. Lumière blanche</a><a href="#molecule">2. La molécule secouée</a><a href="#lambda">3. Toutes les molécules</a><a href="#jour">4. Le ciel de jour</a><a href="#soir">5. Le coucher de soleil</a><a href="#mie">6. Gouttes et nuages</a><a href="#apps">7. Applications</a></nav>
+</header>
+
+<section id="blanc">
+  <div class="step">Étape 1</div>
+  <h2>La lumière blanche est un mélange de couleurs</h2>
+  <p class="note">Une couleur pure est une onde, caractérisée par sa <em>longueur d'onde</em> λ : environ 400 nm pour le violet, 700 nm pour le rouge. La lumière du Soleil les contient toutes. Elle paraît blanche parce que notre œil les reçoit ensemble.</p>
+  <div data-bloc="lumiere-blanche"></div>
+</section>
+
+<section id="molecule">
+  <div class="step">Étape 2</div>
+  <h2>Une molécule d'air, secouée par la lumière</h2>
+  <p class="note">L'air est fait de molécules (N₂ à 78 %, O₂ à 21 %), minuscules devant la longueur d'onde. La lumière est un champ électrique qui oscille : il secoue le nuage d'électrons de la molécule, qui devient une petite antenne. Cette antenne réémet de la lumière dans toutes les directions : c'est la <em>diffusion de Rayleigh</em>. Trois niveaux de réalisme : la molécule dessinée, un modèle d'oscillateur qui explique pourquoi le bleu est plus diffusé, et les mesures réelles.</p>
+  <div data-bloc="molecule-secouee"></div>
+</section>
+
+<section id="lambda">
+  <div class="step">Étape 3</div>
+  <h2>Et si ce n'était pas de l'air ?</h2>
+  <p class="note">La diffusion en 1/λ⁴ n'est pas propre à l'azote : toute molécule bien plus petite que la longueur d'onde diffuse ainsi. Seule l'intensité change, avec le carré de la polarisabilité. Choisis une molécule, ou règle toi-même la polarisabilité. Remarque : H₂ est une des plus petites molécules, et elle diffuse moins que N₂, pas plus.</p>
+  <div data-bloc="diffusion-lambda"></div>
+</section>
+
+<section id="jour">
+  <div class="step">Étape 4</div>
+  <h2>Le ciel de jour</h2>
+  <p class="note">Le ciel est la lumière du Soleil diffusée par l'air. Si la lumière était parfaitement blanche, on aurait un ciel clair tirant sur le bleu-violet. Mais le Soleil n'est pas parfaitement blanc, l'ozone absorbe un peu, et surtout l'œil n'est presque pas sensible au violet. On ajoute chaque effet, l'un après l'autre.</p>
+  <div data-bloc="ciel-de-jour"></div>
+</section>
+
+<section id="soir">
+  <div class="step">Étape 5</div>
+  <h2>Le coucher de soleil</h2>
+  <p class="note">Quand le Soleil est bas, sa lumière traverse jusqu'à 38 fois plus d'air. Le bleu est diffusé hors du faisceau bien avant le rouge : ce qui nous parvient en ligne droite est orange puis rouge. Lance le coucher, ou règle la hauteur à la main.</p>
+  <div data-bloc="coucher-de-soleil"></div>
+</section>
+
+<section id="mie">
+  <div class="step">Étape 6</div>
+  <h2>Quand les particules grossissent : gouttes, poussières, nuages</h2>
+  <p class="note">La loi en 1/λ⁴ n'est valable que pour des particules bien plus petites que la longueur d'onde. Pour des gouttes d'eau, des poussières ou de la fumée, il faut le calcul complet de la <em>théorie de Mie</em>, fait ici en direct. Fais grossir la particule, de la molécule d'air à la goutte de pluie.</p>
+  <div data-bloc="diffusion-mie"></div>
+</section>
+
+<section id="apps">
+  <div class="step">Étape 7</div>
+  <h2>Ce que ça explique, et les limites</h2>
+  <div class="apps">
+    <div><b>Un ciel qui se polarise</b>La lumière diffusée à 90° du Soleil est presque totalement polarisée : c'est ce qu'utilisent des lunettes polarisantes (le ciel s'assombrit) et certains insectes pour s'orienter.</div>
+    <div><b>Le ciel plus foncé en altitude</b>Plus on monte, moins il y a d'air au-dessus de nous à diffuser la lumière : le ciel devient bleu sombre, puis noir dans l'espace.</div>
+    <div><b>Les nuages et la brume</b>Gouttes de 5 à 20 µm : blancs. Brume d'aérosols : bleu pâle devant un fond sombre, jaunâtre devant un fond clair.</div>
+    <div><b>Un coucher de soleil de Mars</b>Sur Mars, les poussières (Mie) diffusent surtout vers l'avant et le bleu : le ciel proche du Soleil couchant y est bleu, à l'inverse de la Terre.</div>
+    <div><b>Les limites de cette page</b>Diffusion simple, atmosphère sans aérosols, une seule altitude de référence : la vraie couleur du ciel varie avec l'humidité, la pollution et l'heure. La diffusion multiple, qui éclaircit le ciel vers l'horizon, n'est pas calculée.</div>
+  </div>
+  <h3>Sources</h3>
+  <ul class="sources">
+    <li>Bodhaine, Wood, Dutton, Slusser (1999), « On Rayleigh optical depth calculations », <i>J. Atmos. Oceanic Technol.</i> 16, 1854 : section efficace de l'air, indice de réfraction, facteur de King.</li>
+    <li>Bucholtz (1995), « Rayleigh-scattering calculations for the terrestrial atmosphere », <i>Applied Optics</i> 34, 2765 : épaisseur optique de l'atmosphère.</li>
+    <li>ASTM G173-03, spectres solaires de référence (calculés avec SMARTS 2.9.2) : spectre du Soleil.</li>
+    <li>Wyman, Sloan, Shirley (2013), « Simple analytic approximations to the CIE XYZ color matching functions », <i>JCGT</i> 2(2) : sensibilité de l'œil.</li>
+    <li>Kasten et Young (1989), « Revised optical air mass tables and approximation formula », <i>Applied Optics</i> 28, 4735 : masse d'air.</li>
+    <li>Bohren et Huffman (1983), <i>Absorption and Scattering of Light by Small Particles</i> : calcul de Mie.</li>
+    <li>Hulburt (1953), « Explanation of the brightness and color of the sky, particularly the twilight sky », <i>J. Opt. Soc. Am.</i> 43, 113 : rôle de l'ozone au crépuscule.</li>
+    <li>CRC Handbook of Chemistry and Physics : polarisabilités des molécules.</li>
+  </ul>
+</section>
+</div>
+<script src="../../../assets/js/data-astm-g173.js"></script>
+<script src="../../../assets/js/diffusion-phys.js"></script>
+<script src="../../../assets/js/labo.js"></script>
+<script src="../../../assets/js/blocs/lumiere-blanche.js"></script>
+<script src="../../../assets/js/blocs/molecule-secouee.js"></script>
+<script src="../../../assets/js/blocs/diffusion-lambda.js"></script>
+<script src="../../../assets/js/blocs/ciel-de-jour.js"></script>
+<script src="../../../assets/js/blocs/coucher-de-soleil.js"></script>
+<script src="../../../assets/js/blocs/diffusion-mie.js"></script>
+<script>Labo.mountBlocs();</script>
+</body></html>

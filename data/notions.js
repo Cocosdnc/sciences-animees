@@ -10,7 +10,7 @@
      même si elle a des applications.
    - liens : [idA, idB, 'nature du lien'] : relations transversales, souvent entre domaines.
    Les domaines eux-mêmes sont définis dans catalogue.js. */
-const D='diode-laser', AEL='atome-et-liaisons', TA='toucher-atomes', AL='alliage', VL='vitesse-lumiere';
+const D='diode-laser', AEL='atome-et-liaisons', TA='toucher-atomes', AL='alliage', VL='vitesse-lumiere', CD='ciel-et-diffusion';
 window.NOTIONS={
   noeuds:[
     /* ================= PHYSIQUE ================= */
@@ -28,6 +28,16 @@ window.NOTIONS={
          ressources:[{type:'animation',id:D,ancre:'couleur',titre:'Le dosage des atomes règle la couleur'}]},
         {id:'synthese-additive', titre:'Synthèse additive', parent:'couleur-spectre', resume:'Additionner des lumières colorées : rouge + vert + bleu, ou bleu + jaune, donnent du blanc.',
          applications:[{type:'animation',id:D,ancre:'blanc',titre:'La LED blanche : bleu + jaune'}]},
+      {id:'diffusion-lumiere', titre:'Diffusion de la lumière', parent:'lumiere', resume:'Pourquoi le ciel est bleu, le soir rouge et les nuages blancs : la lumière déviée par des particules.'},
+        {id:'rayleigh', titre:'Diffusion de Rayleigh', parent:'diffusion-lumiere', resume:'Une particule bien plus petite que λ diffuse en 1/λ⁴ : le bleu bien plus que le rouge.',
+         ressources:[{type:'bloc',id:'lumiere-blanche'},{type:'bloc',id:'molecule-secouee'},{type:'bloc',id:'diffusion-lambda'},{type:'animation',id:CD,ancre:'molecule',titre:'La molécule d’air secouée'}]},
+        {id:'ciel-couleur', titre:'La couleur du ciel', parent:'diffusion-lumiere', resume:'Bleu le jour, pâle vers l’horizon : diffusion, spectre du Soleil, ozone et sensibilité de l’œil.',
+         ressources:[{type:'bloc',id:'ciel-de-jour'},{type:'animation',id:CD,ancre:'jour',titre:'Le ciel de jour'}]},
+        {id:'coucher-soleil', titre:'Le coucher de soleil', parent:'diffusion-lumiere', resume:'Plus d’air traversé : le bleu est retiré du faisceau, il reste l’orange et le rouge.',
+         ressources:[{type:'bloc',id:'coucher-de-soleil'},{type:'animation',id:CD,ancre:'soir',titre:'Le coucher de soleil'}]},
+        {id:'mie', titre:'Diffusion de Mie', parent:'diffusion-lumiere', resume:'Des particules de la taille de λ ou plus : gouttes, poussières, nuages blancs.',
+         ressources:[{type:'bloc',id:'diffusion-mie'},{type:'animation',id:CD,ancre:'mie',titre:'Gouttes et nuages'}]},
+        {id:'applications-diffusion', titre:'Applications', parent:'diffusion-lumiere', application:true, resume:'Ciels, nuages, brume, couchers de soleil sur Mars.'},
       {id:'applications-lumiere', titre:'Applications', parent:'lumiere', application:true, resume:'Les objets où ces notions servent.'},
         {id:'led', titre:'LED', parent:'applications-lumiere', application:true, resume:'Une jonction p-n où chaque rencontre électron-trou donne un photon, émis au hasard.',
          ressources:[],
@@ -137,6 +147,12 @@ window.NOTIONS={
     ['emission','laser','l’émission stimulée fait le laser'],
     ['led','laser','même jonction, plus des faces réfléchissantes'],
     ['led','diode','la même chose vue côté électricité'],
+    ['rayleigh','longueur-onde','la diffusion dépend de la couleur'],
+    ['ciel-couleur','synthese-additive','le mélange des couleurs diffusées'],
+    ['ciel-couleur','cones','l’œil peu sensible au violet'],
+    ['coucher-soleil','exponentielle','transmission = exp(−τ·m)'],
+    ['coucher-soleil','systeme-solaire','la lumière du Soleil traverse l’atmosphère'],
+    ['rayleigh','mie','quand la particule grossit'],
     ['longueur-onde','alliages','la composition fixe la couleur'],
     ['fluorescence','led-blanche','la poudre jaune'],
     ['synthese-additive','led-blanche','bleu + jaune = blanc pour l’œil'],
