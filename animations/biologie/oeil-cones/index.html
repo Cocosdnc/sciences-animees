@@ -15,6 +15,13 @@ h3{font:700 18px/1.3 var(--f-display);margin:6px 0 0}
 .apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
 .apps div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;color:var(--muted)}
 .apps b{display:block;color:var(--ink);font:500 15px var(--f-display);margin-bottom:4px}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
+figure img{width:100%;height:230px;object-fit:contain;background:#fff;border-radius:8px}
+figure.sombre img{background:#000}
+figcaption{font-size:13px;color:var(--muted);line-height:1.5}
+figcaption b{color:var(--ink);font-weight:500}
+figcaption .cr{display:block;margin-top:4px;font-size:12px}
 .toc{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px}
 </style></head><body>
 <div class="topbar" style="max-width:1080px;margin:0 auto 28px"><a class="brand" href="../../../"><i></i>Sciences animées</a><nav><a href="../../../#catalogue">Animations</a><a href="../../../carte.html">Carte des notions</a><a href="../../../blocs/">Modèles</a></nav></div>
@@ -23,26 +30,42 @@ h3{font:700 18px/1.3 var(--f-display);margin:6px 0 0}
   <div class="kicker">Vision · physique et SVT</div>
   <h1>L’œil et les cônes</h1>
   <p class="lead">Pourquoi voit-on moins bien le bleu et le violet que le vert ? Ce n'est pas seulement une question d'intensité : c'est aussi une question de <em>détail</em>. Une page à cheval entre la physique (la lumière, les longueurs d'onde) et les SVT (la rétine et ses cellules).</p>
-  <nav class="toc" aria-label="Sommaire"><a href="#cones">1. Trois sortes de cônes</a><a href="#test">2. Le test de la boule</a><a href="#pourquoi">3. Pourquoi le bleu est moins net</a></nav>
+  <nav class="toc" aria-label="Sommaire"><a href="#images">1. L'œil et la rétine</a><a href="#cones">2. Trois sortes de cônes</a><a href="#test">3. Le test des rayures</a><a href="#pourquoi">4. Pourquoi le bleu est moins net</a></nav>
 </header>
 
 
-<section id="cones">
+<section id="images">
   <div class="step">Étape 1</div>
+  <h2>L'œil et la rétine, en vrai</h2>
+  <p class="note">Avant les courbes et les tests, voici de vraies images scientifiques : un schéma de l'œil, la rétine photographiée au fond de l'œil, les cônes d'une rétine vivante vus au microscope, et la répartition des cellules sur la rétine. Elles viennent de Wikimedia Commons ; le crédit et la licence de chaque image sont sur la page du fichier.</p>
+  <div class="figs">
+    <figure><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Schematic_diagram_of_the_human_eye_en.svg?width=700" alt="Schéma en coupe de l'œil humain : cornée, iris, cristallin, humeur vitrée, rétine, fovéa, nerf optique" loading="lazy" onerror="this.closest('figure').hidden=true">
+      <figcaption><b>Coupe de l'œil.</b> La lumière traverse la cornée, la pupille et le cristallin, puis forme l'image sur la rétine. La <b>fovéa</b>, au centre de la rétine, est la zone de vision fine : c'est là que les cônes sont les plus serrés.<span class="cr">Schéma de l'œil humain (Rhcastilhos). <a href="https://commons.wikimedia.org/wiki/File:Schematic_diagram_of_the_human_eye_en.svg" target="_blank" rel="noopener">Fichier et licence sur Wikimedia Commons</a>.</span></figcaption></figure>
+    <figure class="sombre"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Fundus_photograph_of_normal_right_eye.jpg?width=700" alt="Photographie du fond de l'œil droit normal : rétine orangée, vaisseaux sanguins, papille optique claire, fovéa sombre" loading="lazy" onerror="this.closest('figure').hidden=true">
+      <figcaption><b>Le fond de l'œil, photographié.</b> On voit la rétine (orangée), les vaisseaux sanguins, la papille (zone claire, où le nerf optique part, sans cellules sensibles à la lumière) et, à gauche de celle-ci, la tache sombre de la macula avec la fovéa au centre.<span class="cr">Photographie du fond d'œil, œil droit normal. <a href="https://commons.wikimedia.org/wiki/File:Fundus_photograph_of_normal_right_eye.jpg" target="_blank" rel="noopener">Fichier et licence sur Wikimedia Commons</a>.</span></figcaption></figure>
+    <figure class="sombre"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/ConeMosaics.jpg?width=700" alt="Mosaïque de cônes de la fovéa d'une rétine humaine vivante, vue par optique adaptative : chaque point est un cône, colorié selon sa sorte" loading="lazy" onerror="this.closest('figure').hidden=true">
+      <figcaption><b>Les cônes, un par un.</b> Image d'une rétine vivante obtenue par optique adaptative (une technique d'astronomie qui corrige le flou de l'œil). Chaque point est un cône ; les couleurs sont ajoutées après coup pour distinguer les sortes L, M et S. Regarde combien les cônes S sont rares et dispersés.<span class="cr">Image de mosaïque de cônes (Roorda et coll.). <a href="https://commons.wikimedia.org/wiki/File:ConeMosaics.jpg" target="_blank" rel="noopener">Fichier et licence sur Wikimedia Commons</a>.</span></figcaption></figure>
+    <figure><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Human_photoreceptor_distribution.svg?width=700" alt="Graphique de la densité des cônes et des bâtonnets sur la rétine selon l'angle par rapport à la fovéa" loading="lazy" onerror="this.closest('figure').hidden=true">
+      <figcaption><b>Où sont les cellules.</b> Densité des cônes et des bâtonnets selon l'angle à partir de la fovéa : les cônes sont concentrés au centre, les bâtonnets (vision de nuit, sans couleur) dominent ailleurs, et il n'y a aucune cellule au niveau de la papille (tache aveugle).<span class="cr">Graphique de la distribution des photorécepteurs (Jochen Burghardt). <a href="https://commons.wikimedia.org/wiki/File:Human_photoreceptor_distribution.svg" target="_blank" rel="noopener">Fichier et licence sur Wikimedia Commons</a>.</span></figcaption></figure>
+  </div>
+</section>
+
+<section id="cones">
+  <div class="step">Étape 2</div>
   <h2>Trois sortes de cônes</h2>
   <p class="note">À la lumière du jour, ce sont les <em>cônes</em> de la rétine qui voient. Il y en a trois sortes : L (rouge), M (vert) et S (bleu). Chacun mesure seulement combien de lumière il reçoit, avec sa propre courbe de sensibilité. La couleur est reconstruite en comparant les trois signaux. Regarde les courbes, puis la rétine cône par cône : les cônes S sont rares.</p>
   <div data-bloc="cones-sensibilite"></div>
 </section>
 
 <section id="test">
-  <div class="step">Étape 2</div>
+  <div class="step">Étape 3</div>
   <h2>Le test des rayures</h2>
   <p class="note">Quatre zones de fines rayures (bleu, vert, rouge, violet), à la même luminosité. Garde la finesse à 2 pixels, puis éloigne-toi de l'écran : laquelle devient une surface unie en premier ? Règle le curseur « clarté du bleu » pour que les quatre zones paraissent aussi claires. La ligne du bas montre ce que la rétine reçoit réellement : le bleu est défocalisé par la lentille.</p>
   <div data-bloc="test-cones"></div>
 </section>
 
 <section id="pourquoi">
-  <div class="step">Étape 3</div>
+  <div class="step">Étape 4</div>
   <h2>Pourquoi le bleu est moins net</h2>
   <div class="apps">
     <div><b>Les cônes bleus sont rares</b>Seulement 5 à 10 % des cônes sont de type S, et il n'y en a aucun au centre de la fovéa, là où la vision est la plus fine.</div>
@@ -50,8 +73,20 @@ h3{font:700 18px/1.3 var(--f-display);margin:6px 0 0}
     <div><b>Le bleu est flou dans l'œil</b>C'est la cause la plus forte. La lentille ne focalise pas le bleu au même endroit que le vert (aberration chromatique : 0,7 dioptrie d'écart entre 460 et 555 nm). L'œil fait la mise au point sur le vert-jaune, donc le bleu forme sur la rétine une tache d'environ 10 minutes d'arc avec une pupille de 4 mm, contre moins de 2 pour le vert : c'est le flou de la simulation du test. Le cristallin, en jaunissant avec l'âge, absorbe aussi du bleu.</div>
     <div><b>À ne pas confondre avec la couleur du ciel</b>Voir moins nettement les détails bleus (l'acuité) est un autre sujet que percevoir la couleur bleue : on voit très bien que le ciel est bleu. Pour la couleur, ce qui compte est le rapport des signaux des trois cônes : voir l'étape 4 de <a href="../../physique/ciel-et-diffusion/#jour">Ciel et diffusion</a>.</div>
   </div>
+  <h3>Et pourquoi si peu de cônes S ? Une histoire d'évolution</h3>
+  <p class="note">Deux explications, qui s'additionnent. Ce sont des hypothèses solides, pas des certitudes : on ne peut pas remonter le film de l'évolution.</p>
+  <div class="apps">
+    <div><b>1. Les cônes S sont le système ancien</b>Les mammifères nocturnes, nos lointains ancêtres, n'avaient que deux sortes de cônes : un S (bleu) et un seul L/M (vert-jaune). Il y a environ 30 à 40 millions d'années, chez les primates de l'Ancien Monde (dont nous), le gène du cône L/M s'est dupliqué et les deux copies ont divergé : c'est l'apparition du cône L (rouge) à côté du M (vert). Le S est resté tel quel. Le changement récent, c'est donc l'ajout d'un rouge-vert, pas le recul du bleu.</div>
+    <div><b>2. Voir les fruits mûrs et les jeunes feuilles</b>Les primates mangent des fruits et de jeunes pousses, dans un feuillage vert. Un fruit mûr (orange, rouge, jaune) ou une jeune feuille rougeâtre, plus riche en protéines, se distingue d'une feuille vert foncé justement par l'écart entre ce que reçoivent les cônes L et M. Cet axe rouge-vert est celui qui aide à trouver la nourriture. Les mesures sur les fruits et les feuilles des forêts tropicales (Regan et coll. 2001, Osorio et Vorobyev 1996) vont dans ce sens. Les cônes L et M ont donc été multipliés et serrés pour une vision nette, et ce sont eux qui servent aussi à fabriquer la netteté et la luminosité.</div>
+    <div><b>3. Pas la peine d'échantillonner finement une image floue</b>On a vu que la lentille défocalise le bleu : la tache est d'environ 10 minutes d'arc. Une mosaïque de cônes S très serrée échantillonnerait une image bleue déjà floue, sans rien gagner. Quelques cônes S espacés suffisent à mesurer « combien de bleu » il y a, ce qui donne l'axe bleu-jaune. D'où des cônes S rares (5 à 10 %) et absents au centre de la fovéa, où l'on voit le plus fin (Williams, MacLeod et Hayhoe 1981).</div>
+    <div><b>Un bémol</b>Le résultat ne dit pas que le bleu est « moins important » : l'axe bleu-jaune sert à reconnaître l'ombre et la lumière, le ciel, l'eau. Il se contente d'une résolution plus faible que l'axe qui sert à lire un détail.</div>
+  </div>
   <h3>Sources</h3>
   <ul class="sources">
+    <li>Regan, Julliot, Simmen, Viénot, Charles-Dominique, Mollon et coll. (2001), « Fruits, foliage and the evolution of primate colour vision », <i>Phil. Trans. R. Soc. B</i> 356, 229 : fruits et jeunes feuilles se distinguent du feuillage sur l'axe rouge-vert.</li>
+    <li>Osorio et Vorobyev (1996), « Colour vision as an adaptation to frugivory in primates », <i>Proc. R. Soc. B</i> 263, 593.</li>
+    <li>Williams, MacLeod, Hayhoe (1981), « Punctate sensitivity of the blue-sensitive mechanism », <i>Vision Research</i> 21, 1357 : les cônes S sont épars et absents du centre de la fovéa.</li>
+    <li>Roorda et Williams (1999), « The arrangement of the three cone classes in the living human eye », <i>Nature</i> 397, 520 : première image des cônes L, M et S d'une rétine vivante (optique adaptative).</li>
     <li>Curcio, Allen, Sloan et coll. (1991), « Distribution and morphology of human cone photoreceptors stained with anti-blue opsin », <i>J. Comp. Neurol.</i> 312, 610 : répartition des cônes S, absents du centre de la fovéa.</li>
     <li>Hofer, Carroll, Neitz, Neitz, Williams (2005), « Organization of the human trichromatic cone mosaic », <i>J. Neurosci.</i> 25, 9669 : proportions de cônes L, M, S.</li>
     <li>Thibos, Ye, Zhang, Bradley (1992), « Chromatic eye : a new reduced-eye model of ocular chromatic aberration in humans », <i>Applied Optics</i> 31, 3594 : aberration chromatique longitudinale utilisée par la simulation du test.</li>
