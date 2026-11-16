@@ -31,8 +31,8 @@ Labo.defineBloc('ciel-de-jour',{
     const W=460,H=440,V=L.setup(el.querySelector('canvas'),W,H);
     let step=1, ideal=false, t=0; const infobar=el.querySelector('.infobar'), box=el.querySelector('.infobox');
     const setInfo=()=>L.infoBar(infobar,box,KEYS(),INFO);
-    const sunN=l=>ideal?1:D.sun(l), Toz=l=>Math.exp(-D.tauO3(l)), sig=l=>D.sigmaAir(l)/D.sigmaAir(550), eye=l=>D.eye(l);
-    const S=[null,l=>sunN(l),l=>sunN(l)*Toz(l),l=>sunN(l)*Toz(l)*sig(l),l=>sunN(l)*Toz(l)*sig(l)*eye(l)];
+    const sunN=l=>ideal?1:D.sun(l), Toz=l=>Math.exp(-D.tauO3(l)), sig=l=>D.sigmaAir(l)/D.sigmaAir(550), fd=l=>1-Math.exp(-D.tauR(l)), eye=l=>D.eye(l);
+    const S=[null,l=>sunN(l),l=>sunN(l)*Toz(l),l=>sunN(l)*Toz(l)*fd(l),l=>sunN(l)*Toz(l)*fd(l)*eye(l)];
     const REF=[100,155,232];   // bleu d'un ciel clair, indicatif
     const go=n=>{ step=Math.max(1,Math.min(4,n)); el.querySelectorAll('[data-s]').forEach(c=>c.setAttribute('aria-pressed',+c.dataset.s===step)); setInfo(); cap(); };
     el.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>go(+b.dataset.s));
@@ -42,7 +42,7 @@ Labo.defineBloc('ciel-de-jour',{
     function cap(){ const b=el.querySelector('.caption b'), s=el.querySelector('.caption span');
       if(step===1){ b.textContent='1. Le Soleil, avant l’atmosphère'; s.textContent=ideal?'Soleil idéalisé : autant d’énergie à chaque longueur d’onde, ultraviolet compris. Désactive le bouton pour utiliser le vrai spectre.':'Le spectre du Soleil hors atmosphère : plus faible dans le violet et le rouge, avec de l’ultraviolet (zone grisée) que l’œil ne voit pas.'; }
       else if(step===2){ b.textContent='2. La couche d’ozone retire l’ultraviolet'; s.textContent='L’ozone absorbe presque tout l’ultraviolet sous 310 nm, et à peine 4 % de l’orange vers 600 nm : le visible est presque intact, donc la couleur de la lumière change très peu.'; }
-      else if(step===3){ b.textContent='3. L’atmosphère diffuse : le plus court est le plus diffusé'; s.textContent='Chaque barre est multipliée par σ(λ), en 1/λ⁴. Le maximum est maintenant dans le proche ultraviolet, invisible. La couleur calculée de ce qui est diffusé est déjà un bleu clair.'; }
+      else if(step===3){ b.textContent='3. L’atmosphère diffuse : le plus court est le plus diffusé'; s.textContent='Chaque barre est la part de la lumière arrivante qui est diffusée : 1 − exp(−τ), avec τ en 1/λ⁴ (épaisseur optique de l’air). Même échelle que l’étape précédente (pointillés) : on ne peut pas diffuser plus de lumière qu’il n’en arrive. La couleur calculée est déjà un bleu clair.'; }
       else { b.textContent='4. L’œil : le violet et l’ultraviolet comptent presque pour rien'; s.textContent='L’œil capte le violet à 410 nm avec '+fr(D.eye(410)/D.eye(470)*100,0)+' % de la sensibilité qu’il a pour le bleu à 470 nm, et pas du tout l’ultraviolet. Reste un bleu clair : la couleur du ciel.'; } }
     setInfo(); cap();
     // géométrie de la scène (côté vue, pas à l'échelle)
@@ -88,16 +88,16 @@ Labo.defineBloc('ciel-de-jour',{
       /* ---- spectre ---- */
       const X0=40,X1=326,Y0=210,Y1=352, px=l=>X0+(l-300)/450*(X1-X0), f=S[step], ghost=step>1?S[step-1]:null;
       const nrm=g=>{ let m=1e-300; for(let l=300;l<=750;l+=2) m=Math.max(m,g(l)); return m; };
-      const m1=nrm(S[1]), m=(step<=2)?m1:nrm(f), hOf=(g,mm,l)=>g(l)/mm*(Y1-Y0-8)*.74;
+      const m1=nrm(S[1]), m=m1, hOf=(g,mm,l)=>g(l)/mm*(Y1-Y0-8)*.74;
       L.txt(x,['','Spectre du Soleil, hors atmosphère','Après la couche d’ozone','Lumière diffusée par l’air','Ce que l’œil retient de la lumière diffusée'][step],X0,Y0-14,'left',C.ink,true);
       // zone ultraviolette
       x.fillStyle='rgba(150,130,210,.10)'; x.fillRect(px(300),Y0-4,px(380)-px(300),Y1-Y0+4); L.txt(x,'ultraviolet',(px(300)+px(380))/2,Y0+6,'center','#B7ABFF'); L.txt(x,'(invisible)',(px(300)+px(380))/2,Y0+18,'center','#B7ABFF');
       L.line(x,X0,Y1,X1,Y1,'rgba(232,238,244,.35)',1);
       if(step===2){ for(let l=300;l<750;l+=2){ const h1=hOf(S[1],m1,l), h2=hOf(S[2],m1,l); x.fillStyle='rgba(232,238,244,.13)'; x.fillRect(px(l),Y1-h1,(X1-X0)/450*2+.5,h1-h2); } }
       for(let l=300;l<750;l+=2){ const h=Math.max(0,hOf(f,m,l)); x.fillStyle=l<380?'rgba(170,150,230,.55)':L.rgba(D.rgbStr(D.pure(l)),.65); x.fillRect(px(l),Y1-h,(X1-X0)/450*2+.5,h); }
-      if(ghost&&step>2){ const mg=nrm(ghost); x.beginPath(); for(let l=300;l<=750;l+=3){ const X=px(l),Y=Y1-ghost(l)/mg*(Y1-Y0-8)*.74; l===300?x.moveTo(X,Y):x.lineTo(X,Y); } x.strokeStyle='rgba(232,238,244,.35)'; x.lineWidth=1.2; x.setLineDash([3,3]); x.stroke(); x.setLineDash([]); }
+      if(ghost&&step>2){ x.beginPath(); for(let l=300;l<=750;l+=3){ const X=px(l),Y=Y1-ghost(l)/m1*(Y1-Y0-8)*.74; l===300?x.moveTo(X,Y):x.lineTo(X,Y); } x.strokeStyle='rgba(232,238,244,.35)'; x.lineWidth=1.2; x.setLineDash([3,3]); x.stroke(); x.setLineDash([]); }
       x.beginPath(); for(let l=300;l<=750;l+=2){ const X=px(l), Y=Y1-Math.max(0,hOf(f,m,l)); l===300?x.moveTo(X,Y):x.lineTo(X,Y); } x.strokeStyle='#E8EEF4'; x.lineWidth=1.8; x.stroke();
-      if(step>2) L.txt(x,'pointillés : étape précédente (même forme, autre échelle)',X1,Y1+27,'right',C.muted); else if(step===2) L.txt(x,'en gris clair : ce que l’ozone a retiré',X1,Y1+27,'right',C.muted);
+      if(step>2) L.txt(x,'pointillés : étape précédente, même échelle',X1,Y1+27,'right',C.muted); else if(step===2) L.txt(x,'en gris clair : ce que l’ozone a retiré',X1,Y1+27,'right',C.muted);
       [300,400,500,600,700].forEach(l=>{ L.line(x,px(l),Y1,px(l),Y1+4,C.muted,1); L.txt(x,String(l),px(l),Y1+13,'center'); }); L.txt(x,'nm',X1+10,Y1+13,'left',C.muted);
       // pastilles de couleur
       const SW=[['Soleil',c1],['après l’ozone',c2],['lumière diffusée',c3],['ciel clair réel',D.rgbStr(REF)]], sx=350, sw=96;
@@ -106,7 +106,7 @@ Labo.defineBloc('ciel-de-jour',{
       const rd=[];
       if(step===1){ rd.push('Soleil : maximum vers 500 nm, moins de violet et de rouge.'); rd.push('La couleur calculée de la lumière brute du Soleil est presque blanche.'); }
       else if(step===2){ rd.push('Transmission de l’ozone : 300 nm → '+fr(Toz(300)*100,0)+' % · 310 nm → '+fr(Toz(310)*100,0)+' % · 320 nm → '+fr(Toz(320)*100,0)+' %'); rd.push('Visible : 450 nm → '+fr(Toz(450)*100,1)+' % · orange 600 nm → '+fr(Toz(600)*100,0)+' % · 650 nm → '+fr(Toz(650)*100,0)+' %'); }
-      else if(step===3){ rd.push('bleu 450 nm / rouge 650 nm = '+fr(sig(450)/sig(650),1)+' · violet 410 nm / bleu 470 nm = '+fr(sig(410)/sig(470),2)); rd.push('Le maximum diffusé est à '+(()=>{ let b=300,mv=0; for(let l=300;l<=750;l++){ const v=f(l); if(v>mv){ mv=v; b=l; } } return b; })()+' nm, '+((()=>{ let b=300,mv=0; for(let l=300;l<=750;l++){ const v=f(l); if(v>mv){ mv=v; b=l; } } return b; })()<380?'dans l’ultraviolet : invisible.':'dans le visible.')); }
+      else if(step===3){ rd.push('Part diffusée : 400 nm → '+fr(fd(400)*100,0)+' % · 450 nm → '+fr(fd(450)*100,0)+' % · 650 nm → '+fr(fd(650)*100,1)+' %  (bleu/rouge = '+fr(sig(450)/sig(650),1)+')'); rd.push('Le maximum diffusé est à '+(()=>{ let b=300,mv=0; for(let l=300;l<=750;l++){ const v=f(l); if(v>mv){ mv=v; b=l; } } return b; })()+' nm, '+((()=>{ let b=300,mv=0; for(let l=300;l<=750;l++){ const v=f(l); if(v>mv){ mv=v; b=l; } } return b; })()<380?'dans l’ultraviolet : invisible.':'dans le visible.')); }
       else { rd.push('Sensibilité de l’œil : 410 nm → '+fr(D.eye(410)/D.eye(470)*100,0)+' % de celle à 470 nm · 300–380 nm → 0 %'); rd.push('Pastille « lumière diffusée » = couleur du ciel calculée ; compare avec la suivante.'); }
       rd.forEach((s,i)=>L.txt(x,s,12,Y1+48+i*16,'left',i?C.muted:C.ink));
       L.vignette(x,W,H); },V.cv);
