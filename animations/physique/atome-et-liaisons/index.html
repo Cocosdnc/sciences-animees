@@ -179,11 +179,15 @@ button.info[aria-expanded="true"] .i{background:var(--laser);color:#fff}
   <div class="step">Zoom ultime · d'après les modèles de la physique du solide</div>
   <h2>Au cœur d'une liaison Ga–P, en 3D</h2>
   <p class="note">Ici on abandonne les billes. Chaque atome est un noyau minuscule entouré d'un nuage : la carte des endroits où ses électrons ont des chances d'être trouvés. Glisse sur l'image pour la faire tourner.</p>
-  <h3>Liante ou antiliante : on additionne deux ondes</h3>
-  <p class="note">Avant la 3D, la version la plus nette : chaque atome a son onde, et on les additionne. Si elles battent ensemble, elles se renforcent entre les noyaux ; à contretemps, elles s'y annulent. Tout ce qui suit en découle.</p>
-  <p class="note">Une image qu’on peut toucher d’abord : deux pendules reliés par un ressort obéissent aux mêmes équations qu’un électron partagé entre deux atomes. Ensemble ou à contretemps, c’est tout ce que veulent dire « même signe » et « signes opposés ».</p>
-  <div data-bloc="pendules-couples"></div>
-  <div data-bloc="orbitales-liantes"></div>
+  <h3>1. Où est l'électron ? Des points qui dessinent un nuage</h3>
+  <p class="note">Avant de lier deux atomes, voilà ce qu'on peut vraiment mesurer : on cherche l'électron et on note l'endroit. Un point est un résultat. Des milliers de points dessinent une forme, et cette forme a des endroits où l'électron n'est jamais.</p>
+  <div data-bloc="nuage-probabilite"></div>
+  <h3>2. Deux atomes qui se rapprochent</h3>
+  <p class="note">Quand deux atomes se rapprochent, l'électron peut être autour de l'un ou de l'autre, et leurs deux ondes se rencontrent. Il y a deux façons de les combiner : <em>en phase</em> (elles se renforcent) ou <em>en opposition</em> (elles s'annulent). Compare avec ce qu'on obtiendrait en additionnant simplement des probabilités, comme pour deux billes : la différence est exactement ce que fait « le signe ».</p>
+  <div data-bloc="liante-antiliante"></div>
+  <h3>3. Pourquoi l'énergie baisse, et où elle part</h3>
+  <p class="note">L'électron étalé sur les deux atomes a une onde plus longue : il est moins serré, donc moins agité, c'est le même mécanisme que le creux de l'atome. L'autre forme, coupée par un zéro, est plus courte et monte en énergie. Reste une question : l'énergie perdue ne peut pas disparaître. Où va-t-elle ?</p>
+  <div data-bloc="energie-liaison"></div>
   <h3>La même liaison, en 3D</h3>
   <div class="panel">
     <div class="view"><canvas id="cvBond" style="aspect-ratio:400/270;cursor:grab;touch-action:none" aria-label="Deux noyaux, gallium et phosphore, avec leurs nuages d'électrons en 3D : liaison, trou, électron libre, et nuage qui oscille pendant l'émission"></canvas>
@@ -285,10 +289,10 @@ const INFO={
  exceptions:['Petites exceptions','L’ordre de remplissage dessiné est l’ordre habituel. Quelques atomes y dérogent légèrement (chrome, cuivre), parce que les énergies de 4s et 3d sont très proches.'],
  noyau:['Le noyau','Protons et neutrons, au centre. Il est environ 100 000 fois plus petit que le nuage : si l’atome faisait la taille d’un stade, le noyau serait une bille au centre. Celui du gallium a 31 charges +, celui du phosphore 15.'],
  nuage:['Le nuage électronique','En physique quantique, un électron n’a pas de trajectoire. On ne connaît que la probabilité de le trouver à chaque endroit. Le nuage dessiné est cette probabilité : chaque point est un endroit où on pourrait le détecter.'],
- pourquoiLie:['Pourquoi les atomes se lient','Tout système va vers l\u2019énergie la plus basse, comme une bille qui roule au fond d\u2019un creux. Deux atomes proches ont moins d\u2019énergie ensemble que séparés, à condition que leurs ondes s\u2019additionnent. L\u2019énergie en trop part en chaleur. Pour les séparer, il faut la rendre : c\u2019est l\u2019énergie de liaison.'],
- liante:['Orbitale liante','Forme de nuage obtenue en additionnant les nuages des deux atomes : il se renforce entre les noyaux. C’est l’étage bas (la bande de valence). Elle penche un peu côté phosphore, plus « gourmand » en électrons.'],
- antiliante:['Orbitale antiliante','Forme obtenue en soustrayant les deux nuages : ils s’annulent entre les noyaux, il y a un vide au milieu. C’est l’étage haut (la bande de conduction). Elle penche côté gallium.'],
- pourquoiBas:['Pourquoi la liaison libère de l’énergie','Un électron a d’autant moins d’énergie qu’il est proche de charges + qui l’attirent. Dans la liaison, il passe beaucoup de temps entre les deux noyaux, attiré par les deux. Dans la forme antiliante, il évite cette zone. La différence entre les deux, c’est 1,9 eV dans GaInP : l’énergie qui part en lumière.'],
+ pourquoiLie:['Pourquoi les atomes se lient','Tout système va vers l\u2019énergie la plus basse, comme une bille qui roule au fond d\u2019un creux. Deux atomes proches ont moins d\u2019énergie ensemble que séparés, à condition que leurs ondes se renforcent entre les noyaux. L\u2019énergie en trop ne disparaît pas : elle est emportée (choc avec une autre particule, photon). Pour séparer les atomes, il faut la rendre : c\u2019est l\u2019énergie de liaison.'],
+ liante:['Orbitale liante','Forme obtenue en additionnant les ondes des deux atomes en phase : la probabilité se renforce entre les noyaux et l’électron est étalé sur les deux atomes. C’est l’étage bas (la bande de valence). Elle penche un peu côté phosphore, plus « gourmand » en électrons.'],
+ antiliante:['Orbitale antiliante','Forme obtenue en additionnant les ondes en opposition : elles s’annulent entre les noyaux, il y a un plan à zéro au milieu où l’électron n’est jamais. C’est l’étage haut (la bande de conduction). Elle penche côté gallium.'],
+ pourquoiBas:['Pourquoi la liaison libère de l’énergie','Étalé sur les deux atomes, l’électron a une onde plus longue, donc moins d’énergie d’agitation (c’est le mécanisme du creux de l’atome). Dans la forme antiliante, l’onde est coupée par un zéro : plus courte, donc plus d’énergie. La différence entre les deux, c’est 1,9 eV dans GaInP : l’énergie qui part en lumière.'],
  delocal:['Une seule liaison ? Pas vraiment','Dans le vrai cristal, ni l’électron libre ni le trou ne sont sur une liaison précise. Ce sont des ondes étalées sur des centaines ou des milliers d’atomes. La rencontre se fait quand ces deux ondes se recouvrent. La vue sur une liaison est la version locale de cette histoire.'],
  superpo:['Superposition et antenne','Pendant la transition, l’électron est à la fois un peu dans la forme haute et un peu dans la forme basse. Leur somme donne une charge qui se déplace d’un noyau à l’autre à la fréquence ΔE/h, soit 4,6 × 10¹⁴ Hz pour 1,9 eV. Une charge qui oscille rayonne, exactement comme les électrons d’une antenne radio, mais un million de fois plus vite.'],
  simplif:['Ce qui est simplifié','Les formes sont calculées avec un modèle simple (deux orbitales hybrides sp³ et leur somme ou différence). Les vraies se calculent sur tout le cristal. Les atomes ont en vrai quatre liaisons en tétraèdre ; on n’en montre qu’une. Les noyaux sont dessinés énormes et l’oscillation est ralentie un million de milliards de fois.'],
@@ -664,8 +668,9 @@ requestAnimationFrame(loop);
 })();
 </script>
 <script src="../../../assets/js/labo.js"></script>
-<script src="../../../assets/js/blocs/orbitales-liantes.js"></script>
+<script src="../../../assets/js/blocs/nuage-probabilite.js"></script>
+<script src="../../../assets/js/blocs/liante-antiliante.js"></script>
+<script src="../../../assets/js/blocs/energie-liaison.js"></script>
 <script src="../../../assets/js/blocs/corde-orbitale.js"></script>
-<script src="../../../assets/js/blocs/pendules-couples.js"></script>
 <script>Labo.mountBlocs();</script>
 </body></html>
