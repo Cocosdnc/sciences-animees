@@ -1,0 +1,41 @@
+# Retouche depuis le site : une « issue » créée depuis le clic droit (étiquette « retouche »)
+# fait modifier le projet par Claude, qui publie directement sur main.
+# Sécurité : seul le propriétaire du dépôt peut déclencher l'action ; la clé API est dans les secrets GitHub
+# (Settings › Secrets and variables › Actions › ANTHROPIC_API_KEY), jamais dans le code du site.
+name: Retouche par Claude
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: write
+  issues: write
+jobs:
+  retouche:
+    if: github.actor == github.repository_owner && contains(github.event.issue.labels.*.name, 'retouche')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Tu travailles sur le site statique « Sciences animées » (dossier courant). Lis d'abord docs/CONVENTIONS.md.
+            Voici une demande de modification faite depuis le site par son propriétaire (titre puis texte de l'issue n° ${{ github.event.issue.number }}) :
+
+            TITRE : ${{ github.event.issue.title }}
+
+            ${{ github.event.issue.body }}
+
+            Fais exactement la modification demandée, rien de plus. Respecte les conventions (explications honnêtes, chiffres et unités, couleurs communes, 390 px, réduire les animations).
+            Après la modification, lance `node tools/verifier.mjs` et corrige ce qu'il signale.
+            Puis fais un commit clair en français sur la branche main et publie-le avec `git push origin main`.
+            Termine en commentant l'issue pour dire en une ou deux phrases ce qui a changé, puis ferme-la.
+          claude_args: --max-turns 25 --allowedTools "Read,Edit,Write,Glob,Grep,Bash(git add:*),Bash(git commit:*),Bash(git push origin main),Bash(git status:*),Bash(git diff:*),Bash(node tools/verifier.mjs),Bash(gh issue comment:*),Bash(gh issue close:*)"
+        env:
+          GH_TOKEN: ${{ github.token }}

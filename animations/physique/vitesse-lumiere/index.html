@@ -256,5 +256,6 @@ document.getElementById('go').onclick=()=>{ if(running) return; if(done) reset()
 const h=location.hash.slice(1); if(S[h]){ scene=h; document.querySelectorAll('#scene button').forEach(x=>x.classList.toggle('on',x.dataset.v===h)); }
 reset(); requestAnimationFrame(frame);
 </script>
+<script src="../../../assets/js/retouche.js" defer></script>
 </body>
 </html>

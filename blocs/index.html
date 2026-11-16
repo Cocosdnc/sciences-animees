@@ -31,5 +31,6 @@ K.blocs.forEach(b=>{ const a=document.createElement('a'); a.className='card'; a.
   [...b.domaines.map(d=>dom[d]),...(used.length?['utilisé dans : '+used.join(', ')]:[])].forEach(t=>{ const s=document.createElement('span'); s.textContent=t; a.querySelector('.tags').appendChild(s); });
   g.appendChild(a); });
 </script>
+<script src="../assets/js/retouche.js" defer></script>
 </body>
 </html>
