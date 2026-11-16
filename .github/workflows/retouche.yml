@@ -1,6 +1,7 @@
 # Se relance aussi en retirant puis remettant l'étiquette « retouche », ou en rouvrant l'issue.
 # Retouche depuis le site : une « issue » créée depuis le clic droit (étiquette « retouche »)
 # fait modifier le projet par Claude, qui publie directement sur main.
+# Se déclenche si l'issue porte l'étiquette « retouche » OU si son titre commence par « Retouche » (titre fixé par le site).
 # Sécurité : seul le propriétaire du dépôt peut déclencher l'action ; la clé API est dans les secrets GitHub
 # (Settings › Secrets and variables › Actions › ANTHROPIC_API_KEY), jamais dans le code du site.
 name: Retouche par Claude
@@ -15,7 +16,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   retouche:
-    if: github.actor == github.repository_owner && contains(github.event.issue.labels.*.name, 'retouche') && (github.event.action != 'labeled' || github.event.label.name == 'retouche')
+    if: github.actor == github.repository_owner && (contains(github.event.issue.labels.*.name, 'retouche') || startsWith(github.event.issue.title, 'Retouche')) && (github.event.action != 'labeled' || github.event.label.name == 'retouche')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
