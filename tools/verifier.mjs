@@ -3,12 +3,14 @@
 import fs from 'node:fs'; import vm from 'node:vm'; import path from 'node:path';
 const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'..');
 const ctx={window:{}}; vm.runInNewContext(fs.readFileSync(path.join(root,'data/catalogue.js'),'utf8'),ctx);
+const VG={window:{}}; vm.runInNewContext(fs.readFileSync(path.join(root,'assets/js/vignettes.js'),'utf8'),VG);
 const K=ctx.window.CATALOGUE; const err=[]; const ok=m=>console.log('  ✓ '+m);
 const doms=new Set(K.domaines.map(d=>d.id)), NIV=['collège','lycée','supérieur'];
 const ids=new Set();
 for(const a of K.animations){
   for(const f of ['id','titre','domaine','niveaux','themes','resume','chemin','ajout']) if(!a[f]) err.push(`animation ${a.id||'?'} : champ « ${f} » manquant`);
   if(ids.has(a.id)) err.push(`identifiant en double : ${a.id}`); ids.add(a.id);
+  if(!(VG.window.VIGNETTES||{})[a.id]) err.push(`${a.id} : vignette manquante dans assets/js/vignettes.js`);
   if(!doms.has(a.domaine)) err.push(`${a.id} : domaine inconnu « ${a.domaine} »`);
   (a.niveaux||[]).forEach(n=>{ if(!NIV.includes(n)) err.push(`${a.id} : niveau inconnu « ${n} »`); });
   if(!fs.existsSync(path.join(root,a.chemin,'index.html'))) err.push(`${a.id} : ${a.chemin}index.html introuvable`); else ok(`${a.id} → ${a.chemin}`);

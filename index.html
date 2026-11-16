@@ -31,7 +31,8 @@ header.page.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr
 .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:var(--ink);transition:border-color .15s}
 .card:hover{border-color:var(--muted)}
 .card .thumb{height:120px;position:relative;display:flex;align-items:flex-end;padding:12px;background:radial-gradient(120% 140% at 80% 0%,var(--c) 0%,transparent 55%),#0B1118}
-.card .thumb em{font:500 28px/1 var(--f-mono);font-style:normal;color:#fff;text-shadow:0 0 18px var(--c)}
+.card .thumb svg{position:absolute;inset:0;width:100%;height:100%}
+.card .thumb em{position:relative;z-index:1;font:500 15px/1 var(--f-mono);font-style:normal;color:#fff;background:rgba(11,17,24,.78);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:5px 9px}
 .card .body{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
 .card h3{margin:0;font-size:19px}
 .card p{margin:0;font-size:14px;color:var(--muted);line-height:1.5;flex:1}
@@ -82,6 +83,7 @@ footer{max-width:1080px;margin:56px auto 0;border-top:1px solid var(--line);padd
 <footer>Sciences animées · animations libres d'utilisation en classe · les explications indiquent toujours ce qui est simplifié et leurs sources.</footer>
 
 <script src="data/catalogue.js"></script>
+<script src="assets/js/vignettes.js"></script>
 <script src="assets/js/labo.js"></script>
 <script>
 (function(){
@@ -121,7 +123,7 @@ function render(){
   const g=document.getElementById('cards'); g.innerHTML='';
   list.forEach(a=>{ const d=dom[a.domaine]; const c=document.createElement('a'); c.className='card'; c.href=a.chemin; c.style.setProperty('--c',d.couleur);
     c.innerHTML='<div class="thumb"><em></em></div><div class="body"><div class="tags"><span class="d"></span></div><h3></h3><p></p></div>';
-    c.querySelector('em').textContent=a.signe||''; c.querySelector('.d').textContent=d.nom; c.querySelector('h3').textContent=a.titre; c.querySelector('p').textContent=a.resume;
+    c.querySelector('em').textContent=a.signe||''; if(window.VIGNETTES&&VIGNETTES[a.id]) c.querySelector('.thumb').insertAdjacentHTML('afterbegin',VIGNETTES[a.id]); c.querySelector('.d').textContent=d.nom; c.querySelector('h3').textContent=a.titre; c.querySelector('p').textContent=a.resume;
     const t=c.querySelector('.tags'); a.niveaux.forEach(n=>{ const s=document.createElement('span'); s.textContent=n; t.appendChild(s); }); g.appendChild(c); });
   const e=document.getElementById('empty'); e.hidden=list.length>0;
   document.getElementById('emptyText').textContent=q?'Aucune animation ne correspond à « '+q+' ». Essaie un autre mot.':

@@ -28,6 +28,7 @@ Ces règles viennent des retours faits pendant la création de la première anim
   couche p = violet, couche n = vert, zone active = rouge.
 - **Relief** : sphères éclairées (`Labo.sph`), halos (`Labo.glow`), vignettage. Pas de dessin plat quand l'objet est en volume.
 - **Étiquettes lisibles** sur fond sombre (`Labo.tag`), jamais par-dessus un objet important ; lignes de rappel en pointillés (`Labo.lead`).
+- **Vignette de carte** : chaque animation a une petite illustration SVG dans `assets/js/vignettes.js` (clé = identifiant de l'animation), qui montre ce qu'on va y voir, pas un logo abstrait. 300 × 120, sujet au centre ou à droite (le « signe » de la carte est en bas à gauche). Le vérificateur refuse une animation sans vignette.
 - **Échelle indiquée** quand elle compte (« ≈ 0,3 mm », « ≈ 0,25 nm entre deux atomes »).
 
 ## Ergonomie
