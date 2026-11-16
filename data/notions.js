@@ -35,7 +35,7 @@ window.NOTIONS={
         {id:'ciel-couleur', titre:'La couleur du ciel', parent:'diffusion-lumiere', resume:'Bleu le jour, pâle vers l’horizon : diffusion, spectre du Soleil, ozone et sensibilité de l’œil.',
          ressources:[{type:'bloc',id:'ciel-de-jour'},{type:'animation',id:CD,ancre:'jour',titre:'Le ciel de jour'}]},
         {id:'coucher-soleil', titre:'Le coucher de soleil', parent:'diffusion-lumiere', resume:'Plus d’air traversé : le bleu est retiré du faisceau, il reste l’orange et le rouge.',
-         ressources:[{type:'bloc',id:'coucher-de-soleil'},{type:'animation',id:CD,ancre:'soir',titre:'Le coucher de soleil'}]},
+         ressources:[{type:'bloc',id:'densite-atmosphere'},{type:'bloc',id:'coucher-de-soleil'},{type:'animation',id:CD,ancre:'soir',titre:'Le coucher de soleil'}]},
         {id:'mie', titre:'Diffusion de Mie', parent:'diffusion-lumiere', resume:'Des particules de la taille de λ ou plus : gouttes, poussières, nuages blancs.',
          ressources:[{type:'bloc',id:'diffusion-mie'},{type:'animation',id:CD,ancre:'mie',titre:'Gouttes et nuages'}]},
         {id:'applications-diffusion', titre:'Applications', parent:'diffusion-lumiere', application:true, resume:'Ciels, nuages, brume, couchers de soleil sur Mars.'},
