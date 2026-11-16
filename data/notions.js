@@ -27,6 +27,7 @@ window.NOTIONS={
         {id:'longueur-onde', titre:'Longueur d’onde, énergie et couleur', parent:'couleur-spectre', resume:'Chaque couleur correspond à une énergie de photon : λ (nm) ≈ 1240 ÷ E (eV).',
          ressources:[{type:'animation',id:D,ancre:'couleur',titre:'Le dosage des atomes règle la couleur'}]},
         {id:'synthese-additive', titre:'Synthèse additive', parent:'couleur-spectre', resume:'Additionner des lumières colorées : rouge + vert + bleu, ou bleu + jaune, donnent du blanc.',
+         ressources:[{type:'bloc',id:'lampes-rvb'}],
          applications:[{type:'animation',id:D,ancre:'blanc',titre:'La LED blanche : bleu + jaune'}]},
       {id:'diffusion-lumiere', titre:'Diffusion de la lumière', parent:'lumiere', resume:'Pourquoi le ciel est bleu, le soir rouge et les nuages blancs : la lumière déviée par des particules.'},
         {id:'rayleigh', titre:'Diffusion de Rayleigh', parent:'diffusion-lumiere', resume:'Une particule bien plus petite que λ diffuse en 1/λ⁴ : le bleu bien plus que le rouge.',

@@ -31,26 +31,28 @@ h3{font:700 18px/1.3 var(--f-display);margin:6px 0 0}
   <h2>La lumière blanche est un mélange de couleurs</h2>
   <p class="note">Une couleur pure est une onde, caractérisée par sa <em>longueur d'onde</em> λ : environ 400 nm pour le violet, 700 nm pour le rouge. La lumière du Soleil les contient toutes. Elle paraît blanche parce que notre œil les reçoit ensemble.</p>
   <div data-bloc="lumiere-blanche"></div>
+  <p class="note">La même idée avec des lampes : <em>rouge + vert + bleu = blanc</em>. Ici, ce sont des lumières qui s'ajoutent (synthèse additive), pas des peintures qui se mélangent. Allume les lampes une par une, puis rapproche-les.</p>
+  <div data-bloc="lampes-rvb"></div>
 </section>
 
 <section id="molecule">
   <div class="step">Étape 2</div>
   <h2>Une molécule d'air, secouée par la lumière</h2>
-  <p class="note">L'air est fait de molécules (N₂ à 78 %, O₂ à 21 %), minuscules devant la longueur d'onde. La lumière est un champ électrique qui oscille : il secoue le nuage d'électrons de la molécule, qui devient une petite antenne. Cette antenne réémet de la lumière dans toutes les directions : c'est la <em>diffusion de Rayleigh</em>. Trois niveaux de réalisme : la molécule dessinée, un modèle d'oscillateur qui explique pourquoi le bleu est plus diffusé, et les mesures réelles.</p>
+  <p class="note">L'air est fait de molécules (N₂ à 78 %, O₂ à 21 %), minuscules devant la longueur d'onde. La lumière est un champ électrique qui oscille : il secoue le nuage d'électrons de la molécule, qui devient une petite antenne. Cette antenne réémet de la lumière dans toutes les directions sauf son axe : c'est la <em>diffusion de Rayleigh</em>. Trois niveaux : la molécule secouée (tourne-la par rapport au champ pour voir si elle rayonne autant), une animation qui montre pourquoi le bleu rayonne plus que le rouge, et les mesures réelles.</p>
   <div data-bloc="molecule-secouee"></div>
 </section>
 
 <section id="lambda">
   <div class="step">Étape 3</div>
   <h2>Et si ce n'était pas de l'air ?</h2>
-  <p class="note">La diffusion en 1/λ⁴ n'est pas propre à l'azote : toute molécule bien plus petite que la longueur d'onde diffuse ainsi. Seule l'intensité change, avec le carré de la polarisabilité. Choisis une molécule, ou règle toi-même la polarisabilité. Remarque : H₂ est une des plus petites molécules, et elle diffuse moins que N₂, pas plus.</p>
+  <p class="note">La diffusion en 1/λ⁴ n'est pas propre à l'azote : toute molécule bien plus petite que la longueur d'onde diffuse ainsi. Une molécule fait une seule chose à la lumière qui l'atteint : elle multiplie chaque longueur d'onde par sa section efficace de diffusion. En entrée, choisis le Soleil réel ou un Soleil idéalisé parfaitement blanc ; en sortie, tu vois le spectre diffusé et la couleur que donne la superposition de toutes ses longueurs d'onde. Seule l'intensité change d'une molécule à l'autre (avec le carré de la polarisabilité), pas la couleur. Remarque : H₂ est une des plus petites molécules, et elle diffuse moins que N₂, pas plus.</p>
   <div data-bloc="diffusion-lambda"></div>
 </section>
 
 <section id="jour">
   <div class="step">Étape 4</div>
   <h2>Le ciel de jour</h2>
-  <p class="note">Le ciel est la lumière du Soleil diffusée par l'air. Si la lumière était parfaitement blanche, on aurait un ciel clair tirant sur le bleu-violet. Mais le Soleil n'est pas parfaitement blanc, l'ozone absorbe un peu, et surtout l'œil n'est presque pas sensible au violet. On ajoute chaque effet, l'un après l'autre.</p>
+  <p class="note">Le ciel est la lumière du Soleil diffusée par l'air. On suit un rayon de l'espace jusqu'à ton œil, en quatre étapes : le spectre du Soleil, la couche d'ozone, la diffusion par l'atmosphère, puis l'œil. La flèche montre où on est, le graphique donne le spectre à cet endroit. À la fin, la couleur obtenue est comparée à celle d'un ciel clair : pourquoi bleu, et pas violet ?</p>
   <div data-bloc="ciel-de-jour"></div>
 </section>
 
@@ -95,6 +97,7 @@ h3{font:700 18px/1.3 var(--f-display);margin:6px 0 0}
 <script src="../../../assets/js/diffusion-phys.js"></script>
 <script src="../../../assets/js/labo.js"></script>
 <script src="../../../assets/js/blocs/lumiere-blanche.js"></script>
+<script src="../../../assets/js/blocs/lampes-rvb.js"></script>
 <script src="../../../assets/js/blocs/molecule-secouee.js"></script>
 <script src="../../../assets/js/blocs/diffusion-lambda.js"></script>
 <script src="../../../assets/js/blocs/ciel-de-jour.js"></script>
