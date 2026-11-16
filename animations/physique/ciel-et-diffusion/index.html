@@ -23,7 +23,7 @@ h3{font:700 18px/1.3 var(--f-display);margin:6px 0 0}
   <div class="kicker">Lumière · diffusion · atmosphère</div>
   <h1>Ciel et diffusion</h1>
   <p class="lead">Pourquoi le ciel est bleu le jour, pourquoi le Soleil devient rouge le soir, et pourquoi les nuages sont blancs. Une seule idée, la diffusion de la lumière par des particules, suivie jusqu'au bout, avec les vrais chiffres : le spectre du Soleil, l'air, l'ozone, l'œil. Les boutons <b>i</b> donnent les explications et disent ce qui est simplifié.</p>
-  <nav class="toc" aria-label="Sommaire"><a href="#blanc">1. Lumière blanche</a><a href="#molecule">2. La molécule secouée</a><a href="#lambda">3. Toutes les molécules</a><a href="#jour">4. Le ciel de jour</a><a href="#soir">5. Le coucher de soleil</a><a href="#mie">6. Gouttes et nuages</a><a href="#apps">7. Applications</a></nav>
+  <nav class="toc" aria-label="Sommaire"><a href="#blanc">1. Lumière blanche</a><a href="#molecule">2. La molécule secouée</a><a href="#lambda">3. Toutes les molécules</a><a href="#jour">4. Le ciel de jour</a><a href="#soir">5. Le coucher de soleil</a><a href="#mie">6. Gouttes et nuages</a><a href="#arc">7. L'arc-en-ciel</a><a href="#apps">8. Applications</a></nav>
 </header>
 
 <section id="blanc">
@@ -68,12 +68,21 @@ h3{font:700 18px/1.3 var(--f-display);margin:6px 0 0}
 <section id="mie">
   <div class="step">Étape 6</div>
   <h2>Quand les particules grossissent : gouttes, poussières, nuages</h2>
-  <p class="note">La loi en 1/λ⁴ n'est valable que pour des particules bien plus petites que la longueur d'onde. Pour des gouttes d'eau, des poussières ou de la fumée, il faut le calcul complet de la <em>théorie de Mie</em>, fait ici en direct. Fais grossir la particule, de la molécule d'air à la goutte de pluie.</p>
+  <p class="note">Même onde lumineuse (550 nm), mais la particule grossit : de la molécule d'air à la goutte de pluie. Regarde le champ électrique (ou magnétique) se construire autour d'elle. Une molécule est bien plus petite que la longueur d'onde : un seul dipôle qui oscille, le champ diffusé est le même devant et derrière. Une goutte de nuage contient des dizaines de longueurs d'onde : l'onde y est réfractée et réfléchie, et presque tout part vers l'avant. En bas, la sortie : la direction de la lumière diffusée et sa couleur.</p>
+  <div data-bloc="onde-particule"></div>
+  <p class="note">La loi en 1/λ⁴ n'est valable que pour des particules bien plus petites que la longueur d'onde. Pour des gouttes d'eau, des poussières ou de la fumée, il faut le calcul complet de la <em>théorie de Mie</em>, fait ici en direct sur tout le spectre du Soleil. Fais grossir la particule, de la molécule d'air à la goutte de pluie : la couleur diffusée passe du bleu au blanc.</p>
   <div data-bloc="diffusion-mie"></div>
 </section>
 
-<section id="apps">
+<section id="arc">
   <div class="step">Étape 7</div>
+  <h2>L'arc-en-ciel : pourquoi la pluie colore et pas le nuage</h2>
+  <p class="note">Une goutte de pluie fait environ 1 mm : c'est 2 000 fois la longueur d'onde, assez grand pour suivre les rayons un par un. Chaque rayon se courbe en entrant, se réfléchit au fond, se courbe en sortant, et la déviation dépend de sa hauteur et de la couleur. Les rayons s'accumulent à un angle précis, 42° pour le rouge et un peu moins pour le violet : c'est l'arc. Une goutte de nuage (10 µm) est 100 fois plus petite : la diffraction étale la lumière sur plus de 5°, les couleurs se recouvrent, il reste un arc blanc et flou.</p>
+  <div data-bloc="arc-en-ciel"></div>
+</section>
+
+<section id="apps">
+  <div class="step">Étape 8</div>
   <h2>Ce que ça explique, et les limites</h2>
   <div class="apps">
     <div><b>Un ciel qui se polarise</b>La lumière diffusée à 90° du Soleil est presque totalement polarisée : c'est ce qu'utilisent des lunettes polarisantes (le ciel s'assombrit) et certains insectes pour s'orienter.</div>
@@ -105,7 +114,9 @@ h3{font:700 18px/1.3 var(--f-display);margin:6px 0 0}
 <script src="../../../assets/js/blocs/ciel-de-jour.js"></script>
 <script src="../../../assets/js/blocs/densite-atmosphere.js"></script>
 <script src="../../../assets/js/blocs/coucher-de-soleil.js"></script>
+<script src="../../../assets/js/blocs/onde-particule.js"></script>
 <script src="../../../assets/js/blocs/diffusion-mie.js"></script>
+<script src="../../../assets/js/blocs/arc-en-ciel.js"></script>
 <script>Labo.mountBlocs();</script>
 <script src="../../../assets/js/retouche.js" defer></script>
 </body></html>
