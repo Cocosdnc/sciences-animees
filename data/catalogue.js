@@ -38,6 +38,11 @@ window.CATALOGUE={
      resume:'Pourquoi le ciel est bleu le jour (et pas violet), rouge au coucher du Soleil, et pourquoi les nuages sont blancs : la molécule d\u2019air secouée par la lumière, la loi en 1/λ⁴, le vrai spectre du Soleil, l\u2019ozone, l\u2019œil, puis la diffusion de Mie par les gouttes.',
      chemin:'animations/physique/ciel-et-diffusion/', signe:'1/λ⁴', ajout:'2026-11-16',
      blocs:['lumiere-blanche','molecule-secouee','diffusion-lambda','ciel-de-jour','coucher-de-soleil','diffusion-mie']},
+    {id:'oeil-cones', titre:'L’œil et les cônes : pourquoi le bleu est moins net', domaine:'biologie', niveaux:['collège','lycée'],
+     themes:['vision','œil','cônes','rétine','couleur','sensibilité','fovéa','bleu','luminosité','acuité'],
+     resume:'Trois sortes de cônes, dont les cônes bleus sont rares (5 à 10 %) et absents du centre de la fovéa : un test de boules et de rayures montre qu\u2019on voit le bleu moins nettement que le vert, même à luminosité égale.',
+     chemin:'animations/biologie/oeil-cones/', signe:'5-10 %', ajout:'2026-11-17',
+     blocs:['cones-sensibilite','test-cones']},
     {id:'toucher-atomes', titre:'Que se passe-t-il quand on touche un objet ?', domaine:'physique', niveaux:['collège','lycée','supérieur'],
      themes:['atome','noyau','nuage électronique','électron','contact','force','toucher','principe de Pauli','van der Waals','répulsion','surface','matière'],
      resume:'Ton doigt sur une table, vu au niveau des atomes : un noyau 60 000 fois plus petit que son nuage, deux nuages qui se repoussent parce que les places sont déjà prises, et une peau qui ne touche l\u2019objet que par quelques bosses.',
@@ -90,6 +95,12 @@ window.CATALOGUE={
      script:'assets/js/blocs/coucher-de-soleil.js'},
     {id:'diffusion-mie', titre:'Gouttes, poussières, nuages : quand la particule grossit', domaines:['physique'], niveaux:['lycée', 'supérieur'],
      themes:['Mie', 'diffusion', 'nuage', 'goutte', 'aérosol', 'taille', 'brouillard'], resume:'Calcul de Mie en direct, du rayon 0,1 nm à 1 mm : Rayleigh, régime intermédiaire, nuages blancs, avec diagramme angulaire.',
-     script:'assets/js/blocs/diffusion-mie.js'}
+     script:'assets/js/blocs/diffusion-mie.js'},
+    {id:'cones-sensibilite', titre:'Les trois sortes de cônes', domaines:['biologie','physique'], niveaux:['collège','lycée'],
+     themes:['vision','cônes','rétine','sensibilité','couleur','fovéa','longueur d\u2019onde'], resume:'Courbes de sensibilité des cônes L, M et S, et rétine cône par cône : les cônes bleus sont rares et absents du centre de la fovéa.',
+     script:'assets/js/blocs/cones-sensibilite.js'},
+    {id:'test-cones', titre:'Test : voit-on aussi bien le bleu que le vert ?', domaines:['biologie','physique'], niveaux:['collège','lycée'],
+     themes:['vision','cônes','couleur','luminosité','acuité','bleu'], resume:'Boules et rayures de couleurs sur fond noir, avec réglage « même luminosité » : le bleu reste plus difficile à voir dans les détails fins.',
+     script:'assets/js/blocs/test-cones.js'}
   ]
 };

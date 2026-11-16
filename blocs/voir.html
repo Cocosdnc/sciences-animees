@@ -22,7 +22,7 @@
   if(!b){ document.getElementById('t').textContent='Modèle introuvable'; document.getElementById('r').innerHTML='<a href="./">Voir tous les modèles</a>'; return; }
   document.title=b.titre+' · Sciences animées'; document.getElementById('t').textContent=b.titre; document.getElementById('r').textContent=b.resume;
   const load=src=>new Promise(ok=>{ const s=document.createElement('script'); s.src='../'+src; s.onload=ok; document.body.appendChild(s); });
-  const deps=b.script.includes('diffusion-')||/lumiere-blanche|molecule-secouee|ciel-de-jour|coucher-de-soleil/.test(b.script)?['assets/js/data-astm-g173.js','assets/js/diffusion-phys.js']:[];
+  const deps=b.script.includes('diffusion-')||/lumiere-blanche|molecule-secouee|ciel-de-jour|coucher-de-soleil|cones-sensibilite|test-cones/.test(b.script)?['assets/js/data-astm-g173.js','assets/js/diffusion-phys.js']:[];
   deps.reduce((p,d)=>p.then(()=>load(d)),Promise.resolve()).then(()=>load(b.script)).then(()=>{ const z=document.getElementById('zone'); z.innerHTML='<div data-bloc></div>'; z.firstChild.dataset.bloc=b.id; Labo.mountBlocs(z); });
   addEventListener('hashchange',()=>location.reload());
 })();

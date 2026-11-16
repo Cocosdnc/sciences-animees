@@ -1,0 +1,69 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>L’œil et les cônes · Sciences animées</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<style>
+section{display:flex;flex-direction:column;gap:14px}
+.step{font:500 12px/1 var(--f-mono);color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+h2{font:700 24px/1.2 var(--f-display);margin:0;text-wrap:balance}
+h3{font:700 18px/1.3 var(--f-display);margin:6px 0 0}
+.note{font-size:15px;max-width:66ch;margin:0;color:var(--ink)}
+.note em{font-style:normal;font-weight:500;color:var(--laser)}
+.sources{font-size:13px;color:var(--muted);max-width:75ch}
+.sources li{margin:3px 0}
+.apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.apps div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;color:var(--muted)}
+.apps b{display:block;color:var(--ink);font:500 15px var(--f-display);margin-bottom:4px}
+.toc{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px}
+</style></head><body>
+<div class="topbar" style="max-width:1080px;margin:0 auto 28px"><a class="brand" href="../../../"><i></i>Sciences animées</a><nav><a href="../../../#catalogue">Animations</a><a href="../../../carte.html">Carte des notions</a><a href="../../../blocs/">Modèles</a></nav></div>
+<div class="wrap">
+<header class="page">
+  <div class="kicker">Vision · physique et SVT</div>
+  <h1>L’œil et les cônes</h1>
+  <p class="lead">Pourquoi voit-on moins bien le bleu et le violet que le vert ? Ce n'est pas seulement une question d'intensité : c'est aussi une question de <em>détail</em>. Une page à cheval entre la physique (la lumière, les longueurs d'onde) et les SVT (la rétine et ses cellules).</p>
+  <nav class="toc" aria-label="Sommaire"><a href="#cones">1. Trois sortes de cônes</a><a href="#test">2. Le test de la boule</a><a href="#pourquoi">3. Pourquoi le bleu est moins net</a></nav>
+</header>
+
+
+<section id="cones">
+  <div class="step">Étape 1</div>
+  <h2>Trois sortes de cônes</h2>
+  <p class="note">À la lumière du jour, ce sont les <em>cônes</em> de la rétine qui voient. Il y en a trois sortes : L (rouge), M (vert) et S (bleu). Chacun mesure seulement combien de lumière il reçoit, avec sa propre courbe de sensibilité. La couleur est reconstruite en comparant les trois signaux. Regarde les courbes, puis la rétine cône par cône : les cônes S sont rares.</p>
+  <div data-bloc="cones-sensibilite"></div>
+</section>
+
+<section id="test">
+  <div class="step">Étape 2</div>
+  <h2>Le test de la boule</h2>
+  <p class="note">Quatre boules de couleurs différentes sur fond noir, et quatre réseaux de rayures. Rapetisse les boules, affine les rayures : laquelle disparaît en premier ? Puis passe en mode « même luminosité » : le bleu est-il toujours moins net ?</p>
+  <div data-bloc="test-cones"></div>
+</section>
+
+<section id="pourquoi">
+  <div class="step">Étape 3</div>
+  <h2>Pourquoi le bleu est moins net</h2>
+  <div class="apps">
+    <div><b>Les cônes bleus sont rares</b>Seulement 5 à 10 % des cônes sont de type S, et il n'y en a aucun au centre de la fovéa, là où la vision est la plus fine.</div>
+    <div><b>Ils ne fabriquent pas les détails</b>Le cerveau construit la luminosité et la netteté avec les cônes L et M. Les cônes S y contribuent très peu.</div>
+    <div><b>Le bleu est flou dans l'œil</b>La lentille ne focalise pas le bleu au même endroit que le rouge (aberration chromatique : 1 à 2 dioptries d'écart entre le violet et le rouge). Le cristallin, en jaunissant avec l'âge, absorbe aussi du bleu.</div>
+    <div><b>Le lien avec le ciel</b>C'est une des raisons pour lesquelles le ciel n'est pas violet alors que le violet est le plus diffusé : l'œil y est très peu sensible. Voir <a href="../../physique/ciel-et-diffusion/#jour">Ciel et diffusion</a>.</div>
+  </div>
+  <h3>Sources</h3>
+  <ul class="sources">
+    <li>Curcio, Allen, Sloan et coll. (1991), « Distribution and morphology of human cone photoreceptors stained with anti-blue opsin », <i>J. Comp. Neurol.</i> 312, 610 : répartition des cônes S, absents du centre de la fovéa.</li>
+    <li>Hofer, Carroll, Neitz, Neitz, Williams (2005), « Organization of the human trichromatic cone mosaic », <i>J. Neurosci.</i> 25, 9669 : proportions de cônes L, M, S.</li>
+    <li>Wyman, Sloan, Shirley (2013), ajustement analytique des fonctions colorimétriques CIE 1931 ; transformation de Hunt-Pointer-Estevez pour les courbes des cônes.</li>
+    <li>Stockman et Sharpe (2000), « The spectral sensitivities of the middle- and long-wavelength-sensitive cones », <i>Vision Research</i> 40, 1711 : courbes de cônes de référence (celles de cette page en sont une approximation).</li>
+  </ul>
+</section>
+</div>
+<script src="../../../assets/js/data-astm-g173.js"></script>
+<script src="../../../assets/js/diffusion-phys.js"></script>
+<script src="../../../assets/js/labo.js"></script>
+<script src="../../../assets/js/blocs/cones-sensibilite.js"></script>
+<script src="../../../assets/js/blocs/test-cones.js"></script>
+<script>Labo.mountBlocs();</script>
+<script src="../../../assets/js/retouche.js" defer></script>
+</body></html>

@@ -10,7 +10,7 @@
      même si elle a des applications.
    - liens : [idA, idB, 'nature du lien'] : relations transversales, souvent entre domaines.
    Les domaines eux-mêmes sont définis dans catalogue.js. */
-const D='diode-laser', AEL='atome-et-liaisons', TA='toucher-atomes', AL='alliage', VL='vitesse-lumiere', CD='ciel-et-diffusion';
+const D='diode-laser', AEL='atome-et-liaisons', TA='toucher-atomes', AL='alliage', VL='vitesse-lumiere', CD='ciel-et-diffusion', OC='oeil-cones';
 window.NOTIONS={
   noeuds:[
     /* ================= PHYSIQUE ================= */
@@ -119,7 +119,8 @@ window.NOTIONS={
        ressources:[{type:'animation',id:D,ancre:'couleur',titre:'Choisir la couleur'}]},
     /* ================= BIOLOGIE ================= */
     {id:'vision', titre:'La vision', parent:'biologie', resume:'Comment l’œil capte la lumière et fabrique les couleurs.'},
-      {id:'cones', titre:'Les cônes et la couleur', parent:'vision', resume:'Trois sortes de cônes : c’est pour ça que trois couleurs suffisent à tout recréer.',
+      {id:'cones', titre:'Les cônes et la couleur', parent:'vision', resume:'Trois sortes de cônes : c’est pour ça que trois couleurs suffisent à tout recréer. Les cônes bleus sont rares : le bleu est moins net.',
+       ressources:[{type:'bloc',id:'cones-sensibilite'},{type:'bloc',id:'test-cones'},{type:'animation',id:OC,titre:'L’œil et les cônes'}],
        applications:[{type:'animation',id:D,ancre:'blanc',titre:'Pourquoi l’œil voit la LED blanche… blanche'}]},
     {id:'sens', titre:'Les sens', parent:'biologie', resume:'Comment le corps capte le monde extérieur.'},
       {id:'toucher', titre:'Le toucher', parent:'sens', resume:'Des capteurs sous la peau détectent sa déformation quand elle appuie sur un objet.',
