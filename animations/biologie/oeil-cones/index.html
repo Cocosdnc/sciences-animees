@@ -36,8 +36,8 @@ h3{font:700 18px/1.3 var(--f-display);margin:6px 0 0}
 
 <section id="test">
   <div class="step">Étape 2</div>
-  <h2>Le test de la boule</h2>
-  <p class="note">Quatre boules de couleurs différentes sur fond noir, et quatre réseaux de rayures. Rapetisse les boules, affine les rayures : laquelle disparaît en premier ? Puis passe en mode « même luminosité » : le bleu est-il toujours moins net ?</p>
+  <h2>Le test des rayures</h2>
+  <p class="note">Quatre zones de fines rayures (bleu, vert, rouge, violet), à la même luminosité. Garde la finesse à 2 pixels, puis éloigne-toi de l'écran : laquelle devient une surface unie en premier ? Règle le curseur « clarté du bleu » pour que les quatre zones paraissent aussi claires. La ligne du bas montre ce que la rétine reçoit réellement : le bleu est défocalisé par la lentille.</p>
   <div data-bloc="test-cones"></div>
 </section>
 
@@ -47,13 +47,14 @@ h3{font:700 18px/1.3 var(--f-display);margin:6px 0 0}
   <div class="apps">
     <div><b>Les cônes bleus sont rares</b>Seulement 5 à 10 % des cônes sont de type S, et il n'y en a aucun au centre de la fovéa, là où la vision est la plus fine.</div>
     <div><b>Ils ne fabriquent pas les détails</b>Le cerveau construit la luminosité et la netteté avec les cônes L et M. Les cônes S y contribuent très peu.</div>
-    <div><b>Le bleu est flou dans l'œil</b>La lentille ne focalise pas le bleu au même endroit que le rouge (aberration chromatique : 1 à 2 dioptries d'écart entre le violet et le rouge). Le cristallin, en jaunissant avec l'âge, absorbe aussi du bleu.</div>
-    <div><b>Le lien avec le ciel</b>C'est une des raisons pour lesquelles le ciel n'est pas violet alors que le violet est le plus diffusé : l'œil y est très peu sensible. Voir <a href="../../physique/ciel-et-diffusion/#jour">Ciel et diffusion</a>.</div>
+    <div><b>Le bleu est flou dans l'œil</b>C'est la cause la plus forte. La lentille ne focalise pas le bleu au même endroit que le vert (aberration chromatique : 0,7 dioptrie d'écart entre 460 et 555 nm). L'œil fait la mise au point sur le vert-jaune, donc le bleu forme sur la rétine une tache d'environ 10 minutes d'arc avec une pupille de 4 mm, contre moins de 2 pour le vert : c'est le flou de la simulation du test. Le cristallin, en jaunissant avec l'âge, absorbe aussi du bleu.</div>
+    <div><b>À ne pas confondre avec la couleur du ciel</b>Voir moins nettement les détails bleus (l'acuité) est un autre sujet que percevoir la couleur bleue : on voit très bien que le ciel est bleu. Pour la couleur, ce qui compte est le rapport des signaux des trois cônes : voir l'étape 4 de <a href="../../physique/ciel-et-diffusion/#jour">Ciel et diffusion</a>.</div>
   </div>
   <h3>Sources</h3>
   <ul class="sources">
     <li>Curcio, Allen, Sloan et coll. (1991), « Distribution and morphology of human cone photoreceptors stained with anti-blue opsin », <i>J. Comp. Neurol.</i> 312, 610 : répartition des cônes S, absents du centre de la fovéa.</li>
     <li>Hofer, Carroll, Neitz, Neitz, Williams (2005), « Organization of the human trichromatic cone mosaic », <i>J. Neurosci.</i> 25, 9669 : proportions de cônes L, M, S.</li>
+    <li>Thibos, Ye, Zhang, Bradley (1992), « Chromatic eye : a new reduced-eye model of ocular chromatic aberration in humans », <i>Applied Optics</i> 31, 3594 : aberration chromatique longitudinale utilisée par la simulation du test.</li>
     <li>Wyman, Sloan, Shirley (2013), ajustement analytique des fonctions colorimétriques CIE 1931 ; transformation de Hunt-Pointer-Estevez pour les courbes des cônes.</li>
     <li>Stockman et Sharpe (2000), « The spectral sensitivities of the middle- and long-wavelength-sensitive cones », <i>Vision Research</i> 40, 1711 : courbes de cônes de référence (celles de cette page en sont une approximation).</li>
   </ul>

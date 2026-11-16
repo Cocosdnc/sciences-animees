@@ -16,6 +16,9 @@ const g=(l,mu,s1,s2)=>{ const t=(l-mu)/(l<mu?s1:s2); return Math.exp(-.5*t*t); }
 D.xbar=l=>1.056*g(l,599.8,37.9,31)+.362*g(l,442,16,26.7)-.065*g(l,501.1,20.4,26.2);
 D.ybar=l=>.821*g(l,568.8,46.9,40.5)+.286*g(l,530.9,16.3,31.1);
 D.zbar=l=>1.217*g(l,437,11.8,36)+.681*g(l,459,26,13.8);
+/* Sensibilités des cônes L, M, S (Hunt-Pointer-Estevez appliquée aux fonctions CIE ci-dessus), normalisées à 1 au maximum de chaque courbe. */
+const lmsRaw=l=>{ const X=D.xbar(l),Y=D.ybar(l),Z=D.zbar(l); return [Math.max(0,.4002*X+.7076*Y-.0808*Z),Math.max(0,-.2263*X+1.1653*Y+.0457*Z),Math.max(0,.9182*Z)]; };
+let lmsPk=null; D.lms=l=>{ if(!lmsPk){ lmsPk=[1e-9,1e-9,1e-9]; for(let q=380;q<=750;q+=2){ const v=lmsRaw(q); for(let i=0;i<3;i++) lmsPk[i]=Math.max(lmsPk[i],v[i]); } } const v=lmsRaw(l); return [v[0]/lmsPk[0],v[1]/lmsPk[1],v[2]/lmsPk[2]]; };
 D.LMIN=380; D.LMAX=750;
 const gam=u=>{ u=Math.max(0,Math.min(1,u)); return u<=.0031308?12.92*u:1.055*Math.pow(u,1/2.4)-.055; };
 /* Spectre -> [r,g,b] (0..255). S(l) est une fonction de la longueur d'onde (énergie par nm).

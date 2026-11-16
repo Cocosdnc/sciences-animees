@@ -40,7 +40,7 @@ window.CATALOGUE={
      blocs:['lumiere-blanche','lampes-rvb','molecule-secouee','diffusion-lambda','ciel-de-jour','densite-atmosphere','coucher-de-soleil','onde-particule','diffusion-mie','arc-en-ciel']},
     {id:'oeil-cones', titre:'L’œil et les cônes : pourquoi le bleu est moins net', domaine:'biologie', niveaux:['collège','lycée'],
      themes:['vision','œil','cônes','rétine','couleur','sensibilité','fovéa','bleu','luminosité','acuité'],
-     resume:'Trois sortes de cônes, dont les cônes bleus sont rares (5 à 10 %) et absents du centre de la fovéa : un test de boules et de rayures montre qu\u2019on voit le bleu moins nettement que le vert, même à luminosité égale.',
+     resume:'Trois sortes de cônes, dont les cônes bleus sont rares (5 à 10 %) et absents du centre de la fovéa : un test de rayures fines, bleues, vertes, rouges et violettes, à luminosité égale, montre que le bleu perd ses rayures en premier quand on s\u2019éloigne ; une simulation montre le flou de la lentille.',
      chemin:'animations/biologie/oeil-cones/', signe:'5-10 %', ajout:'2026-11-17',
      blocs:['cones-sensibilite','test-cones']},
     {id:'toucher-atomes', titre:'Que se passe-t-il quand on touche un objet ?', domaine:'physique', niveaux:['collège','lycée','supérieur'],
@@ -111,8 +111,8 @@ window.CATALOGUE={
     {id:'cones-sensibilite', titre:'Les trois sortes de cônes', domaines:['biologie','physique'], niveaux:['collège','lycée'],
      themes:['vision','cônes','rétine','sensibilité','couleur','fovéa','longueur d\u2019onde'], resume:'Courbes de sensibilité des cônes L, M et S, et rétine cône par cône : les cônes bleus sont rares et absents du centre de la fovéa.',
      script:'assets/js/blocs/cones-sensibilite.js'},
-    {id:'test-cones', titre:'Test : voit-on aussi bien le bleu que le vert ?', domaines:['biologie','physique'], niveaux:['collège','lycée'],
-     themes:['vision','cônes','couleur','luminosité','acuité','bleu'], resume:'Boules et rayures de couleurs sur fond noir, avec réglage « même luminosité » : le bleu reste plus difficile à voir dans les détails fins.',
+    {id:'test-cones', titre:'Test des rayures : quelle couleur perd ses rayures en premier ?', domaines:['biologie','physique'], niveaux:['collège','lycée'],
+     themes:['vision','cônes','couleur','luminosité','acuité','bleu'], resume:'Quatre zones de rayures fines (bleu, vert, rouge, violet) à luminosité égale : en s\u2019éloignant, le bleu devient uni en premier. Dessous, la simulation du flou chromatique de l\u2019œil.',
      script:'assets/js/blocs/test-cones.js'}
   ]
 };

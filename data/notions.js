@@ -153,7 +153,7 @@ window.NOTIONS={
     ['led','diode','la même chose vue côté électricité'],
     ['rayleigh','longueur-onde','la diffusion dépend de la couleur'],
     ['ciel-couleur','synthese-additive','le mélange des couleurs diffusées'],
-    ['ciel-couleur','cones','l’œil peu sensible au violet'],
+    ['ciel-couleur','cones','la couleur est le rapport des signaux des trois cônes'],
     ['coucher-soleil','exponentielle','transmission = exp(−τ·m)'],
     ['coucher-soleil','systeme-solaire','la lumière du Soleil traverse l’atmosphère'],
     ['rayleigh','mie','quand la particule grossit'],
