@@ -16,6 +16,12 @@
 - Sections (ancres utilisables dans `notions.js`) : `#atomeseul` Pourquoi l'électron tient autour du noyau · `#liaison` Au cœur d'une liaison Ga–P, en 3D
 - Modèles utilisés : `nuage-probabilite`, `liante-antiliante`, `energie-liaison`, `corde-orbitale`
 
+### Les nombres quantiques : n, l, m et le spin  (`nombres-quantiques`)
+- Domaine : physique · niveaux : lycée, supérieur · ajout : 2026-11-19
+- Dossier : `animations/physique/nombres-quantiques/index.html`
+- Sections (ancres utilisables dans `notions.js`) : `#adresse-intro` Une adresse en quatre nombres · `#niveau-n` n : la couche, donc l'énergie · `#forme-l` l : la forme du nuage · `#orientation-m` m : vers où pointe la forme · `#spin` Le spin : deux orientations, et rien d'autre · `#adresse` Les cases d'une couche, électron par électron
+- Modèles utilisés : `corde-vibrante`
+
 ### Combien de temps met la lumière ?  (`vitesse-lumiere`)
 - Domaine : physique · niveaux : collège · ajout : 2026-11-11
 - Dossier : `animations/physique/vitesse-lumiere/index.html`
@@ -50,7 +56,7 @@
 | id | titre | domaines | fichier | utilisé par |
 |---|---|---|---|---|
 | `creux-atome` | Le creux de l’atome | physique, chimie | `assets/js/blocs/creux-atome.js` | — |
-| `corde-vibrante` | La corde vibrante | physique, chimie | `assets/js/blocs/corde-vibrante.js` | — |
+| `corde-vibrante` | La corde vibrante | physique, chimie | `assets/js/blocs/corde-vibrante.js` | `nombres-quantiques` |
 | `nuage-probabilite` | Où trouve-t-on l’électron ? | chimie, physique | `assets/js/blocs/nuage-probabilite.js` | `atome-et-liaisons` |
 | `liante-antiliante` | Liante et antiliante : où est l’électron entre deux atomes ? | chimie, physique | `assets/js/blocs/liante-antiliante.js` | `atome-et-liaisons`, `toucher-atomes` |
 | `energie-liaison` | Pourquoi l’énergie baisse, et où elle part | chimie, physique | `assets/js/blocs/energie-liaison.js` | `atome-et-liaisons`, `toucher-atomes` |
@@ -108,7 +114,7 @@
   - `contact-atomes` Pourquoi deux objets se touchent sans se traverser — 2 ressources
   - `adhesion` Coller ou se repousser — 2 ressources
   - `surface-reelle` Surface de contact réelle — 1 ressource
-- `atome-liaisons` Atome et liaisons — 20 ressources
+- `atome-liaisons` Atome et liaisons — 26 ressources
   - `dualite` Onde ou particule — 2 ressources
     - `electron-onde` L’électron est une onde — 1 ressource
     - `de-broglie` Longueur d’onde de de Broglie — 1 ressource
@@ -116,6 +122,12 @@
     - `creux` Pourquoi l’électron ne tombe pas — 2 ressources
     - `couches` Couches et orbitales — 2 ressources
     - `pauli` Principe de Pauli — 1 ressource · 2 applications
+  - `nombres-quantiques` Les nombres quantiques — 6 ressources
+    - `nq-n` n : la couche et l’énergie — 2 ressources
+    - `nq-l` l : la forme du nuage — 1 ressource
+    - `nq-m` m : l’orientation et l’effet Zeeman — 1 ressource
+    - `nq-spin` Le spin et l’expérience de Stern et Gerlach — 1 ressource
+    - `nq-adresse` L’adresse complète d’un électron — 1 ressource
   - `structure-atome` Structure de l’atome — 3 ressources
     - `noyau-nuage` Noyau et nuage électronique — 2 ressources
     - `valence` Électrons de valence — 1 ressource
@@ -160,4 +172,4 @@
 - `sinus` Fonctions sinus et ondes (sous `fonctions`) : La forme de toutes les ondes, et leurs additions.
 - `exponentielle` Exponentielle (sous `fonctions`) : Ce qui décroît en gardant la même proportion : nuages électroniques, absorption.
 
-_7 animations · 19 modèles · 71 notions · 46 liens._
+_8 animations · 19 modèles · 77 notions · 53 liens._

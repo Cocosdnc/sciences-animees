@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Les nombres quantiques · Sciences animées</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<style>
+.callout{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.callout.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:760px){.callout{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.callout,.callout.c2{grid-template-columns:1fr}}
+.callout div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.callout small{font:500 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.callout b{font:500 16px/1.3 var(--f-display)}
+.callout span{font-size:14px;line-height:1.55;color:var(--muted)}
+.callout .q{font:700 28px/1 var(--f-display);color:var(--laser)}
+.histo{font-size:14px;line-height:1.6;max-width:66ch;margin:0;color:var(--muted);border-left:2px solid var(--line);padding-left:12px}
+.histo b{color:var(--ink);font-weight:500}
+</style>
+</head>
+<body>
+<div class="topbar"><a class="brand" href="../../../"><i></i>Sciences animées</a><nav><a href="../../../#catalogue">Animations</a><a href="../../../carte.html">Carte des notions</a><a href="../../../blocs/">Modèles</a></nav></div>
+<div class="wrap">
+  <header class="page">
+    <div class="kicker">Atome · physique quantique</div>
+    <h1>Les nombres quantiques</h1>
+    <p class="lead">Quatre nombres suffisent à repérer un électron dans un atome : <em>n</em>, <em>l</em>, <em>m</em> et le spin. Pour chacun : ce qu'il représente, comment on le voit, et comment on l'a découvert. Les boutons <span class="i" aria-hidden="true" style="display:inline-grid;place-items:center;width:17px;height:17px;border-radius:50%;background:var(--ink);color:var(--bg);font:500 11px/1 var(--f-mono)">i</span> détaillent chaque point. Cette page prolonge <a href="../atome-et-liaisons/" style="color:var(--laser)">Atome et liaisons</a>.</p>
+  </header>
+
+  <section id="adresse-intro">
+    <div class="step">Les quatre questions</div>
+    <h2>Une adresse en quatre nombres</h2>
+    <p class="note">Une onde enfermée autour d'un noyau ne vibre que de certaines façons (voir <a href="../atome-et-liaisons/#atomeseul" style="color:var(--laser)">Pourquoi des couches</a>). Chaque façon de vibrer se repère par trois nombres entiers, qui sortent des équations. Un quatrième, le spin, est apparu parce que les expériences l'imposaient.</p>
+    <div class="callout">
+      <div><span class="q">n</span><b>Quelle couche ?</b><span>L'énergie et la taille. n = 1, 2, 3…</span></div>
+      <div><span class="q">l</span><b>Quelle forme ?</b><span>Sphère, haltère, trèfle… l = 0 à n − 1.</span></div>
+      <div><span class="q">m</span><b>Quelle orientation ?</b><span>Vers où pointe la forme. m = −l à +l.</span></div>
+      <div><span class="q">s</span><b>Quel spin ?</b><span>Deux états seulement : ↑ ou ↓.</span></div>
+    </div>
+  </section>
+
+  <section id="niveau-n">
+    <div class="step">Nombre 1 · n, le nombre quantique principal</div>
+    <h2>n : la couche, donc l'énergie</h2>
+    <p class="note">Dans l'hydrogène, l'énergie de l'électron ne peut prendre que les valeurs −13,6 eV ÷ n². Quand il passe d'un niveau à un autre, l'atome émet un photon dont l'énergie est <em>exactement</em> l'écart entre les deux niveaux. C'est ainsi que n a été découvert : par les couleurs de la lumière de l'hydrogène.</p>
+    <div class="panel">
+      <div class="view"><canvas id="cvN" style="aspect-ratio:400/260" aria-label="Niveaux d'énergie de l'hydrogène, un électron qui descend d'un niveau à l'autre et le photon émis, avec sa longueur d'onde sur le spectre"></canvas></div>
+      <div class="lc">
+        <label class="slider" for="nHi" style="width:100%"><span>Niveau de départ</span><input id="nHi" type="range" min="2" max="6" step="1" value="3"><strong id="nHiv">n = 3</strong></label>
+        <label class="slider" for="nLo" style="width:100%"><span>Niveau d'arrivée</span><input id="nLo" type="range" min="1" max="5" step="1" value="2"><strong id="nLov">n = 2</strong></label>
+        <button id="nGo" class="primary">Faire descendre l'électron</button>
+      </div>
+      <div class="caption" aria-live="polite"><b id="nTitle"></b><span id="nText"></span></div>
+      <div class="infobar" id="nIb"></div><div class="infobox" id="nBx" hidden></div>
+    </div>
+    <p class="histo"><b>Comment on l'a découvert.</b> En 1885, Johann Balmer, professeur de mathématiques dans une école de filles à Bâle, trouve une formule simple pour les quatre raies visibles de l'hydrogène. Rydberg la généralise en 1888. Mais personne ne sait pourquoi les nombres entiers apparaissent. Bohr en donne une première image en 1913, Schrödinger l'explication en 1926 : des nombres entiers, parce qu'une onde enfermée doit « tomber juste ».</p>
+    <h3>Pourquoi des nombres entiers ?</h3>
+    <p class="note">Même raison que pour une corde de guitare attachée aux deux bouts : seules certaines notes tiennent.</p>
+    <div data-bloc="corde-vibrante"></div>
+  </section>
+
+  <section id="forme-l">
+    <div class="step">Nombre 2 · l, le nombre quantique azimutal</div>
+    <h2>l : la forme du nuage</h2>
+    <p class="note">À chaque n, l'onde peut vibrer de plusieurs façons. l compte les <em>nœuds angulaires</em> : les surfaces où l'onde passe par zéro, au travers du noyau. l = 0 : aucune, le nuage est une sphère (s). l = 1 : un plan, deux lobes (p). l = 2 : deux cônes, quatre lobes ou un trèfle (d). Les couleurs montrent le signe de l'onde (rouge +, bleu −), pas une charge.</p>
+    <div class="panel">
+      <div class="view"><canvas id="cvL" style="aspect-ratio:400/270" aria-label="À gauche, la forme de l'orbitale en coupe avec ses lobes rouges et bleus ; à droite, la probabilité de trouver l'électron selon la distance au noyau"></canvas></div>
+      <div class="lc">
+        <span style="font-size:14px;color:var(--muted)">n</span>
+        <div class="seg" role="group" aria-label="Valeur de n" id="lN"><button data-v="1" aria-pressed="false">1</button><button data-v="2" aria-pressed="false">2</button><button data-v="3" aria-pressed="true">3</button><button data-v="4" aria-pressed="false">4</button></div>
+        <span style="font-size:14px;color:var(--muted)">l</span>
+        <div class="seg" role="group" aria-label="Valeur de l" id="lL"><button data-v="0" aria-pressed="false">0 · s</button><button data-v="1" aria-pressed="true">1 · p</button><button data-v="2" aria-pressed="false">2 · d</button><button data-v="3" aria-pressed="false">3 · f</button></div>
+      </div>
+      <div class="caption" aria-live="polite"><b id="lTitle"></b><span id="lText"></span></div>
+      <div class="legend"><span><i class="dot" style="background:#FF8A80;box-shadow:none"></i>Onde positive</span><span><i class="dot" style="background:#6FB6FF;box-shadow:none"></i>Onde négative</span><span>Tirets : nœuds, là où l'électron n'est jamais</span></div>
+      <div class="infobar" id="lIb"></div><div class="infobox" id="lBx" hidden></div>
+    </div>
+    <p class="histo"><b>Comment on l'a découvert.</b> Bien avant la théorie, les spectroscopistes classaient les raies des métaux en séries qu'ils ont nommées <b>s</b>harp (nette), <b>p</b>rincipal, <b>d</b>iffuse et <b>f</b>undamental : ce sont les lettres des orbitales. En 1916, Sommerfeld ajoute un second nombre à celui de Bohr pour expliquer la structure fine des raies de l'hydrogène (chez lui, k = l + 1). La forme des nuages, elle, ne vient qu'avec Schrödinger, en 1926.</p>
+  </section>
+
+  <section id="orientation-m">
+    <div class="step">Nombre 3 · m, le nombre quantique magnétique</div>
+    <h2>m : vers où pointe la forme</h2>
+    <p class="note">Une forme p peut pointer vers le haut, vers la droite, vers l'avant. m dit combien la rotation de l'électron autour du noyau « avance » le long d'un axe : m va de −l à +l, soit 2l + 1 valeurs. Sans champ magnétique, toutes les orientations ont la même énergie : l'axe n'a rien de spécial. Avec un champ, il devient l'axe du champ, et chaque m a son énergie.</p>
+    <div class="panel">
+      <div class="view"><canvas id="cvM" style="aspect-ratio:400/270" aria-label="À gauche, les orientations permises du moment cinétique ; à droite, les niveaux d'énergie qui se séparent quand on augmente le champ magnétique"></canvas></div>
+      <div class="lc">
+        <span style="font-size:14px;color:var(--muted)">l</span>
+        <div class="seg" role="group" aria-label="Valeur de l" id="mL"><button data-v="0" aria-pressed="false">0</button><button data-v="1" aria-pressed="true">1</button><button data-v="2" aria-pressed="false">2</button><button data-v="3" aria-pressed="false">3</button></div>
+        <label class="slider" for="mB" style="width:100%"><span>Champ magnétique</span><input id="mB" type="range" min="0" max="10" step="0.1" value="0"><strong id="mBv">0 T</strong></label>
+      </div>
+      <div class="caption" aria-live="polite"><b id="mTitle"></b><span id="mText"></span></div>
+      <div class="infobar" id="mIb"></div><div class="infobox" id="mBx" hidden></div>
+    </div>
+    <p class="histo"><b>Comment on l'a découvert.</b> En 1896, Pieter Zeeman place une flamme de sodium entre les pôles d'un électroaimant : les raies s'élargissent. Avec une meilleure résolution, elles se séparent : une raie en trois. Lorentz l'explique aussitôt avec la théorie classique. L'idée que seules certaines orientations sont permises (« quantification spatiale ») est testée en 1922 par l'expérience suivante.</p>
+  </section>
+
+  <section id="spin">
+    <div class="step">Nombre 4 · le spin</div>
+    <h2>Le spin : deux orientations, et rien d'autre</h2>
+    <p class="note">Celui-là ne sort pas des équations de l'onde autour du noyau : il a fallu l'expérience. En 1922, Otto Stern et Walther Gerlach chauffent de l'argent jusqu'à vaporisation et envoient les atomes dans un champ magnétique non uniforme, qui dévie chaque atome selon l'orientation de son petit aimant. Sur la plaque de verre : <em>deux</em> taches, pas une nappe.</p>
+    <div class="panel">
+      <div class="view"><canvas id="cvSG" style="aspect-ratio:400/270" aria-label="Expérience de Stern et Gerlach : four, aimant, plaque de verre, et dépôt d'atomes d'argent en deux taches"></canvas></div>
+      <div class="lc">
+        <div class="seg" role="group" aria-label="Ce qu'on suppose sur l'atome" id="sgMode"><button data-v="ag" aria-pressed="true">Réalité (argent)</button><button data-v="cl" aria-pressed="false">Aimant « classique »</button><button data-v="l1" aria-pressed="false">Si c'était l'orbite l = 1</button></div>
+        <button id="sgMag" aria-pressed="true">Aimant allumé</button>
+        <button id="sgClear">Vider la plaque</button>
+      </div>
+      <div class="caption" aria-live="polite"><b id="sgTitle"></b><span id="sgText"></span></div>
+      <div class="infobar" id="sgIb"></div><div class="infobox" id="sgBox" hidden></div>
+    </div>
+    <h3>Pourquoi ce ne pouvait être que l'électron seul de l'argent</h3>
+    <p class="note">Il y a trois pistes pour expliquer le magnétisme d'un atome d'argent. Une seule tient.</p>
+    <div class="panel">
+      <div class="view"><canvas id="cvAg" style="aspect-ratio:400/230" aria-label="Les 47 électrons de l'argent rangés en cases : 46 appariés dont les moments s'annulent, un seul célibataire dans la case 5s"></canvas></div>
+      <div class="lc"><button id="agPrev">Précédent</button><button id="agNext" class="primary">Suivant</button></div>
+      <div class="caption" aria-live="polite"><b id="agTitle"></b><span id="agText"></span></div>
+      <div class="infobar" id="agIb"></div><div class="infobox" id="agBox" hidden></div>
+    </div>
+    <div class="callout c2">
+      <div><small>Piste 1 · les 46 autres électrons</small><b>Ils s'annulent</b><span>Dans une case pleine, un électron ↑ et un électron ↓ ont des petits aimants opposés. Toutes les couches de l'argent sauf la dernière sont pleines : somme nulle.</span></div>
+      <div><small>Piste 2 · le noyau</small><b>Trop faible</b><span>Le noyau a lui aussi un petit aimant, mais environ 1 800 fois plus faible que celui de l'électron. La déviation serait invisible.</span></div>
+      <div><small>Piste 3 · le mouvement de l'électron</small><b>Il n'y en a pas</b><span>L'électron seul est dans une case s (l = 0) : aucune rotation autour du noyau, donc pas d'aimant d'orbite.</span></div>
+      <div><small>Le test des taches</small><b>2l + 1 est toujours impair</b><span>Un aimant d'orbite donnerait 1, 3, 5… taches (m = −l…+l). Deux taches sont impossibles avec l entier : il faut une grandeur à <em>deux</em> valeurs, 2s + 1 = 2, donc s = ½. C'est le spin.</span></div>
+    </div>
+    <p class="histo"><b>L'histoire, honnêtement.</b> En 1922, personne ne parlait de spin. La théorie de Bohr et Sommerfeld prévoyait aussi deux orientations pour l'orbite : Stern et Gerlach ont cru confirmer la quantification de l'orientation de l'orbite. Bonne observation, mauvaise explication. Le spin est proposé en 1925 par Uhlenbeck et Goudsmit (Pauli avait senti dès 1924 qu'il manquait un nombre à deux valeurs). En 1927, Phipps et Taylor refont l'expérience avec de l'hydrogène (l = 0 sans ambiguïté) et obtiennent encore deux taches. Dirac fait sortir le spin des équations en 1928.</p>
+  </section>
+
+  <section id="adresse">
+    <div class="step">Tout ensemble</div>
+    <h2>Les cases d'une couche, électron par électron</h2>
+    <p class="note">Les règles : n ≥ 1 ; l de 0 à n − 1 ; m de −l à +l ; s = ±½. Choisis n puis touche une flèche : tu vois l'adresse complète de cet électron. Deux électrons d'un même atome ne peuvent jamais avoir exactement les quatre mêmes nombres (principe de Pauli).</p>
+    <div class="panel">
+      <div class="view"><canvas id="cvAd" style="aspect-ratio:400/300;cursor:pointer" aria-label="Toutes les cases d'une couche, chacune avec ses deux flèches de spin ; toucher une flèche affiche les quatre nombres quantiques de l'électron"></canvas></div>
+      <div class="lc"><span style="font-size:14px;color:var(--muted)">n</span><div class="seg" role="group" aria-label="Valeur de n" id="adN"><button data-v="1" aria-pressed="false">1</button><button data-v="2" aria-pressed="true">2</button><button data-v="3" aria-pressed="false">3</button><button data-v="4" aria-pressed="false">4</button></div></div>
+      <div class="caption" aria-live="polite"><b id="adTitle"></b><span id="adText"></span></div>
+      <div class="infobar" id="adIb"></div><div class="infobox" id="adBox" hidden></div>
+    </div>
+    <p class="sources">Sources : Stern et Gerlach, <i>Zeitschrift für Physik</i>, 1922 · Phipps et Taylor, 1927 · Zeeman, 1896–1897 · constantes : <a href="https://physics.nist.gov/cuu/Constants/">NIST CODATA</a> · <a href="https://en.wikipedia.org/wiki/Stern%E2%80%93Gerlach_experiment">Stern–Gerlach</a> · <a href="https://en.wikipedia.org/wiki/Zeeman_effect">Effet Zeeman</a> · <a href="https://en.wikipedia.org/wiki/Quantum_number">Nombres quantiques</a> · <a href="https://en.wikipedia.org/wiki/Balmer_series">Série de Balmer</a>.</p>
+  </section>
+</div>
+
+<script src="../../../assets/js/labo.js"></script>
+<script src="../../../assets/js/blocs/corde-vibrante.js"></script>
+<script>
+(function(){
+const L=Labo, C=L.C, $=id=>document.getElementById(id), RED='#FF8A80', BLUE='#6FB6FF';
+const fr=(v,d)=>v.toFixed(d).replace('.',',');
+const MUB=5.7883818e-5; /* magnéton de Bohr, eV/T */
+function seg(id,fn){ const g=$(id); g.querySelectorAll('button').forEach(b=>b.onclick=()=>{ if(b.disabled) return; g.querySelectorAll('button').forEach(c=>c.setAttribute('aria-pressed',c===b)); fn(b.dataset.v); }); }
+function setSeg(id,v){ $(id).querySelectorAll('button').forEach(c=>c.setAttribute('aria-pressed',c.dataset.v==v)); }
+function wl2rgb(w){ let r=0,g=0,b=0;
+  if(w<440){r=-(w-440)/60;b=1;} else if(w<490){g=(w-440)/50;b=1;} else if(w<510){g=1;b=-(w-510)/20;} else if(w<580){r=(w-510)/70;g=1;} else if(w<645){r=1;g=-(w-645)/65;} else r=1;
+  let f=1; if(w<420) f=.3+.7*(w-380)/40; else if(w>700) f=.3+.7*(780-w)/80;
+  return '#'+[r,g,b].map(v=>Math.round(255*Math.pow(Math.max(0,v*f),.8)).toString(16).padStart(2,'0')).join(''); }
+function bigtxt(x,s,px,py,size,col,al){ x.font='500 '+size+'px "IBM Plex Mono",monospace'; x.textAlign=al||'left'; x.textBaseline='middle'; x.fillStyle=col; x.fillText(s,px,py); }
+
+/* ================= n : niveaux de l'hydrogène ================= */
+(function(){
+  const V=L.setup('cvN',400,260), x=V.ctx; let hi=3, lo=2, t=0, px=150, ph=0;
+  const E=n=>-13.6057/(n*n), yE=e=>26+(-e)/13.6057*206, lam=()=>91.176/(1/(lo*lo)-1/(hi*hi));
+  const INFO={
+    quoi:['Ce que n représente',`n = 1, 2, 3… numérote les niveaux d’énergie. Plus n est grand, plus l’électron a d’énergie et plus son nuage est grand (environ n² × 0,053 nm). Pour l’hydrogène, E = −13,6 eV ÷ n². Le signe − veut dire « lié » : à n = 1 il faut fournir 13,6 eV pour arracher l’électron, à n = 2 seulement 3,4 eV. Dans les autres atomes, l’énergie dépend aussi de l (effet d’écran des autres électrons).`],
+    photon:['Pourquoi une couleur précise',`Le photon emporte toute l’énergie perdue : E = h·c/λ, soit λ (nm) ≈ 1 240 ÷ E (eV). Comme les niveaux sont fixes, l’énergie perdue ne peut prendre que quelques valeurs : le spectre n’est pas continu mais fait de raies. C’est la signature de chaque atome (on s’en sert pour connaître la composition des étoiles).`],
+    series:['Les séries',`Selon le niveau d’arrivée : Lyman (n = 1, ultraviolet), Balmer (n = 2, visible), Paschen (n = 3, infrarouge)… Seule la série de Balmer est visible : c’est pour ça qu’elle a été découverte la première. Formule de Rydberg : 1/λ = R × (1/n₁² − 1/n₂²), avec R = 1,097 × 10⁷ m⁻¹.`],
+    vrai:['Bohr ou Schrödinger ?',`Les niveaux sont ceux de Bohr (1913), qui imaginait des orbites en cercles : c’était faux comme image, mais juste pour les énergies. L’image actuelle est celle d’un nuage de probabilité (voir plus bas). Les nombres n et les énergies, eux, n’ont pas changé.`],
+    simplif:['Ce qui est simplifié',`Le photon est dessiné comme un petit train d’onde et très ralenti : la vraie descente dure environ 10⁻⁸ s. L’électron est dessiné comme un point qui descend ; en réalité il reste un nuage, qui passe d’une forme à l’autre. Longueurs d’onde calculées dans le vide, pour l’hydrogène (noyau de masse finie prise en compte).`]
+  };
+  L.infoBar($('nIb'),$('nBx'),['quoi','photon','series','vrai','simplif'],INFO);
+  function restart(){ t=L.reduce?1:0; px=L.reduce?560:150; }
+  function upd(){ const l=lam(), dE=13.6057*(1/(lo*lo)-1/(hi*hi)), vis=l>=380&&l<=780, serie={1:'Lyman',2:'Balmer',3:'Paschen',4:'Brackett',5:'Pfund'}[lo];
+    $('nHiv').textContent='n = '+hi; $('nLov').textContent='n = '+lo; $('nTitle').textContent='n = '+hi+' → n = '+lo+' · série de '+serie;
+    $('nText').textContent='Photon de '+Math.round(l)+' nm ('+(vis?'visible':l<380?'ultraviolet, invisible':'infrarouge, invisible')+'), énergie '+fr(dE,2)+' eV : exactement l’écart entre les deux niveaux, pas un de plus ou de moins.'; }
+  $('nHi').oninput=e=>{ hi=+e.target.value; if(lo>=hi){ lo=hi-1; $('nLo').value=lo; } upd(); restart(); };
+  $('nLo').oninput=e=>{ lo=+e.target.value; if(hi<=lo){ hi=lo+1; $('nHi').value=hi; } upd(); restart(); };
+  $('nGo').onclick=restart; upd(); restart();
+  const X=w=>205+(w-380)/400*187;
+  L.onFrame(dt=>{ ph+=dt*9; if(t<1) t=Math.min(1,t+dt*.9); else px+=dt*170;
+    V.base(); L.bgLab(x,400,260);
+    for(let n=1;n<=6;n++){ const y=yE(E(n)), on=n===hi||n===lo; L.line(x,100,y,190,y,on?'#E8EEF4':'rgba(147,161,176,.55)',on?2:1);
+      if(on) L.tag(x,'n = '+n+' · '+fr(E(n),2).replace('-','−')+' eV',96,y,'right'); else if(n<=3) L.txt(x,'n = '+n,96,y,'right'); }
+    L.line(x,100,26,190,26,'rgba(147,161,176,.35)',1,[4,3]); L.txt(x,'E = 0 : électron libre',100,13,'left');
+    const yh=yE(E(hi)), yl=yE(E(lo)), ey=yh+(yl-yh)*L.ease(Math.min(1,t)); L.elec(x,145,ey,4.5);
+    const l=lam(), vis=l>=380&&l<=780, col=vis?wl2rgb(l):(l<380?'#B79CFF':'#C0443C');
+    if(t>=1&&px<560) L.wave(x,px,yl,1,0,70,7,ph,col,1.6,vis?1:.6);
+    /* spectre */
+    for(let w=380;w<780;w+=4){ x.fillStyle=wl2rgb(w); x.globalAlpha=.5; x.fillRect(X(w),176,Math.ceil(187*4/400)+.5,20); } x.globalAlpha=1;
+    [[410.2,'Hδ',207],[434.0,'Hγ',219],[486.1,'Hβ',207],[656.3,'Hα',207]].forEach(([w,s,ty])=>{ L.line(x,X(w),176,X(w),196,'#fff',1.6); L.txt(x,s,X(w),ty,'center'); });
+    L.txt(x,'raies de Balmer (visibles)',205,240,'left');
+    if(vis&&t>=1){ L.line(x,X(l),170,X(l),200,col,3); x.beginPath(); x.moveTo(X(l)-5,164); x.lineTo(X(l)+5,164); x.lineTo(X(l),172); x.closePath(); x.fillStyle=col; x.fill(); }
+    bigtxt(x,'λ = '+Math.round(l)+' nm',205,112,19,vis?col:'#E8EEF4'); L.txt(x,vis?'visible':l<380?'ultraviolet (invisible)':'infrarouge (invisible)',205,134,'left',vis?col:C.muted);
+    L.vignette(x,400,260); },V.cv);
+})();
+
+/* ================= l : forme ================= */
+(function(){
+  const V=L.setup('cvL',400,270), x=V.ctx; let n=3, l=1, rad=null, zeros=[];
+  const P=[c=>1,c=>c,c=>(3*c*c-1)/2,c=>(5*c*c*c-3*c)/2], NAME=['s','p','d','f'], ANG=['la sphère','le plan horizontal','deux cônes','un plan et deux cônes'];
+  const fact=i=>{ let r=1; for(let j=2;j<=i;j++) r*=j; return r; }, binom=(a,k)=>{ let r=1; for(let i=1;i<=k;i++) r=r*(a-k+i)/i; return r; };
+  const lag=(k,a,z)=>{ let s=0; for(let i=0;i<=k;i++) s+=(i%2?-1:1)*binom(k+a,k-i)*Math.pow(z,i)/fact(i); return s; };
+  const INFO={
+    sens:['Ce que l représente',`l compte les surfaces nodales angulaires : là où l’onde s’annule en passant par le noyau. C’est aussi la mesure de la rotation de l’électron autour du noyau : son moment cinétique vaut √(l(l+1)) × ħ. Pour l = 0 (s), il n’y a aucune rotation : le nuage est une sphère.`],
+    noeuds:['Pourquoi l ≤ n − 1',`Le nombre total de nœuds de l’onde vaut n − 1. Il se partage en l nœuds angulaires (des plans ou des cônes) et n − l − 1 nœuds radiaux (des sphères, visibles à droite comme des zéros de la courbe). Pas de place pour plus de l = n − 1 : à n = 1 il n’y a que s, à n = 2 on a s et p.`],
+    lettres:['Pourquoi s, p, d, f ?',`Les lettres viennent des spectroscopistes du XIXᵉ siècle, qui nommaient les séries de raies d’après leur aspect : sharp (nette), principal, diffuse, fundamental. Après f, on suit l’alphabet : g, h…`],
+    signe:['Le signe de l’onde',`Rouge et bleu montrent le signe de l’onde, pas une charge ni une probabilité négative : la probabilité est le carré de l’onde, toujours positive. Le signe compte quand deux nuages se rencontrent : ondes de même signe, elles se renforcent (liaison) ; de signes opposés, elles s’annulent.`],
+    simplif:['Ce qui est simplifié',`À gauche : coupe de la forme avec m = 0 (axe z), seule l’angle compte, les rayons ne sont pas à l’échelle entre les formes. À droite : fonctions de l’hydrogène (un seul électron). Dans les autres atomes les formes restent les mêmes mais les distances changent. La courbe donne r²·|R(r)|², la probabilité de trouver l’électron à la distance r (a₀ = 0,053 nm).`]
+  };
+  L.infoBar($('lIb'),$('lBx'),['sens','noeuds','lettres','signe','simplif'],INFO);
+  function calc(){ const rmax=4*n*n+8, N=240, pts=[], nodes=[]; let m=0, prev=null;
+    for(let i=0;i<=N;i++){ const r=rmax*i/N, rho=2*r/n, R=Math.pow(rho,l)*Math.exp(-rho/2)*lag(n-l-1,2*l+1,rho), p=r*r*R*R; pts.push([r,p]); m=Math.max(m,p);
+      if(i>0){ if(prev!==null&&prev*R<0) nodes.push(r); if(Math.abs(R)>1e-12) prev=R; } }
+    rad={rmax,pts,m,nodes}; zeros=[]; let pv=null; for(let i=1;i<=720;i++){ const th=Math.PI*i/720, v=P[l](Math.cos(th)); if(pv!==null&&pv*v<0) zeros.push(th); if(Math.abs(v)>1e-9) pv=v; }
+    $('lTitle').textContent='n = '+n+', l = '+l+' : orbitale '+n+NAME[l];
+    $('lText').textContent=l+' nœud'+(l>1?'s':'')+' angulaire'+(l>1?'s':'')+(l?' ('+ANG[l]+')':' (aucun)')+' + '+(n-l-1)+' nœud'+(n-l-1>1?'s':'')+' radial'+(n-l-1>1?'aux':'')+' = n − 1 = '+(n-1)+' nœud'+(n-1>1?'s':'')+' au total. Étendue : environ '+fr(rmax*.0529,1)+' nm.'; }
+  function sync(){ $('lL').querySelectorAll('button').forEach(b=>{ b.disabled=+b.dataset.v>n-1; }); if(l>n-1){ l=n-1; } setSeg('lL',l); calc(); }
+  seg('lN',v=>{ n=+v; sync(); }); seg('lL',v=>{ l=+v; calc(); }); sync();
+  function lobes(cx,cy,R){ const S=140, f=P[l];
+    for(const side of [1,-1]){ let run=null; const runs=[];
+      for(let i=0;i<=S;i++){ const th=Math.PI*i/S, v=f(Math.cos(th)), s=v>=0?1:-1, a=Math.abs(v), pt=[cx+side*R*a*Math.sin(th), cy-R*a*Math.cos(th)];
+        if(!run||run.s!==s){ run={s,pts:[]}; runs.push(run); } run.pts.push(pt); }
+      runs.forEach(r=>{ if(r.pts.length<2) return; const col=r.s>0?RED:BLUE; x.beginPath(); x.moveTo(cx,cy); r.pts.forEach(p=>x.lineTo(p[0],p[1])); x.closePath();
+        const g=x.createRadialGradient(cx,cy,0,cx,cy,R); g.addColorStop(0,L.rgba(col,.85)); g.addColorStop(1,L.rgba(col,.3)); x.fillStyle=g; x.fill(); x.strokeStyle=col; x.lineWidth=1.4; x.stroke(); }); }
+    zeros.forEach(th=>[1,-1].forEach(s=>L.line(x,cx,cy,cx+s*R*1.18*Math.sin(th),cy-R*1.18*Math.cos(th),'rgba(232,238,244,.6)',1,[4,3])));
+    L.line(x,cx,cy-R*1.25,cx,cy+R*1.25,'rgba(147,161,176,.4)',1,[2,4]); L.txt(x,'z',cx+6,cy-R*1.25,'left'); L.sph(x,cx,cy,3.5,'#FFFFFF'); }
+  L.onFrame(()=>{ V.base(); L.bgLab(x,400,270); L.txt(x,'Forme (coupe, axe z)',100,18,'center',C.ink);
+    lobes(100,138,76);
+    const ax=215, ay=216, aw=170, ah=120; L.txt(x,'Probabilité selon la distance r',ax+aw/2,18,'center',C.ink);
+    L.line(x,ax,ay,ax+aw,ay,C.muted,1); L.line(x,ax,ay,ax,ay-ah-6,C.muted,1);
+    x.beginPath(); x.moveTo(ax,ay); rad.pts.forEach(p=>x.lineTo(ax+p[0]/rad.rmax*aw,ay-p[1]/rad.m*ah)); x.lineTo(ax+aw,ay); x.closePath(); x.fillStyle='rgba(227,179,65,.22)'; x.fill();
+    x.beginPath(); rad.pts.forEach((p,i)=>{ const X=ax+p[0]/rad.rmax*aw, Y=ay-p[1]/rad.m*ah; i?x.lineTo(X,Y):x.moveTo(X,Y); }); x.strokeStyle=C.gold; x.lineWidth=1.8; x.stroke();
+    rad.nodes.forEach(r=>{ const X=ax+r/rad.rmax*aw; x.beginPath(); x.arc(X,ay,4,0,7); x.strokeStyle='#fff'; x.lineWidth=1.5; x.stroke(); });
+    if(rad.nodes.length) L.tag(x,'○ = nœud radial',ax+aw,ay-ah-6,'right',C.ink);
+    L.txt(x,'0',ax,ay+12,'center'); L.txt(x,fr(rad.rmax*.0529,1)+' nm',ax+aw,ay+12,'right'); L.txt(x,'distance au noyau',ax+aw/2,ay+26,'center');
+    L.vignette(x,400,270); },V.cv);
+})();
+
+/* ================= m : orientation et effet Zeeman ================= */
+(function(){
+  const V=L.setup('cvM',400,270), x=V.ctx; let l=1, B=0, ph=0;
+  const INFO={
+    sens:['Ce que m représente',`m est la projection du moment cinétique sur un axe, en unités de ħ : −l, …, 0, …, +l. Pour l = 1, trois valeurs (les trois orbitales p, orientées selon x, y, z). Pour l = 2, cinq. Pour l = 3, sept : toujours 2l + 1, un nombre impair.`],
+    cone:['Pourquoi la flèche n’est jamais sur l’axe',`La longueur du vecteur vaut √(l(l+1)) et non l : pour l = 1, √2 ≈ 1,41 contre une projection maximale de 1. Le vecteur ne peut donc jamais être aligné avec l’axe. Et il ne tourne pas vraiment autour de l’axe comme sur le dessin : on ne peut pas connaître en même temps sa projection sur z et ses projections sur x et y (incertitude de Heisenberg). Le dessin de la flèche qui tourne est une image, pas une mesure.`],
+    zeeman:['L’effet Zeeman',`Un électron qui tourne est un petit courant, donc un petit aimant. Dans un champ B, son énergie change de m × μB × B, avec μB = 5,788 × 10⁻⁵ eV/T (magnéton de Bohr). À 1 T, l’écart entre deux m voisins est 0,058 meV : minuscule devant 2 eV (un photon visible), d’où une raie qui se sépare d’à peine 0,012 nm vers 500 nm. Zeeman l’a vu dès 1896, Lorentz et lui ont reçu le prix Nobel en 1902.`],
+    axe:['Qui choisit l’axe ?',`Sans champ, personne : tous les m ont la même énergie (l’espace n’a pas de direction privilégiée). On peut donc tourner l’axe sans rien changer. Un champ magnétique en impose un, et c’est le seul moment où m devient mesurable.`],
+    simplif:['Ce qui est simplifié',`Le champ est exagéré par rapport à un laboratoire courant (jusqu’à 10 T, c’est celui d’un grand électroaimant) et le dessin de droite est étiré : 1 meV vaut 55 pixels. Le spin de l’électron, absent ici, ajoute lui aussi des séparations (effet Zeeman « anormal »).`]
+  };
+  L.infoBar($('mIb'),$('mBx'),['sens','cone','zeeman','axe','simplif'],INFO);
+  function upd(){ const dEmeV=MUB*B*1000; $('mBv').textContent=fr(B,1)+' T';
+    $('mTitle').textContent='l = '+l+' : '+(2*l+1)+' orientation'+(l?'s':'')+' possible'+(l?'s':'')+' (m = '+(l?'−'+l+' … +'+l:'0')+')';
+    $('mText').textContent=l===0?`Pour l = 0, une seule case : pas d’orientation, donc rien à séparer, même avec un champ.`:(B<.05?`Sans champ, les ${2*l+1} niveaux ont la même énergie : monte le champ pour les voir se séparer.`:`B = ${fr(B,1)} T : chaque niveau est décalé de m × ${fr(dEmeV/B*B,2)} meV, soit ${fr(dEmeV,2)} meV entre deux m voisins. Une raie de 500 nm bouge de ${fr(.01167*B,3)} nm de chaque côté.`); }
+  $('mB').oninput=e=>{ B=+e.target.value; upd(); }; seg('mL',v=>{ l=+v; upd(); }); upd();
+  L.onFrame(dt=>{ if(!L.reduce) ph+=dt*1.1; V.base(); L.bgLab(x,400,270);
+    const cx=100, cy=140, u=[36,34,28,22][l], Lr=Math.sqrt(l*(l+1)), R=Math.max(Lr,1)*u;
+    L.txt(x,'Orientations permises',100,18,'center',C.ink);
+    x.beginPath(); x.arc(cx,cy,R,0,7); x.strokeStyle='rgba(147,161,176,.35)'; x.lineWidth=1; x.stroke();
+    L.line(x,cx,cy-R-12,cx,cy+R+12,'rgba(147,161,176,.55)',1,[2,4]); L.txt(x,'axe du champ',cx+6,cy-R-12,'left');
+    for(let m=-l;m<=l;m++){ const y=cy-m*u, s=Math.sqrt(Math.max(0,Lr*Lr-m*m))*u, a=ph+m*.9, X=cx+s*Math.cos(a), Y=y+s*.22*Math.sin(a);
+      L.line(x,cx-s,y,cx+s,y,'rgba(232,238,244,.18)',1,[3,3]);
+      L.arrow(x,cx,cy,X,Y,C.gold,2); L.sph(x,X,Y,3,C.gold); L.tag(x,'m = '+(m>0?'+':m<0?'−':'')+Math.abs(m),190,y,'right',C.ink); }
+    L.sph(x,cx,cy,3,'#FFFFFF');
+    const ex=232, ew=88, y0=135, k=.05788*B*55; L.txt(x,'Énergie',ex+ew+30,18,'center',C.ink);
+    for(let m=-l;m<=l;m++){ const y=y0-m*k; L.line(x,ex,y,ex+ew,y,m>0?RED:m<0?BLUE:'#E8EEF4',2); if(B>.3||m===0) L.txt(x,'m = '+(m>0?'+':m<0?'−':'')+Math.abs(m),ex+ew+6,y,'left',C.muted); }
+    if(B<=.3&&l>0) L.txt(x,'m = −'+l+' … +'+l,ex+ew+6,y0+14,'left',C.muted);
+    if(l>0){ L.txt(x,'Une raie devient '+(l>0?'trois':'une'),310,222,'center',C.muted);
+      for(const d of[-1,0,1]){ const X=310+d*k*1.0+d*(B>.05?0:0); L.line(x,X,230,X,254,'#fff',2); }
+      if(B<.05) L.txt(x,'(B = 0 : une seule raie)',310,262,'center'); }
+    L.vignette(x,400,270); },V.cv);
+})();
+
+/* ================= spin : Stern et Gerlach ================= */
+(function(){
+  const V=L.setup('cvSG',400,270), x=V.ctx; let mode='ag', on=true, atoms=[], dep=[], acc=0;
+  const X0=135, X1=250, XP=300, Y0=135, D=50, w=X1-X0, d=XP-X1, a=D/(w*(w/2+d));
+  const yAt=(xx,c)=>xx<=X0?0:xx<=X1?.5*a*c*Math.pow(xx-X0,2):(.5*a*w*w+a*w*(xx-X1))*c;
+  const pick=()=>mode==='ag'?(Math.random()<.5?1:-1):mode==='l1'?[1,0,-1][Math.floor(Math.random()*3)]:Math.random()*2-1;
+  const TXT={ag:['Deux taches : le moment magnétique n’a que deux orientations',`Chaque atome est dévié vers le haut ou vers le bas, jamais entre les deux. Les atomes sortent du four avec des orientations quelconques, et pourtant on n’en trouve que deux. Écart mesuré en 1922 : environ 0,2 mm.`],
+    cl:['Ce que la physique classique prévoyait',`Un petit aimant peut pointer n’importe où : tous les angles seraient équiprobables, la déviation prendrait toutes les valeurs entre −max et +max, et on verrait une nappe continue. Ce n’est pas ce qu’on a observé : c’est ce qui a surpris tout le monde.`],
+    l1:['Si le magnétisme venait d’une orbite l = 1',`Il y aurait trois orientations (m = −1, 0, +1) donc trois taches, dont une au milieu. Jamais observé avec l’argent. Et pour l = 0, il y en aurait une seule. Un nombre pair de taches est impossible avec une orbite.`],
+    off:['Aimant éteint : pas de déviation',`Sans champ inhomogène, rien ne dévie les atomes : une seule tache au centre. L’aimant est donc bien ce qui « trie » les orientations.`]};
+  const INFO={
+    force:['Pourquoi dévier ?',`Un atome est un petit aimant. Dans un champ uniforme, il ne ferait que tourner, sans partir. Dans un champ plus fort en haut qu’en bas (un pôle en couteau, l’autre en creux), la force sur lui dépend de l’orientation : vers le haut s’il pointe dans un sens, vers le bas dans l’autre, et pas du tout s’il est à angle droit. La déviation mesure donc l’orientation.`],
+    argent:['Pourquoi de l’argent ?',`Un atome neutre dont l’aimant vient d’un seul électron : c’est le cas de l’argent (47 électrons dont un seul célibataire). De plus il se vaporise vers 1 000 °C et se dépose en traces noires sur du verre. Pourquoi pas des électrons seuls ? Ils sont chargés, le champ les dévierait par la force de Lorentz, bien plus forte et qui masquerait l’effet.`],
+    trace:['Comment on a vu les taches',`Les dépôts d’argent sont minces, presque invisibles. L’anecdote raconte que la fumée soufrée du cigare de Stern a noirci l’argent en sulfure et rendu les deux taches visibles. Retenir : c’est un détail de la légende, pas un résultat.`],
+    spin:['Le spin n’est pas une rotation',`On l’appelle « spin » (tourner) parce qu’on a d’abord imaginé l’électron comme une petite toupie. Impossible : pour avoir ce moment magnétique, la surface d’un électron de la taille connue irait plus vite que la lumière. Le spin est une propriété à part entière de l’électron, aussi fondamentale que sa charge. Sa valeur est s = ½ et ses seules projections sont ms = +½ ou −½.`],
+    simplif:['Ce qui est simplifié',`Distances et déviation ne sont pas à l’échelle : la vraie séparation est d’environ 0,2 mm, ici elle est grossie 250 fois. Les atomes sont dessinés énormes, et nombreux en même temps : dans l’expérience, ils passent presque un à un, pendant des heures. Les petites flèches montrent l’orientation de l’aimant de chaque atome avant l’aimant, dans la réalité on ne peut pas la connaître avant de mesurer.`]
+  };
+  L.infoBar($('sgIb'),$('sgBox'),['force','argent','trace','spin','simplif'],INFO);
+  function cap(){ const k=!on?'off':mode; $('sgTitle').textContent=TXT[k][0]; $('sgText').textContent=TXT[k][1]; }
+  seg('sgMode',v=>{ mode=v; dep=[]; atoms=[]; cap(); });
+  $('sgMag').onclick=e=>{ on=!on; e.target.setAttribute('aria-pressed',on); e.target.textContent=on?'Aimant allumé':'Aimant éteint'; dep=[]; atoms=[]; cap(); };
+  $('sgClear').onclick=()=>{ dep=[]; }; cap();
+  function stepAtoms(dt){ acc+=dt*9; while(acc>=1){ acc--; const c=pick(); atoms.push({x:66,c,j:(Math.random()-.5)*5}); }
+    atoms.forEach(o=>{ o.x+=dt*95; }); atoms=atoms.filter(o=>{ if(o.x<XP) return true; dep.push({y:Y0-(on?D*o.c:0)+o.j*.6+(Math.random()-.5)*5,jx:(Math.random()-.5)*26}); return false; }); if(dep.length>1400) dep.splice(0,dep.length-1400); }
+  function pole(pts,col,lab,lx,ly){ L.poly(x,pts,L.lg(x,0,pts[0][1]||0,0,0,[[0,col],[1,col]]),null); }
+  L.onFrame(dt=>{ if(!L.reduce) stepAtoms(dt); else { for(let i=0;i<30;i++) stepAtoms(.05); }
+    V.base(); L.bgLab(x,400,270);
+    /* four et fentes */
+    L.rr(x,6,102,54,66,8,'#2A2018','#5A4636',1.2); L.glow(x,34,Y0,44,'#FFB547',.55); L.sph(x,34,Y0,7,'#FFB547'); L.tag(x,'Four ≈ 1 000 °C',8,92,'left',C.ink); L.txt(x,'argent',34,178,'center');
+    x.fillStyle='#6E7883'; x.fillRect(84,Y0-36,4,30); x.fillRect(84,Y0+6,4,30);
+    /* aimant : pôle nord en couteau, pôle sud en creux */
+    L.poly(x,[X0,50,X1,50,X1,86,X1-36,118,X0+36,118,X0,86],L.lg(x,0,50,0,118,[[0,'#8A3B35'],[1,'#B8564E']]),'#E0928B',1); L.txt(x,'N',(X0+X1)/2,76,'center','#FFD9D4',true);
+    L.poly(x,[X0,222,X1,222,X1,172,X1-44,172,X1-58,160,X0+58,160,X0+44,172,X0,172],L.lg(x,0,160,0,222,[[0,'#3E6FB0'],[1,'#27497C']]),'#8DB4E8',1); L.txt(x,'S',(X0+X1)/2,204,'center','#D6E6FA',true);
+    if(on) for(let k=-2;k<=2;k++){ const ox=(X0+X1)/2; L.line(x,ox+k*9,121,ox+k*18,157,'rgba(255,255,255,.18)',1,[2,3]); }
+    /* trajectoires possibles */
+    const cs=!on?[0]:mode==='ag'?[1,-1]:mode==='l1'?[1,0,-1]:[1,-1];
+    const path=(c)=>{ x.beginPath(); for(let xx=88;xx<=XP;xx+=4){ const yy=Y0-yAt(xx,c); xx===88?x.moveTo(xx,yy):x.lineTo(xx,yy); } };
+    if(mode==='cl'&&on){ x.beginPath(); for(let xx=88;xx<=XP;xx+=4) x.lineTo(xx,Y0-yAt(xx,1)); for(let xx=XP;xx>=88;xx-=4) x.lineTo(xx,Y0+yAt(xx,1)); x.closePath(); x.fillStyle='rgba(227,179,65,.12)'; x.fill(); }
+    else cs.forEach(c=>{ path(c); x.strokeStyle='rgba(227,179,65,.4)'; x.lineWidth=1; x.setLineDash([4,4]); x.stroke(); x.setLineDash([]); });
+    /* plaque (vue de côté) */
+    x.fillStyle=L.lg(x,XP,0,XP+6,0,[[0,'#C9D2DB'],[1,'#6E7883']]); x.fillRect(XP,40,6,190); L.txt(x,'plaque',XP+3,238,'center'); L.txt(x,'de verre',XP+3,250,'center');
+    /* atomes en vol */
+    atoms.forEach(o=>{ const yy=Y0+o.j-yAt(o.x,on?o.c:0), th=Math.acos(Math.max(-1,Math.min(1,o.c))); L.sph(x,o.x,yy,2.8,'#C9D2DB');
+      if(o.x<X0&&o.x>96) L.arrow(x,o.x,yy,o.x+6*Math.sin(th),yy-6*Math.cos(th),'rgba(255,200,87,.9)',1.2); });
+    /* plaque vue de face */
+    L.rr(x,338,44,56,184,8,'rgba(201,210,219,.1)','#6E7883',1); L.tag(x,'vue de face',366,34,'center',C.ink);
+    x.fillStyle='rgba(20,22,26,.9)'; dep.forEach(p=>{ x.beginPath(); x.arc(366+p.jx,p.y,1.7,0,7); x.fillStyle='#E8EEF4'; x.fill(); });
+    if(on&&mode==='ag'&&dep.length>40){ L.line(x,333,Y0-D,338,Y0-D,'#fff',1); L.line(x,333,Y0+D,338,Y0+D,'#fff',1); L.tag(x,'≈ 0,2 mm',329,Y0,'right',C.ink); }
+    L.vignette(x,400,270); },V.cv);
+})();
+
+/* ================= qui fait le magnétisme de l'argent ? ================= */
+(function(){
+  const V=L.setup('cvAg',400,230), x=V.ctx; let step=0, tt=0;
+  const ORB=[['1s',1,2],['2s',1,2],['2p',3,6],['3s',1,2],['3p',3,6],['3d',5,10],['4s',1,2],['4p',3,6],['4d',5,10],['5s',1,1]];
+  const TXT=[['Les 47 électrons de l’argent','Configuration : 1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s¹. Chaque case contient deux électrons de spins opposés (↑↓), sauf la dernière : 5s n’en contient qu’un.'],
+    ['Les paires s’annulent','Un électron ↑ et un électron ↓ ont des petits aimants opposés : leur somme est nulle. Les 46 électrons des couches pleines ne font aucun magnétisme, ni par leur spin, ni par leur mouvement (une couche pleine a un moment cinétique total nul).'],
+    ['Reste un seul électron','L’électron 5s est célibataire, et il est dans une case s (l = 0) : il ne tourne pas autour du noyau, donc pas d’aimant d’orbite. Son aimant ne peut venir que d’une propriété propre à l’électron : son spin. Il vaut environ un magnéton de Bohr (9,27 × 10⁻²⁴ J/T), 1 800 fois plus que celui du noyau.']];
+  const INFO={
+    ferme:['Pourquoi une couche pleine s’annule',`Dans une couche pleine, chaque valeur de m est occupée par un électron ↑ et un électron ↓. Pour le spin, les paires s’annulent. Pour l’orbite, les m opposés (+1 et −1, par exemple) s’annulent aussi : le moment cinétique total est nul. C’est pourquoi les gaz rares et les couches pleines n’ont aucun magnétisme.`],
+    cuivre:['Pourquoi 4d¹⁰ 5s¹ et pas 4d⁹ 5s² ?',`L’ordre habituel de remplissage donnerait 4d⁹ 5s², mais une sous-couche d pleine est un peu plus stable : un électron passe de s à d. C’est une des petites exceptions (cuivre, chrome, argent…). Dans les deux cas, il reste un seul électron célibataire : c’est la même conclusion.`],
+    noyau:['Et le noyau ?',`Le proton et les neutrons ont aussi un moment magnétique, mais il est mille huit cents fois plus faible que celui de l’électron (le magnéton nucléaire vaut μB ÷ 1 836). La déviation serait de l’ordre du millième de millimètre : indétectable en 1922.`],
+    simplif:['Ce qui est simplifié',`Les cases sont dessinées côte à côte pour les compter : elles ne sont pas rangées ainsi dans l’espace. L’ordre est celui de l’énergie croissante. Les flèches ↑ et ↓ sont une façon commode d’écrire les deux valeurs du spin, pas des directions réelles.`]
+  };
+  L.infoBar($('agIb'),$('agBox'),['ferme','cuivre','noyau','simplif'],INFO);
+  function upd(){ $('agTitle').textContent=TXT[step][0]; $('agText').textContent=TXT[step][1]; $('agPrev').disabled=step===0; $('agNext').disabled=step===2; }
+  $('agPrev').onclick=()=>{ step=Math.max(0,step-1); upd(); }; $('agNext').onclick=()=>{ step=Math.min(2,step+1); upd(); }; upd();
+  L.onFrame(dt=>{ tt+=dt; V.base(); L.bgLab(x,400,230);
+    const bw=12, bh=20, y=100; let px=12;
+    const ar=(bx,y0,y1,col)=>{ L.line(x,bx,y0,bx,y1,col,1.2); const d=y1>y0?-1:1; x.beginPath(); x.moveTo(bx,y1); x.lineTo(bx-2.2,y1+d*3.4); x.moveTo(bx,y1); x.lineTo(bx+2.2,y1+d*3.4); x.strokeStyle=col; x.lineWidth=1.2; x.stroke(); };
+    ORB.forEach(([nm,cases,e],gi)=>{ const gx=px; for(let c=0;c<cases;c++){ const bx=px+c*(bw+1), full=e>cases*1&&true, nE=gi===9?1:2;
+        const last=gi===9, fade=step===2&&!last?.18:1; x.globalAlpha=fade; L.rr(x,bx,y,bw,bh,2,'rgba(255,255,255,.04)','rgba(147,161,176,.6)',1);
+        ar(bx+3.8,y+bh-3,y+3.5,last?C.laser:'#9FB3C8');
+        if(!last) ar(bx+8.4,y+3,y+bh-3.5,'#9FB3C8');
+        if(step===1&&!last){ x.globalAlpha=.9; L.txt(x,'0',bx+bw/2,y-9,'center',C.muted); }
+        x.globalAlpha=1; if(last&&step===2){ L.glow(x,bx+3.5,y+bh/2,40+4*Math.sin(tt*3),C.laser,.55); L.elec(x,bx+3.5,y+bh/2-1,3.4); } }
+      L.txt(x,nm,gx+(cases*(bw+1)-1)/2,y+bh+12,'center',gi===9?C.laser:C.muted); px+=cases*(bw+1)+7; });
+    if(step===0) L.tag(x,'46 électrons par paires ↑↓',150,60,'center',C.ink), L.tag(x,'1 seul : 5s¹',351,60,'right',C.laser);
+    if(step===1) L.tag(x,'chaque paire : ↑ + ↓ = 0',150,60,'center',C.ink);
+    if(step===2){ L.tag(x,'l = 0 : pas d’orbite',345,60,'right',C.ink); L.tag(x,'seul : un moment ≈ 1 μB',345,82,'right',C.laser); L.tag(x,'noyau : ≈ 1/1 800 de ce moment',200,200,'center',C.muted); }
+    L.vignette(x,400,230); },V.cv);
+})();
+
+/* ================= adresse : toutes les cases d'une couche ================= */
+(function(){
+  const V=L.setup('cvAd',400,300), x=V.ctx; let n=2, sel=null, hits=[]; const NAME=['s','p','d','f'];
+  const INFO={
+    regles:['Les règles, et pourquoi',`l de 0 à n − 1 : une onde à n − 1 nœuds au total. m de −l à +l : 2l + 1 orientations. s = ±½ : deux états de spin. Total par couche : 2 × (1 + 3 + 5 + …) = 2n² : 2, 8, 18, 32 électrons pour n = 1, 2, 3, 4.`],
+    pauli:['Le principe de Pauli',`Deux électrons d’un même atome ne peuvent pas avoir les quatre mêmes nombres (n, l, m, s). Pauli l’énonce en 1925, avant que le spin soit compris : il avait besoin d’un quatrième nombre à deux valeurs pour que le compte des électrons par couche soit juste. Sans ce principe, tous les électrons iraient dans la case 1s et la chimie n’existerait pas.`],
+    tableau:['Et le tableau périodique ?',`Les périodes du tableau (2, 8, 8, 18, 18, 32…) ne reprennent pas exactement 2n², parce que les sous-couches se remplissent dans l’ordre de leur énergie et non de leur n : 4s se remplit avant 3d, par exemple. Mais c’est bien la structure en n, l, m, s qui donne ses rangées au tableau.`],
+    simplif:['Ce qui est simplifié',`Les cases sont dessinées toutes à la même énergie dans une couche : vrai pour l’hydrogène, faux dès qu’il y a plusieurs électrons (la sous-couche s est plus basse que p). Les flèches ↑ et ↓ sont une écriture pour ms = +½ et −½.`]
+  };
+  L.infoBar($('adIb'),$('adBox'),['regles','pauli','tableau','simplif'],INFO);
+  const sgn=m=>(m>0?'+':m<0?'−':'')+Math.abs(m);
+  function upd(){ $('adTitle').textContent=sel?`n = ${n}, l = ${sel.l} (${NAME[sel.l]}), m = ${sgn(sel.m)}, s = ${sel.s>0?'+½':'−½'}`:`n = ${n} : ${n} sous-couche${n>1?'s':''}, ${n*n} case${n>1?'s':''}, ${2*n*n} électron${n>1?'s':''} au plus`;
+    $('adText').textContent=sel?`Cet électron est dans une case ${n}${NAME[sel.l]} (l = ${sel.l}), orientée selon m = ${sgn(sel.m)}, avec le spin ${sel.s>0?'↑':'↓'}. Aucun autre électron de l’atome n’a ces quatre mêmes nombres.`:`Touche une flèche pour lire l’adresse de l’électron. Il y a 2l + 1 cases pour chaque l, chacune accueille deux spins : au total 2n² = ${2*n*n}.`; }
+  seg('adN',v=>{ n=+v; sel=null; upd(); }); upd();
+  $('cvAd').addEventListener('click',e=>{ const r=e.target.getBoundingClientRect(), px=(e.clientX-r.left)*400/r.width, py=(e.clientY-r.top)*300/r.height;
+    const h=hits.find(h=>px>=h.x&&px<=h.x+h.w&&py>=h.y&&py<=h.y+h.h); sel=h&&!(sel&&sel.l===h.l&&sel.m===h.m&&sel.s===h.s)?h:null; upd(); });
+  L.onFrame(()=>{ V.base(); L.bgLab(x,400,300); hits=[];
+    L.txt(x,'Chaque case = une façon de vibrer (n, l, m) ; chaque flèche = un spin',200,16,'center',C.ink);
+    for(let l=0;l<n;l++){ const k=2*l+1, tw=k*48-8, x0=200-tw/2+16, y=36+l*62;
+      L.txt(x,NAME[l]+' (l = '+l+')',6,y+17,'left',C.muted);
+      for(let i=0;i<k;i++){ const m=i-l, bx=x0+i*48;
+        L.rr(x,bx,y,40,34,5,'rgba(255,255,255,.04)','rgba(147,161,176,.7)',1);
+        [1,-1].forEach((s,j)=>{ const ax=bx+11+j*18, on=sel&&sel.l===l&&sel.m===m&&sel.s===s, col=on?C.laser:'#C9D2DB';
+          if(on) L.glow(x,ax,y+17,18,C.laser,.55);
+          if(s>0) L.arrow(x,ax,y+28,ax,y+6,col,on?2.4:1.6); else L.arrow(x,ax,y+6,ax,y+28,col,on?2.4:1.6);
+          hits.push({x:ax-8,y:y,w:16,h:34,l,m,s}); });
+        L.txt(x,'m = '+sgn(m),bx+20,y+46,'center',C.muted); } }
+    L.vignette(x,400,300); },V.cv);
+})();
+
+L.mountBlocs();
+})();
+</script>
+<script src="../../../assets/js/retouche.js" defer></script>
+</body>
+</html>

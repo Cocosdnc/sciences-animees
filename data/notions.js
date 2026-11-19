@@ -10,7 +10,7 @@
      même si elle a des applications.
    - liens : [idA, idB, 'nature du lien'] : relations transversales, souvent entre domaines.
    Les domaines eux-mêmes sont définis dans catalogue.js. */
-const D='diode-laser', AEL='atome-et-liaisons', TA='toucher-atomes', AL='alliage', VL='vitesse-lumiere', CD='ciel-et-diffusion', OC='oeil-cones';
+const D='diode-laser', AEL='atome-et-liaisons', TA='toucher-atomes', AL='alliage', VL='vitesse-lumiere', CD='ciel-et-diffusion', OC='oeil-cones', NQ='nombres-quantiques';
 window.NOTIONS={
   noeuds:[
     /* ================= PHYSIQUE ================= */
@@ -93,6 +93,17 @@ window.NOTIONS={
         {id:'pauli', titre:'Principe de Pauli', parent:'atome-quantique', resume:'Deux électrons au plus par case, de spins opposés.',
          ressources:[{type:'animation',id:AEL,ancre:'atomeseul',titre:'Remplir les cases'}],
          applications:[{type:'animation',id:TA,ancre:'deux-atomes',titre:'Pourquoi deux nuages pleins se repoussent'},{type:'animation',id:TA,ancre:'couche-incomplete',titre:'Places libres ou places prises'}]},
+      {id:'nombres-quantiques', titre:'Les nombres quantiques', parent:'atome-liaisons', resume:'Quatre nombres repèrent un électron : n (couche), l (forme), m (orientation) et le spin.'},
+        {id:'nq-n', titre:'n : la couche et l’énergie', parent:'nombres-quantiques', resume:'E = −13,6 eV ÷ n² pour l’hydrogène ; une descente entre deux niveaux donne un photon de couleur précise (raies de Balmer).',
+         ressources:[{type:'animation',id:NQ,ancre:'niveau-n',titre:'Niveaux de l’hydrogène et raies'},{type:'bloc',id:'corde-vibrante'}]},
+        {id:'nq-l', titre:'l : la forme du nuage', parent:'nombres-quantiques', resume:'l compte les nœuds angulaires : sphère (s), haltère (p), trèfle (d). Au total n − 1 nœuds.',
+         ressources:[{type:'animation',id:NQ,ancre:'forme-l',titre:'Formes s, p, d, f et nœuds radiaux'}]},
+        {id:'nq-m', titre:'m : l’orientation et l’effet Zeeman', parent:'nombres-quantiques', resume:'m va de −l à +l (2l + 1 orientations) ; un champ magnétique sépare les niveaux de m × μB × B.',
+         ressources:[{type:'animation',id:NQ,ancre:'orientation-m',titre:'Orientations permises et effet Zeeman'}]},
+        {id:'nq-spin', titre:'Le spin et l’expérience de Stern et Gerlach', parent:'nombres-quantiques', resume:'Deux taches avec de l’argent : l’électron seul de la couche 5s a un moment magnétique à deux valeurs, le spin ½.',
+         ressources:[{type:'animation',id:NQ,ancre:'spin',titre:'Stern et Gerlach, et pourquoi l’électron seul'}]},
+        {id:'nq-adresse', titre:'L’adresse complète d’un électron', parent:'nombres-quantiques', resume:'n, l, m, s : 2n² électrons par couche, jamais deux avec les quatre mêmes nombres.',
+         ressources:[{type:'animation',id:NQ,ancre:'adresse',titre:'Les cases d’une couche, électron par électron'}]},
     {id:'structure-atome', titre:'Structure de l’atome', parent:'atome-liaisons', resume:'Noyau, nuage électronique, électrons de valence.'},
     {id:'liaison-chimique', titre:'Liaison chimique', parent:'atome-liaisons', resume:'Pourquoi les atomes se collent, et combien de liaisons ils font.'},
       {id:'noyau-nuage', titre:'Noyau et nuage électronique', parent:'structure-atome', resume:'Un noyau minuscule et un nuage de probabilité des dizaines de milliers de fois plus grand (environ 60 000 pour l’hydrogène).',
@@ -185,6 +196,13 @@ window.NOTIONS={
     ['adhesion','alliage-metal','soudé n’est pas mélangé'],
     ['alliage-metal','diffusion-solide','il faut que les atomes bougent'],
     ['diffusion-solide','cristaux','des sauts dans le réseau'],
-    ['oscillateurs-couples','orbitales-mol','les mêmes équations']
+    ['oscillateurs-couples','orbitales-mol','les mêmes équations'],
+    ['nq-n','longueur-onde','le photon émis a l’énergie de l’écart entre deux niveaux'],
+    ['nq-n','onde-stationnaire','n entier = onde stationnaire'],
+    ['nq-l','couches','les formes des cases'],
+    ['nq-adresse','pauli','jamais les quatre mêmes nombres'],
+    ['nq-spin','pauli','deux spins par case'],
+    ['nq-spin','valence','l’électron célibataire de la couche externe'],
+    ['nq-m','nq-l','m dépend de l']
   ]
 };

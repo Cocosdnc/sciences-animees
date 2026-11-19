@@ -48,4 +48,4 @@ Publié par GitHub Pages depuis `main` : https://cocosdnc.github.io/sciences-ani
 - Pas d'installation de paquets : tout tient en JS/CSS natifs, polices via Google Fonts.
 
 ## Chantiers en cours
-- Page `nombres-quantiques` (n, l, m, spin avec expérience de Stern et Gerlach, découvertes historiques, « adresse » d'un électron) : à créer dans `animations/physique/nombres-quantiques/`.
+- Aucun. Dernier ajout : page `nombres-quantiques` (n, l, m, spin / Stern et Gerlach). Idées pour la suite : orbitales f, structure fine et couplage spin-orbite, règles de Hund et de Klechkowski (ordre de remplissage), tableau périodique interactif relié aux cases.

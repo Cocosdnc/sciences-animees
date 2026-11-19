@@ -77,5 +77,17 @@ window.VIGNETTES={
 <circle cx="125" cy="92" r="11"/><circle cx="155" cy="92" r="11"/><circle cx="185" cy="92" r="11"/><circle cx="215" cy="92" r="11"/>
 <circle cx="230" cy="26" r="11"/><circle cx="95" cy="92" r="11"/></g>
 <circle cx="172" cy="58" r="15" fill="url(#vg2)" stroke="#FFD9A0" stroke-opacity=".6"/>
-<g fill="none" stroke="#FFC857" stroke-opacity=".6" stroke-width="1.4"><path d="M156 42 l-6 -8"/><path d="M190 76 l6 8"/></g></svg>`
+<g fill="none" stroke="#FFC857" stroke-opacity=".6" stroke-width="1.4"><path d="M156 42 l-6 -8"/><path d="M190 76 l6 8"/></g></svg>`,
+/* nombres quantiques : une orbitale p (lobes rouge et bleu) et la plaque de Stern et Gerlach avec ses deux taches */
+'nombres-quantiques':`<svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+<defs><radialGradient id="nq1"><stop offset="0" stop-color="#FF8A80"/><stop offset="1" stop-color="#FF3D33" stop-opacity=".15"/></radialGradient>
+<radialGradient id="nq2"><stop offset="0" stop-color="#6FB6FF"/><stop offset="1" stop-color="#5AA9FF" stop-opacity=".15"/></radialGradient></defs>
+<ellipse cx="140" cy="36" rx="17" ry="25" fill="url(#nq1)" stroke="#FF8A80"/>
+<ellipse cx="140" cy="84" rx="17" ry="25" fill="url(#nq2)" stroke="#6FB6FF"/>
+<circle cx="140" cy="60" r="3" fill="#fff"/>
+<path d="M172 60 H236" stroke="#9AA6B2" stroke-width="1.4" stroke-dasharray="3 3"/>
+<path d="M200 60 L236 30 M200 60 L236 90" stroke="#E3B341" stroke-opacity=".6" stroke-width="1.2" fill="none"/>
+<rect x="240" y="14" width="7" height="92" rx="2" fill="#6E7883"/>
+<circle cx="244" cy="30" r="5" fill="#E8EEF4"/><circle cx="244" cy="90" r="5" fill="#E8EEF4"/>
+<g fill="#E8EEF4" fill-opacity=".7"><circle cx="262" cy="28" r="1.6"/><circle cx="268" cy="32" r="1.6"/><circle cx="264" cy="88" r="1.6"/><circle cx="270" cy="92" r="1.6"/></g></svg>`
 };
