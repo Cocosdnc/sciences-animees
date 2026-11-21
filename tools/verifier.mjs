@@ -1,7 +1,7 @@
 // Vérifie le catalogue : champs obligatoires, identifiants uniques, fichiers présents.
 // Usage : node tools/verifier.mjs
-import fs from 'node:fs'; import vm from 'node:vm'; import path from 'node:path';
-const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'..');
+import fs from 'node:fs'; import vm from 'node:vm'; import path from 'node:path'; import { fileURLToPath } from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const ctx={window:{}}; vm.runInNewContext(fs.readFileSync(path.join(root,'data/catalogue.js'),'utf8'),ctx);
 const VG={window:{}}; vm.runInNewContext(fs.readFileSync(path.join(root,'assets/js/vignettes.js'),'utf8'),VG);
 const K=ctx.window.CATALOGUE; const err=[]; const ok=m=>console.log('  ✓ '+m);
@@ -35,3 +35,14 @@ for(const n of NO.noeuds){ if(!nids.has(n.parent)) err2.push(`notion ${n.id} : p
 for(const [a,b] of NO.liens){ if(!nids.has(a)||!nids.has(b)) err2.push(`lien ${a} ↔ ${b} : notion inconnue`); }
 for(const n of NO.noeuds){ for(const r of n.applications||[]) if((n.ressources||[]).some(x=>x.id===r.id&&x.ancre===r.ancre)) err2.push(`notion ${n.id} : la même ressource est à la fois explication et application`); }
 if(err2.length){ console.error(err2.map(e=>'  ✗ '+e).join('\n')); process.exit(1); } else console.log(`Carte valide : ${NO.noeuds.length} notions, ${NO.liens.length} liens.`);
+
+// App installable : chaque page doit charger le manifeste et assets/js/app.js (chemins relatifs justes).
+const pages=[], err3=[];
+(function walk(d){ for(const e of fs.readdirSync(d,{withFileTypes:true})){ if(e.name.startsWith('.')||e.name==='node_modules') continue;
+  const p=path.join(d,e.name); if(e.isDirectory()) walk(p); else if(e.name.endsWith('.html')) pages.push(p); } })(root);
+for(const p of pages){ const html=fs.readFileSync(p,'utf8'), rel=path.relative(root,p).split(path.sep).join('/');
+  let pre=path.relative(path.dirname(p),root).split(path.sep).join('/'); pre=pre?pre+'/':'';
+  for(const f of ['manifest.webmanifest','assets/js/app.js']) if(!html.includes(`"${pre}${f}"`)) err3.push(`${rel} : ne charge pas ${pre}${f} (copier les 5 lignes « app » d’une autre page, avant </head>)`); }
+for(const f of ['manifest.webmanifest','sw.js','assets/js/app.js','assets/app/icone-192.png','assets/app/icone-512.png','assets/app/icone-masquable-512.png','assets/app/icone-180.png','assets/app/icone.svg'])
+  if(!fs.existsSync(path.join(root,f))) err3.push(`${f} introuvable`);
+if(err3.length){ console.error(err3.map(e=>'  ✗ '+e).join('\n')); process.exit(1); } else console.log(`App valide : ${pages.length} pages installables et lisibles hors ligne.`);

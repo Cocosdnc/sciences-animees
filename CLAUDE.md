@@ -24,6 +24,7 @@ Publié par GitHub Pages depuis `main` : https://cocosdnc.github.io/sciences-ani
 | ajouter une notion à la carte | `data/notions.js` (`noeuds` + `liens`) |
 | changer les styles communs | `assets/css/base.css` (jetons de couleur en tête) |
 | changer les outils de dessin | `assets/js/labo.js` (`window.Labo`) |
+| changer l'app installable (PWA) | `manifest.webmanifest`, `sw.js` (hors ligne), `assets/js/app.js` (enregistrement, bouton « Installer l'app »), `assets/app/` (icônes) |
 
 ## Ajouter une animation : marche à suivre
 1. Copier `animations/_modele/` vers `animations/<domaine>/<id>/` (domaines : `physique`, `chimie`, `biologie`, `terre-univers`, `maths`).
@@ -46,6 +47,8 @@ Publié par GitHub Pages depuis `main` : https://cocosdnc.github.io/sciences-ani
 - Les accents dans `catalogue.js` : utiliser `’` pour l'apostrophe typographique dans les chaînes entre apostrophes.
 - Largeur téléphone 390 px : rien ne doit déborder horizontalement.
 - Pas d'installation de paquets : tout tient en JS/CSS natifs, polices via Google Fonts.
+- App installable : chaque page HTML garde, avant `</head>`, les 5 lignes « app » (manifeste, `theme-color`, icône, `apple-touch-icon`, `assets/js/app.js`) avec des chemins relatifs justes ; `verifier.mjs` le contrôle. Le modèle `_modele` est à `../../` : à la copie en `animations/<domaine>/<id>/`, passer **tous** ses chemins à `../../../`.
+- Hors ligne : `sw.js` lit la liste des pages dans `catalogue.js` (champs `chemin` et `script`) ; rien à déclarer ailleurs. Ne pas changer ces noms de champs sans adapter `sw.js`. Ne monter `NUMERO` dans `sw.js` que si sa logique change.
 
 ## Chantiers en cours
 - Aucun. Dernier ajout : page `nombres-quantiques` (n, l, m, spin / Stern et Gerlach). Idées pour la suite : orbitales f, structure fine et couplage spin-orbite, règles de Hund et de Klechkowski (ordre de remplissage), tableau périodique interactif relié aux cases.

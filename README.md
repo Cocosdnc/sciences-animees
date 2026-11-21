@@ -70,6 +70,19 @@ python3 -m http.server 8000
 
 puis ouvrir http://localhost:8000.
 
+## Application (installable, hors ligne)
+
+Le site s'installe comme une app : sur Android, bouton « Installer l'app » de l'accueil (ou menu de Chrome ›
+« Installer l'application ») ; sur iPhone et iPad, Safari › Partager › « Sur l'écran d'accueil » ; sur PC,
+l'icône d'installation de la barre d'adresse (Chrome, Edge).
+
+- `manifest.webmanifest` : nom, couleurs, icônes (`assets/app/`).
+- `sw.js` : met tout le site en réserve pour le lire sans réseau. Les pages sont lues dans `data/catalogue.js`,
+  il n'y a donc rien à déclarer en plus pour une nouvelle animation. En ligne, le réseau passe d'abord :
+  chaque push sur `main` arrive tout de suite dans l'app.
+- `assets/js/app.js` : chargé par toutes les pages ; enregistre `sw.js` et gère le bouton d'installation.
+  Ouvert en double-cliquant (`file://`), le site marche comme avant, sans app.
+
 ## Publication
 
 GitHub Pages, branche `main`, dossier racine. Le fichier `.nojekyll` évite tout traitement par Jekyll.

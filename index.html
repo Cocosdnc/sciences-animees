@@ -43,6 +43,11 @@ header.page.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr
 .empty b{display:block;color:var(--ink);font:500 17px/1.3 var(--f-display);margin-bottom:4px}
 footer{max-width:1080px;margin:56px auto 0;border-top:1px solid var(--line);padding-top:16px;font-size:13px;color:var(--muted)}
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#090D12">
+<link rel="icon" href="assets/app/icone.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/app/icone-180.png">
+<script src="assets/js/app.js" defer></script>
 </head>
 <body>
 <div class="topbar"><a class="brand" href="./"><i></i><span id="siteName">Sciences animées</span></a><nav><a href="#catalogue">Animations</a><a href="carte.html">Carte des notions</a><a href="blocs/">Modèles</a></nav></div>
@@ -52,7 +57,8 @@ footer{max-width:1080px;margin:56px auto 0;border-top:1px solid var(--line);padd
       <div class="kicker">Laboratoire en ligne</div>
       <h1>Voir la science <br>en mouvement</h1>
       <p class="lead" id="devise"></p>
-      <div class="controls"><a href="#catalogue" style="text-decoration:none"><button class="primary" type="button" tabindex="-1">Parcourir les animations</button></a><a href="carte.html" style="text-decoration:none"><button type="button" tabindex="-1">Explorer la carte des notions</button></a></div>
+      <div class="controls"><a href="#catalogue" style="text-decoration:none"><button class="primary" type="button" tabindex="-1">Parcourir les animations</button></a><a href="carte.html" style="text-decoration:none"><button type="button" tabindex="-1">Explorer la carte des notions</button></a><button type="button" data-installer hidden>Installer l'app</button></div>
+      <p class="note" data-installer-ios hidden style="margin:0">Pour l'avoir en app sur iPhone ou iPad : bouton Partager, puis « Sur l'écran d'accueil ». Elle marche aussi sans réseau.</p>
     </div>
     <canvas id="cvHero" style="aspect-ratio:400/260" aria-label="Animation décorative : un faisceau laser traverse une rangée d'atomes"></canvas>
   </header>
